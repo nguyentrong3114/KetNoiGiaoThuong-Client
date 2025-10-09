@@ -1,5 +1,7 @@
 # 🧩 Quy tắc code dự án Kết Nối Giao Thương (LoginPage Style)
 
+Đọc kĩ nhé
+
 ## 1️⃣ Cấu trúc thư mục
 
 ```
