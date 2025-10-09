@@ -19,16 +19,12 @@ const LoginPage = () => {
       {/* LEFT SIDE - FORM */}
       <div className="w-full md:w-1/2 flex flex-col justify-center items-center px-6 md:px-20 bg-white">
         <div className="w-full max-w-md">
-          <h1 className="text-4xl font-extrabold text-blue-800 mb-10">
-            Sign in
-          </h1>
+          <h1 className="text-4xl font-extrabold text-blue-800 mb-10">Sign in</h1>
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label className="block text-gray-800 font-medium mb-1">
-                Email
-              </label>
+              <label className="block text-gray-800 font-medium mb-1">Email</label>
               <input
                 type="email"
                 name="email"
@@ -40,9 +36,7 @@ const LoginPage = () => {
             </div>
 
             <div>
-              <label className="block text-gray-800 font-medium mb-1">
-                Password
-              </label>
+              <label className="block text-gray-800 font-medium mb-1">Password</label>
               <input
                 type="password"
                 name="password"
@@ -57,10 +51,7 @@ const LoginPage = () => {
               <label className="flex items-center gap-2 text-gray-600">
                 <input type="checkbox" className="rounded" /> Remember Me
               </label>
-              <Link
-                to="/forgot"
-                className="text-blue-600 hover:underline font-medium"
-              >
+              <Link to="/forgot" className="text-blue-600 hover:underline font-medium">
                 Forgot Password
               </Link>
             </div>
@@ -87,18 +78,13 @@ const LoginPage = () => {
               alt="Google"
               className="w-5 h-5"
             />
-            <span className="text-gray-700 font-medium">
-              Sign in with Google
-            </span>
+            <span className="text-gray-700 font-medium">Sign in with Google</span>
           </button>
 
           {/* Register Link */}
           <p className="text-center text-sm text-gray-600 mt-6">
             Don’t have an account?{" "}
-            <Link
-              to="/register"
-              className="text-blue-700 hover:underline font-semibold"
-            >
+            <Link to="/register" className="text-blue-700 hover:underline font-semibold">
               Đăng ký ngay
             </Link>
           </p>
