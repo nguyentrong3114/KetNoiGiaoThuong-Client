@@ -1,3 +1,8 @@
+Cáhc chạy
+
+- Tải 'npm install' các package
+- Chạy 'npm run dev'
+
 # 🧩 Quy tắc code dự án Kết Nối Giao Thương (LoginPage Style)
 
 Đọc kĩ nhé

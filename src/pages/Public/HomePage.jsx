@@ -14,12 +14,7 @@ const HomePage = () => {
       color: "bg-blue-100",
       iconColor: "text-blue-600",
       icon: (
-        <svg
-          className="w-8 h-8"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
+        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -35,12 +30,7 @@ const HomePage = () => {
       color: "bg-green-100",
       iconColor: "text-green-600",
       icon: (
-        <svg
-          className="w-8 h-8"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
+        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -56,12 +46,7 @@ const HomePage = () => {
       color: "bg-purple-100",
       iconColor: "text-purple-600",
       icon: (
-        <svg
-          className="w-8 h-8"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
+        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -83,30 +68,23 @@ const HomePage = () => {
           <h1 className="text-4xl md:text-6xl font-extrabold mb-6 drop-shadow-lg">
             Kết nối doanh nghiệp
             <br />
-            <span className="text-blue-200 font-semibold">
-              Phát triển bền vững
-            </span>
+            <span className="text-blue-200 font-semibold">Phát triển bền vững</span>
           </h1>
           <p className="text-lg md:text-xl mb-10 text-blue-50 max-w-3xl mx-auto leading-relaxed">
-            Nền tảng giao thương hàng đầu Việt Nam, tạo cầu nối giữa các doanh
-            nghiệp để cùng nhau phát triển và thành công.
+            Nền tảng giao thương hàng đầu Việt Nam, tạo cầu nối giữa các doanh nghiệp để cùng nhau
+            phát triển và thành công.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button
-              variant="primary"
-              size="lg"
-              onClick={() => alert("Bắt đầu ngay!")}
-            >
+            <Button variant="primary" size="lg" onClick={() => alert("Bắt đầu ngay!")}>
               Bắt đầu ngay
             </Button>
-            <Button
-              variant="outline"
-              size="lg"
-              onClick={() => setShowModal(true)}
-            >
-              Tìm hiểu thêm
-            </Button>
+
+            <Link to="/about" className="inline-block">
+              <Button variant="outline" size="lg">
+                Tìm hiểu thêm
+              </Button>
+            </Link>
           </div>
         </div>
       </section>
@@ -118,8 +96,7 @@ const HomePage = () => {
             Tại sao chọn chúng tôi?
           </h2>
           <p className="text-lg text-gray-600 mb-16">
-            Chúng tôi cung cấp giải pháp toàn diện để kết nối và phát triển kinh
-            doanh
+            Chúng tôi cung cấp giải pháp toàn diện để kết nối và phát triển kinh doanh
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -133,12 +110,8 @@ const HomePage = () => {
                 >
                   {f.icon}
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-3">
-                  {f.title}
-                </h3>
-                <p className="text-gray-600 text-base leading-relaxed">
-                  {f.desc}
-                </p>
+                <h3 className="text-xl font-semibold text-gray-900 mb-3">{f.title}</h3>
+                <p className="text-gray-600 text-base leading-relaxed">{f.desc}</p>
               </div>
             ))}
           </div>
@@ -162,9 +135,7 @@ const HomePage = () => {
                 key={index}
                 className="p-4 rounded-lg hover:bg-gray-50 transition-all duration-300"
               >
-                <div
-                  className={`text-4xl font-extrabold ${item.color} mb-2 drop-shadow-sm`}
-                >
+                <div className={`text-4xl font-extrabold ${item.color} mb-2 drop-shadow-sm`}>
                   {item.num}
                 </div>
                 <p className="text-gray-700 font-medium">{item.text}</p>
@@ -176,16 +147,16 @@ const HomePage = () => {
 
       {/* CTA SECTION */}
       <section className="py-20 bg-blue-700 text-center text-white">
-        <h2 className="text-3xl md:text-4xl font-bold mb-4">
-          Sẵn sàng bắt đầu?
-        </h2>
+        <h2 className="text-3xl md:text-4xl font-bold mb-4">Sẵn sàng bắt đầu?</h2>
         <p className="text-lg md:text-xl text-blue-100 mb-10 max-w-2xl mx-auto">
           Tham gia cộng đồng doanh nghiệp lớn nhất Việt Nam ngay hôm nay
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Button variant="outline" size="lg">
-            Đăng ký miễn phí
-          </Button>
+          <Link to="/register" className="inline-block">
+            <Button variant="outline" size="lg">
+              Đăng ký miễn phí
+            </Button>
+          </Link>
           <Link to="/contact" className="inline-block">
             <Button variant="primary" size="lg">
               Liên hệ tư vấn
@@ -195,15 +166,10 @@ const HomePage = () => {
       </section>
 
       {/* MODAL */}
-      <Modal
-        show={showModal}
-        onClose={() => setShowModal(false)}
-        title="Thông tin thêm"
-      >
+      <Modal show={showModal} onClose={() => setShowModal(false)} title="Thông tin thêm">
         <p className="text-gray-700 leading-relaxed">
-          Nền tảng <strong>Kết Nối Giao Thương</strong> giúp doanh nghiệp Việt Nam
-          mở rộng mạng lưới hợp tác, nâng cao hiệu quả, và phát triển bền vững
-          thông qua công nghệ số hiện đại.
+          Nền tảng <strong>Kết Nối Giao Thương</strong> giúp doanh nghiệp Việt Nam mở rộng mạng lưới
+          hợp tác, nâng cao hiệu quả, và phát triển bền vững thông qua công nghệ số hiện đại.
         </p>
       </Modal>
     </div>
