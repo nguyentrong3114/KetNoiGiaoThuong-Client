@@ -8,7 +8,7 @@ const AdminSidebar = () => {
   return (
     <div className="sidebar">
       <div className="logo-container">
-        <img src="/images/logo.png" alt="GoPro Logo" className="logo-image" />
+        <img src="../src/assets/images/logo.png" alt="GoPro Logo" className="logo-image" />
       </div>
       <nav className="nav-menu">
         <Link to="/admin/dashboard" className={`nav-item ${location.pathname === '/admin/dashboard' ? 'active' : ''}`}>
@@ -19,10 +19,10 @@ const AdminSidebar = () => {
           <i className="bi bi-people"></i>
           <span className="nav-text">Users</span>
         </Link>
-        <div className="nav-item">
+        <Link to="/admin/posts" className={`nav-item ${location.pathname === '/admin/posts' ? 'active' : ''}`}>
           <i className="bi bi-graph-up"></i>
           <span className="nav-text">Posts / Ads</span>
-        </div>
+        </Link>
         <Link to="/admin/transactions" className={`nav-item ${location.pathname === '/admin/transactions' ? 'active' : ''}`}>
           <i className="bi bi-credit-card"></i>
           <span className="nav-text">Transactions</span>

@@ -78,7 +78,7 @@ const AdminUsers = () => {
       <AdminSidebar />
 
       <div className="main-content">
-        <AdminHeader title="Users" subtitle="Manage and view all user accounts" />
+        <AdminHeader title="Users" subtitle="" />
 
         <div className="table-card">
           <div className="table-header">
