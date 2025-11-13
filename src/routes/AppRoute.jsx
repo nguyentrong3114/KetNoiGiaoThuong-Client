@@ -7,6 +7,8 @@ import LoginPage from "../pages/Public/LoginPage";
 import RegisterPage from "../pages/Public/RegisterPage";
 import ResetPasswordPage from "../pages/Public/ResetPasswordPage";
 import ForgotPasswordPage from "../pages/Public/ForgotPasswordPage";
+import AdminDashboard from "../pages/Admin/AdminDashboard";
+
 const AppRoute = () => {
   return (
     <Router>
@@ -20,6 +22,7 @@ const AppRoute = () => {
           <Route path="reset" element={<ResetPasswordPage />} />
           <Route path="forgot" element={<ForgotPasswordPage />} />
         </Route>
+        <Route path="/admin/dashboard" element={<AdminDashboard />} />
       </Routes>
     </Router>
   );
