@@ -27,10 +27,10 @@ const AdminSidebar = () => {
           <i className="bi bi-credit-card"></i>
           <span className="nav-text">Transactions</span>
         </div>
-        <div className="nav-item">
+        <Link to="/admin/reports" className={`nav-item ${location.pathname === '/admin/reports' ? 'active' : ''}`}>
           <i className="bi bi-bar-chart"></i>
           <span className="nav-text">Reports</span>
-        </div>
+        </Link>
       </nav>
       <div className="nav-bottom">
         <div className="nav-item">
