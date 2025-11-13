@@ -1,0 +1,188 @@
+/* Payment History Card */
+.transactions-history-card {
+  background-color: white;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.transactions-history-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.transactions-history-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.transactions-more-btn {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background-color: transparent;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #9ca3af;
+  transition: all 0.2s;
+}
+
+.transactions-more-btn:hover {
+  background-color: #f3f4f6;
+}
+
+.transactions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.transactions-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.transactions-item-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.transactions-item-info {
+  flex: 1;
+}
+
+.transactions-item-type {
+  font-size: 14px;
+  font-weight: 500;
+  color: #111827;
+  margin-bottom: 4px;
+}
+
+.transactions-item-date {
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+.transactions-item-amount {
+  text-align: right;
+}
+
+.transactions-item-value {
+  font-size: 16px;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 4px;
+}
+
+.transactions-item-currency {
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+/* Payment Chart Card */
+.transactions-chart-card {
+  background-color: white;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.transactions-chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.transactions-chart-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.transactions-chart-legend {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 24px;
+  justify-content: flex-end;
+}
+
+.transactions-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.transactions-legend-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.transactions-chart {
+  width: 100%;
+  height: 250px;
+  margin-bottom: 16px;
+}
+
+.transactions-chart-svg {
+  width: 100%;
+  height: 100%;
+}
+
+.transactions-chart-label {
+  font-size: 11px;
+  fill: #9ca3af;
+}
+
+.transactions-chart-footer {
+  text-align: center;
+  padding-top: 16px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.transactions-chart-footer-label {
+  font-size: 12px;
+  color: #9ca3af;
+  font-weight: 500;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .transactions-content {
+    grid-template-columns: 1fr;
+  }
+  
+  .transactions-history-card {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .transactions-header {
+    padding: 16px 20px;
+  }
+
+  .transactions-content {
+    padding: 20px;
+  }
+}

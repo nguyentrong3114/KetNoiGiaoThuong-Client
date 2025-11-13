@@ -23,10 +23,10 @@ const AdminSidebar = () => {
           <i className="bi bi-graph-up"></i>
           <span className="nav-text">Posts / Ads</span>
         </div>
-        <div className="nav-item">
+        <Link to="/admin/transactions" className={`nav-item ${location.pathname === '/admin/transactions' ? 'active' : ''}`}>
           <i className="bi bi-credit-card"></i>
           <span className="nav-text">Transactions</span>
-        </div>
+        </Link>
         <Link to="/admin/reports" className={`nav-item ${location.pathname === '/admin/reports' ? 'active' : ''}`}>
           <i className="bi bi-bar-chart"></i>
           <span className="nav-text">Reports</span>

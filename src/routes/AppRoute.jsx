@@ -10,6 +10,7 @@ import ForgotPasswordPage from "../pages/Public/ForgotPasswordPage";
 import AdminDashboard from "../pages/Admin/AdminDashboard";
 import AdminUsers from "../pages/Admin/AdminUsers";
 import ReportsPage from "../pages/Admin/ReportsPage";
+import TransactionsPage from "../pages/Admin/TransactionsPage";
 
 const AppRoute = () => {
   return (
@@ -27,6 +28,7 @@ const AppRoute = () => {
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
         <Route path="/admin/users" element={<AdminUsers />} />
         <Route path="/admin/reports" element={<ReportsPage />} />
+        <Route path="/admin/transactions" element={<TransactionsPage />} />
       </Routes>
     </Router>
   );
