@@ -1,20 +1,16 @@
 import React from 'react';
-import AdminSidebar from "./components/AdminSidebar";
 import AdminHeader from "./components/AdminHeader";
 import './TransactionsPage.css';
 
 const TransactionsPage = () => {
   return (
-    <div className="dashboard-container">
-      <AdminSidebar />
-      <div className="main-content">
-        <AdminHeader title="Transactions" subtitle="" />
-        <div className="transactions-content">
-          <PaymentHistory />
-          <PaymentChart />
-        </div>
+    <>
+      <AdminHeader title="Transactions" subtitle="" />
+      <div className="transactions-content">
+        <PaymentHistory />
+        <PaymentChart />
       </div>
-    </div>
+    </>
   );
 };
 

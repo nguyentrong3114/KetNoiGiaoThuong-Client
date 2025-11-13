@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from "react";
 import { Chart } from "chart.js/auto";
-import AdminSidebar from "./components/AdminSidebar";
 import AdminHeader from "./components/AdminHeader";
 import "./AdminDashboard.css";
 
@@ -127,11 +126,8 @@ const AdminDashboard = () => {
   }, []);
 
   return (
-    <div className="dashboard-container">
-      <AdminSidebar />
-
-      <div className="main-content">
-        <AdminHeader title="Dashboard" subtitle="Welcome back! Here's what's happening today." />
+    <>
+      <AdminHeader title="Dashboard" subtitle="Welcome back! Here's what's happening today." />
 
         <div className="stats-grid">
           {/* Total Orders */}
@@ -260,8 +256,7 @@ const AdminDashboard = () => {
             </div>
           </div>
         </div>
-      </div>
-    </div>
+    </>
   );
 };
 

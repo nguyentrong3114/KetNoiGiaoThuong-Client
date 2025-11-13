@@ -1,5 +1,4 @@
 import React from "react";
-import AdminSidebar from "./components/AdminSidebar";
 import AdminHeader from "./components/AdminHeader";
 import "./AdminUsers.css";
 
@@ -74,11 +73,8 @@ const AdminUsers = () => {
   ];
 
   return (
-    <div className="dashboard-container">
-      <AdminSidebar />
-
-      <div className="main-content">
-        <AdminHeader title="Users" subtitle="" />
+    <>
+      <AdminHeader title="Users" subtitle="" />
 
         <div className="table-card">
           <div className="table-header">
@@ -163,22 +159,7 @@ const AdminUsers = () => {
             </div>
           </div>
         </div>
-      </div>
-
-      <style>{`
-        .dashboard-container {
-          display: flex;
-          min-height: 100vh;
-          background: #f8f9fa;
-        }
-
-        .main-content {
-          flex: 1;
-          padding: 0;
-          background: #ffffff;
-        }
-      `}</style>
-    </div>
+    </>
   );
 };
 

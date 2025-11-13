@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from "react";
 import { Chart } from "chart.js/auto";
-import AdminSidebar from "./components/AdminSidebar";
 import AdminHeader from "./components/AdminHeader";
 import "./PostsAds.css";
 
@@ -84,11 +83,8 @@ const PostsAds = () => {
   }, []);
 
   return (
-    <div className="dashboard-container">
-      <AdminSidebar />
-
-      <div className="main-content">
-        <AdminHeader title="Post / Ads" subtitle="" />
+    <>
+      <AdminHeader title="Post / Ads" subtitle="" />
 
         <div className="overview-section">
           <div className="overview-header">
@@ -187,8 +183,7 @@ const PostsAds = () => {
             <canvas ref={barChartRef}></canvas>
           </div>
         </div>
-      </div>
-    </div>
+    </>
   );
 };
 

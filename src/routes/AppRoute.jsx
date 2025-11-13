@@ -7,6 +7,7 @@ import LoginPage from "../pages/Public/LoginPage";
 import RegisterPage from "../pages/Public/RegisterPage";
 import ResetPasswordPage from "../pages/Public/ResetPasswordPage";
 import ForgotPasswordPage from "../pages/Public/ForgotPasswordPage";
+import AdminLayout from "../pages/Admin/AdminLayout";
 import AdminDashboard from "../pages/Admin/AdminDashboard";
 import AdminUsers from "../pages/Admin/AdminUsers";
 import ReportsPage from "../pages/Admin/ReportsPage";
@@ -26,11 +27,13 @@ const AppRoute = () => {
           <Route path="reset" element={<ResetPasswordPage />} />
           <Route path="forgot" element={<ForgotPasswordPage />} />
         </Route>
-        <Route path="/admin/dashboard" element={<AdminDashboard />} />
-        <Route path="/admin/users" element={<AdminUsers />} />
-        <Route path="/admin/reports" element={<ReportsPage />} />
-        <Route path="/admin/transactions" element={<TransactionsPage />} />
-        <Route path="/admin/posts" element={<PostsAds />} />
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route path="dashboard" element={<AdminDashboard />} />
+          <Route path="users" element={<AdminUsers />} />
+          <Route path="reports" element={<ReportsPage />} />
+          <Route path="transactions" element={<TransactionsPage />} />
+          <Route path="posts" element={<PostsAds />} />
+        </Route>
       </Routes>
     </Router>
   );

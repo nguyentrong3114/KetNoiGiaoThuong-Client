@@ -1,15 +1,11 @@
 import React from "react";
-import AdminSidebar from "./components/AdminSidebar";
 import AdminHeader from "./components/AdminHeader";
 import "./ReportsPage.css";
 
 const ReportsPage = () => {
   return (
-    <div className="dashboard-container">
-      <AdminSidebar />
-      
-      <div className="main-content">
-        <AdminHeader title="Reports" subtitle="" />
+    <>
+      <AdminHeader title="Reports" subtitle="" />
         
         {/* Stats Cards */}
         <div className="stats-grid">
@@ -277,8 +273,7 @@ const ReportsPage = () => {
             </button>
           </div>
         </div>
-      </div>
-    </div>
+    </>
   );
 };
 
