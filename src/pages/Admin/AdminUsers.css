@@ -1,0 +1,243 @@
+.users-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 40px;
+  background: white;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.page-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.btn-icon {
+  width: 40px;
+  height: 40px;
+  border: none;
+  background: transparent;
+  color: #6c757d;
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+
+.btn-icon:hover {
+  background: #f8f9fa;
+}
+
+.btn-share {
+  padding: 10px 24px;
+  background: #000;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-share:hover {
+  background: #333;
+}
+
+.header-profile img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.table-card {
+  margin: 40px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 32px;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.table-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #6c757d;
+}
+
+.btn-menu {
+  border: none;
+  background: transparent;
+  color: #6c757d;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 4px;
+}
+
+.btn-menu:hover {
+  background: #f8f9fa;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+}
+
+.invoice-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.invoice-table thead th {
+  padding: 20px 24px;
+  text-align: left;
+  font-size: 13px;
+  font-weight: 500;
+  color: #adb5bd;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.invoice-table tbody td {
+  padding: 20px 24px;
+  font-size: 14px;
+  border-bottom: 1px solid #f8f9fa;
+}
+
+.invoice-table tbody tr:hover {
+  background: #f8f9fa;
+}
+
+.profile-img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.text-dark {
+  color: #2c3e50;
+  font-weight: 500;
+}
+
+.text-muted {
+  color: #6c757d;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.status-completed {
+  background: #3498db;
+  color: white;
+}
+
+.status-cancelled {
+  background: #e74c3c;
+  color: white;
+}
+
+.attachment-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  background: #2ecc71;
+  color: white;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.table-footer {
+  padding: 20px 32px;
+  border-top: 1px solid #e9ecef;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.pagination-btn {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: #f8f9fa;
+  color: #6c757d;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+.pagination-btn:hover {
+  background: #e9ecef;
+}
+
+.pagination-scrollbar {
+  flex: 1;
+}
+
+.scrollbar-track {
+  width: 100%;
+  height: 6px;
+  background: #e9ecef;
+  border-radius: 3px;
+  position: relative;
+}
+
+.scrollbar-thumb {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 30%;
+  height: 100%;
+  background: #adb5bd;
+  border-radius: 3px;
+}
+
+@media (max-width: 1200px) {
+  .invoice-table {
+    min-width: 1000px;
+  }
+}
+
+@media (max-width: 768px) {
+  .users-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .table-card {
+    margin: 20px;
+  }
+}

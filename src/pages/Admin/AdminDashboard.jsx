@@ -131,7 +131,7 @@ const AdminDashboard = () => {
       <AdminSidebar />
 
       <div className="main-content">
-        <AdminHeader />
+        <AdminHeader title="Dashboard" subtitle="Welcome back! Here's what's happening today." />
 
         <div className="stats-grid">
           {/* Total Orders */}

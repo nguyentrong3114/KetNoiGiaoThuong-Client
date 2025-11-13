@@ -1,12 +1,12 @@
 import React from "react";
 import "./AdminHeader.css";
 
-const AdminHeader = () => {
+const AdminHeader = ({ title = "Dashboard", subtitle = "Welcome back! Here's what's happening today." }) => {
   return (
     <div className="header">
       <div className="header-left">
-        <h1 className="header-title">Dashboard</h1>
-        <p className="header-subtitle">Welcome back! Here's what's happening today.</p>
+        <h1 className="header-title">{title}</h1>
+        <p className="header-subtitle">{subtitle}</p>
       </div>
       <div className="header-right">
         <div className="header-search">
