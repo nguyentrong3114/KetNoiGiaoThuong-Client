@@ -9,3 +9,17 @@ input[type="password"]::-webkit-inner-spin-button,
 input[type="password"]::-webkit-textfield-decoration-container {
   display: none !important;
 }
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.2s ease-out;
+}

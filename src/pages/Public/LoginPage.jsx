@@ -41,6 +41,17 @@ const LoginPage = () => {
     // 🟩 Tài khoản user thường (demo)
     if (email === "user@gmail.com" && password === "123456") {
       alert("Đăng nhập USER thành công!");
+
+      // ⭐ Quan trọng: lưu user vào localStorage
+      localStorage.setItem("role", "user");
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          name: "Người dùng",
+          avatar: "/default-avatar.jpg",
+        })
+      );
+
       navigate("/");
       return;
     }

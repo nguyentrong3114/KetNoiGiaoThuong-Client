@@ -2,7 +2,6 @@ import React from "react";
 import AdminHeader from "./components/AdminHeader";
 import "./AdminUsers.css";
 
-
 const AdminUsers = () => {
   const invoices = [
     {
@@ -74,91 +73,98 @@ const AdminUsers = () => {
 
   return (
     <>
-      <AdminHeader title="Users" subtitle="" />
+      <AdminHeader title="Người dùng" subtitle="Danh sách người dùng và hoạt động gần đây." />
 
-        <div className="table-card">
-          <div className="table-header">
-            <h2 className="table-title">Monthly Invoices</h2>
-            <button className="btn-menu">
-              <i className="bi bi-three-dots-vertical"></i>
+      <div className="table-card">
+        <div className="table-header">
+          <h2 className="table-title">Hóa đơn hàng tháng</h2>
+          <button className="btn-menu">
+            <i className="bi bi-three-dots-vertical"></i>
+          </button>
+        </div>
+
+        <div className="table-wrapper">
+          <table className="invoice-table">
+            <thead>
+              <tr>
+                <th>Hồ sơ</th>
+                <th>Loại hoạt động</th>
+                <th>Chủ sở hữu</th>
+                <th>Nhiệm vụ</th>
+                <th>Ngân sách</th>
+                <th>Mức ưu tiên</th>
+                <th>Thời gian</th>
+                <th>Trạng thái</th>
+                <th>Hạn cuối</th>
+                <th>Tập tin</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {invoices.map((invoice) => (
+                <tr key={invoice.id}>
+                  {/* Profile hình đại diện */}
+                  <td>
+                    <img src={invoice.profile} alt={invoice.owner} className="profile-img" />
+                  </td>
+
+                  {/* Những field này là DATA → giữ nguyên */}
+                  <td className="text-dark">{invoice.activityType}</td>
+                  <td className="text-dark">{invoice.owner}</td>
+                  <td className="text-muted">{invoice.task}</td>
+                  <td className="text-dark">{invoice.budget}</td>
+                  <td className="text-dark">{invoice.priority}</td>
+
+                  {/* Period: dịch riêng Oct → Tháng 10 */}
+                  <td className="text-dark">
+                    {invoice.period === "Oct" ? "Tháng 10" : invoice.period}
+                  </td>
+
+                  {/* Status: chỉ icon ✔ hoặc ✖ */}
+                  <td>
+                    <span
+                      className={`status-badge ${
+                        invoice.status === "completed" ? "status-completed" : "status-cancelled"
+                      }`}
+                    >
+                      {invoice.status === "completed" ? (
+                        <i className="bi bi-check"></i>
+                      ) : (
+                        <i className="bi bi-x"></i>
+                      )}
+                    </span>
+                  </td>
+
+                  {/* Deadline giữ nguyên */}
+                  <td className="text-dark">{invoice.deadline}</td>
+
+                  {/* Attachment: giữ PDF */}
+                  <td>{invoice.attachment && <span className="attachment-badge">PDF</span>}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        {/* Footer phân trang */}
+        <div className="table-footer">
+          <div className="pagination">
+            <button className="pagination-btn">
+              <i className="bi bi-chevron-left"></i>
+            </button>
+
+            <div className="pagination-scrollbar">
+              <div className="scrollbar-track">
+                <div className="scrollbar-thumb"></div>
+              </div>
+            </div>
+
+            <button className="pagination-btn">
+              <i className="bi bi-chevron-right"></i>
             </button>
           </div>
-
-          <div className="table-wrapper">
-            <table className="invoice-table">
-              <thead>
-                <tr>
-                  <th>Profile</th>
-                  <th>Activity Type</th>
-                  <th>Owner</th>
-                  <th>Task</th>
-                  <th>Budget</th>
-                  <th>Priority</th>
-                  <th>Period</th>
-                  <th>Status</th>
-                  <th>Deadline</th>
-                  <th>Attachment</th>
-                </tr>
-              </thead>
-              <tbody>
-                {invoices.map((invoice) => (
-                  <tr key={invoice.id}>
-                    <td>
-                      <img
-                        src={invoice.profile}
-                        alt={invoice.owner}
-                        className="profile-img"
-                      />
-                    </td>
-                    <td className="text-dark">{invoice.activityType}</td>
-                    <td className="text-dark">{invoice.owner}</td>
-                    <td className="text-muted">{invoice.task}</td>
-                    <td className="text-dark">{invoice.budget}</td>
-                    <td className="text-dark">{invoice.priority}</td>
-                    <td className="text-dark">{invoice.period}</td>
-                    <td>
-                      <span
-                        className={`status-badge ${
-                          invoice.status === "completed"
-                            ? "status-completed"
-                            : "status-cancelled"
-                        }`}
-                      >
-                        {invoice.status === "completed" ? (
-                          <i className="bi bi-check"></i>
-                        ) : (
-                          <i className="bi bi-x"></i>
-                        )}
-                      </span>
-                    </td>
-                    <td className="text-dark">{invoice.deadline}</td>
-                    <td>
-                      {invoice.attachment && (
-                        <span className="attachment-badge">PDF</span>
-                      )}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          
-          <div className="table-footer">
-            <div className="pagination">
-              <button className="pagination-btn">
-                <i className="bi bi-chevron-left"></i>
-              </button>
-              <div className="pagination-scrollbar">
-                <div className="scrollbar-track">
-                  <div className="scrollbar-thumb"></div>
-                </div>
-              </div>
-              <button className="pagination-btn">
-                <i className="bi bi-chevron-right"></i>
-              </button>
-            </div>
-          </div>
         </div>
+      </div>
     </>
   );
 };

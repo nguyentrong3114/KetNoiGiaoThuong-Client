@@ -14,7 +14,7 @@ const PostsAds = () => {
         labels: ["Sun 12", "Mon 13", "Tue 14", "Wed 15", "Thu 16", "Fri 17", "Sat 18"],
         datasets: [
           {
-            label: "New Visit",
+            label: "Lượt truy cập mới",
             data: [1650, 2550, 2150, 2450, 2700, 2850, 2600],
             backgroundColor: "#00D9C0",
             borderRadius: 8,
@@ -84,105 +84,111 @@ const PostsAds = () => {
 
   return (
     <>
-      <AdminHeader title="Post / Ads" subtitle="" />
+      <AdminHeader title="Bài đăng / Quảng cáo" subtitle="" />
 
-        <div className="overview-section">
-          <div className="overview-header">
-            <div>
-              <h2 className="overview-title">Ads Performance Overview</h2>
-              <div className="overview-amount">$45,000</div>
-            </div>
-            <div className="overview-controls">
-              <div className="time-filters">
-                <button className="time-btn">Today</button>
-                <button className="time-btn active">Week</button>
-                <button className="time-btn">Month</button>
-                <button className="time-btn">Quarter</button>
-                <button className="time-btn">Year</button>
-                <button className="time-btn">Custom date</button>
-              </div>
-              <label className="compare-toggle">
-                <input type="checkbox" />
-                <span>Do not compare</span>
-              </label>
-              <button className="btn-export">
-                <i className="bi bi-download"></i>
-                Export
-              </button>
-            </div>
+      {/* Tổng quan quảng cáo */}
+      <div className="overview-section">
+        <div className="overview-header">
+          <div>
+            <h2 className="overview-title">Tổng quan hiệu suất quảng cáo</h2>
+            <div className="overview-amount">$45,000</div>
           </div>
 
-          {/* Stats Cards */}
-          <div className="stats-cards">
-            <div className="stat-card">
-              <div className="stat-label">Total Posts</div>
-              <div className="stat-value">$14,509</div>
-              <div className="stat-change positive">
-                <i className="bi bi-arrow-up"></i>
-                <span>21%</span>
-                <span className="stat-period">From last week</span>
-              </div>
+          <div className="overview-controls">
+            <div className="time-filters">
+              <button className="time-btn">Hôm nay</button>
+              <button className="time-btn active">Tuần</button>
+              <button className="time-btn">Tháng</button>
+              <button className="time-btn">Quý</button>
+              <button className="time-btn">Năm</button>
+              <button className="time-btn">Tùy chọn</button>
             </div>
 
-            <div className="stat-card">
-              <div className="stat-label">Clicks</div>
-              <div className="stat-value">$204</div>
-              <div className="stat-change positive">
-                <i className="bi bi-arrow-up"></i>
-                <span>$53</span>
-                <span className="stat-period">From last week</span>
-              </div>
-            </div>
+            <label className="compare-toggle">
+              <input type="checkbox" />
+              <span>Không so sánh</span>
+            </label>
 
-            <div className="stat-card">
-              <div className="stat-label">CTR</div>
-              <div className="stat-value">12%</div>
-              <div className="stat-change positive">
-                <i className="bi bi-arrow-up"></i>
-                <span>4%</span>
-                <span className="stat-period">From last week</span>
-              </div>
-            </div>
-
-            <div className="stat-card">
-              <div className="stat-label">Spent</div>
-              <div className="stat-value">$306</div>
-              <div className="stat-change positive">
-                <i className="bi bi-arrow-up"></i>
-                <span>11%</span>
-                <span className="stat-period">From last week</span>
-              </div>
-            </div>
+            <button className="btn-export">
+              <i className="bi bi-download"></i>
+              Xuất dữ liệu
+            </button>
           </div>
         </div>
 
-        {/* Chart Section */}
-        <div className="chart-section">
-          <div className="chart-header">
-            <div className="chart-legend">
-              <span className="legend-item">
-                <span className="legend-dot new-visit"></span>
-                New Visit
-              </span>
-              <span className="legend-item">
-                <span className="legend-dot unique-visit"></span>
-                Unique Visit
-              </span>
-              <span className="legend-item">
-                <span className="legend-dot old-visit"></span>
-                Old Visit
-              </span>
+        {/* Thống kê */}
+        <div className="stats-cards">
+          <div className="stat-card">
+            <div className="stat-label">Tổng bài đăng</div>
+            <div className="stat-value">$14,509</div>
+            <div className="stat-change positive">
+              <i className="bi bi-arrow-up"></i>
+              <span>21%</span>
+              <span className="stat-period">So với tuần trước</span>
             </div>
-            <select className="chart-filter">
-              <option>Week</option>
-              <option>Month</option>
-              <option>Year</option>
-            </select>
           </div>
-          <div className="chart-container">
-            <canvas ref={barChartRef}></canvas>
+
+          <div className="stat-card">
+            <div className="stat-label">Lượt nhấp</div>
+            <div className="stat-value">$204</div>
+            <div className="stat-change positive">
+              <i className="bi bi-arrow-up"></i>
+              <span>$53</span>
+              <span className="stat-period">So với tuần trước</span>
+            </div>
+          </div>
+
+          <div className="stat-card">
+            <div className="stat-label">CTR</div>
+            <div className="stat-value">12%</div>
+            <div className="stat-change positive">
+              <i className="bi bi-arrow-up"></i>
+              <span>4%</span>
+              <span className="stat-period">So với tuần trước</span>
+            </div>
+          </div>
+
+          <div className="stat-card">
+            <div className="stat-label">Chi tiêu</div>
+            <div className="stat-value">$306</div>
+            <div className="stat-change positive">
+              <i className="bi bi-arrow-up"></i>
+              <span>11%</span>
+              <span className="stat-period">So với tuần trước</span>
+            </div>
           </div>
         </div>
+      </div>
+
+      {/* Biểu đồ */}
+      <div className="chart-section">
+        <div className="chart-header">
+          <div className="chart-legend">
+            <span className="legend-item">
+              <span className="legend-dot new-visit"></span>
+              Lượt truy cập mới
+            </span>
+            <span className="legend-item">
+              <span className="legend-dot unique-visit"></span>
+              Lượt truy cập duy nhất
+            </span>
+            <span className="legend-item">
+              <span className="legend-dot old-visit"></span>
+              Lượt truy cập cũ
+            </span>
+          </div>
+
+          <select className="chart-filter">
+            <option>Tuần</option>
+            <option>Tháng</option>
+            <option>Năm</option>
+          </select>
+        </div>
+
+        <div className="chart-container">
+          <canvas ref={barChartRef}></canvas>
+        </div>
+      </div>
     </>
   );
 };

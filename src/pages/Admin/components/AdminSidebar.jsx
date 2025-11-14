@@ -6,8 +6,11 @@ const AdminSidebar = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // 🔥 Hàm logout
+  // 🔥 Hàm đăng xuất có xác nhận
   const handleLogout = () => {
+    const confirmLogout = window.confirm("Bạn có chắc chắn muốn đăng xuất không?");
+    if (!confirmLogout) return;
+
     localStorage.removeItem("token");
     localStorage.removeItem("role");
     navigate("/login");
@@ -17,7 +20,7 @@ const AdminSidebar = () => {
     <div className="sidebar">
       {/* Logo */}
       <div className="logo-container">
-        <img src="../src/assets/images/logo.png" alt="GoPro Logo" className="logo-image" />
+        <img src="../src/assets/images/logo.png" alt="Logo" className="logo-image" />
       </div>
 
       {/* Menu */}
@@ -27,7 +30,7 @@ const AdminSidebar = () => {
           className={`nav-item ${location.pathname === "/admin/dashboard" ? "active" : ""}`}
         >
           <i className="bi bi-house-door"></i>
-          <span className="nav-text">Dashboard</span>
+          <span className="nav-text">Trang chính</span>
         </Link>
 
         <Link
@@ -35,7 +38,7 @@ const AdminSidebar = () => {
           className={`nav-item ${location.pathname === "/admin/users" ? "active" : ""}`}
         >
           <i className="bi bi-people"></i>
-          <span className="nav-text">Users</span>
+          <span className="nav-text">Người dùng</span>
         </Link>
 
         <Link
@@ -43,7 +46,7 @@ const AdminSidebar = () => {
           className={`nav-item ${location.pathname === "/admin/posts" ? "active" : ""}`}
         >
           <i className="bi bi-graph-up"></i>
-          <span className="nav-text">Posts / Ads</span>
+          <span className="nav-text">Bài đăng / Quảng cáo</span>
         </Link>
 
         <Link
@@ -51,7 +54,7 @@ const AdminSidebar = () => {
           className={`nav-item ${location.pathname === "/admin/transactions" ? "active" : ""}`}
         >
           <i className="bi bi-credit-card"></i>
-          <span className="nav-text">Transactions</span>
+          <span className="nav-text">Giao dịch</span>
         </Link>
 
         <Link
@@ -59,22 +62,15 @@ const AdminSidebar = () => {
           className={`nav-item ${location.pathname === "/admin/reports" ? "active" : ""}`}
         >
           <i className="bi bi-bar-chart"></i>
-          <span className="nav-text">Reports</span>
+          <span className="nav-text">Báo cáo</span>
         </Link>
       </nav>
 
       {/* Bottom Menu */}
       <div className="nav-bottom">
-        {/* Setting */}
-        <Link to="/admin/settings" className="nav-item">
-          <i className="bi bi-gear"></i>
-          <span className="nav-text">Setting</span>
-        </Link>
-
-        {/* Logout */}
         <button onClick={handleLogout} className="nav-item nav-button">
           <i className="bi bi-box-arrow-right"></i>
-          <span className="nav-text">Logout</span>
+          <span className="nav-text">Đăng xuất</span>
         </button>
       </div>
     </div>
