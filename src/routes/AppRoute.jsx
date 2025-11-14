@@ -1,5 +1,9 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import MainLayout from "../pages/Layout/MainLayout";
+import ChatPage from "../pages/Public/ChatPage"; 
+import OrderPage from "../pages/Public/OrderPage";
+import CheckoutPage from "../pages/Public/CheckoutPage";
+import OrderTrackingPage from "../pages/Public/OrderTrackingPage";
 import HomePage from "../pages/Public/HomePage";
 import AboutPage from "../pages/Public/AboutPage";
 import Profile from "../pages/Private/Profile";
@@ -26,6 +30,11 @@ const AppRoute = () => {
           <Route path="register" element={<RegisterPage />} />
           <Route path="reset" element={<ResetPasswordPage />} />
           <Route path="forgot" element={<ForgotPasswordPage />} />
+          <Route path="chat" element={<ChatPage />} />
+          <Route path="order" element={<OrderPage />} />
+          <Route path="checkout" element={<CheckoutPage />} />
+          <Route path="track-order" element={<OrderTrackingPage />} />
+
         </Route>
         <Route path="/admin" element={<AdminLayout />}>
           <Route path="dashboard" element={<AdminDashboard />} />
