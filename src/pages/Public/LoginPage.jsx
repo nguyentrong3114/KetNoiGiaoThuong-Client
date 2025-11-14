@@ -1,14 +1,14 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline"; // ✅ Heroicons v2
+import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const [loading, setLoading] = useState(false);
-
+  const navigate = useNavigate();
   // 🧩 Xử lý thay đổi input
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -20,15 +20,33 @@ const LoginPage = () => {
     e.preventDefault();
     setErrorMsg("");
 
-    if (!formData.email || !formData.password) {
+    const { email, password } = formData;
+
+    if (!email || !password) {
       setErrorMsg("Vui lòng nhập đầy đủ thông tin.");
       return;
     }
 
     setLoading(true);
-    await new Promise((resolve) => setTimeout(resolve, 1000)); // mô phỏng API
+    await new Promise((resolve) => setTimeout(resolve, 800)); // mô phỏng API
     setLoading(false);
-    alert("Đăng nhập thành công (demo)");
+
+    // 🟦 Kiểm tra tài khoản admin ( demo)
+    if (email === "admin@gmail.com" && password === "admin123") {
+      alert("Đăng nhập ADMIN thành công!");
+      navigate("/admin/dashboard");
+      return;
+    }
+
+    // 🟩 Tài khoản user thường (demo)
+    if (email === "user@gmail.com" && password === "123456") {
+      alert("Đăng nhập USER thành công!");
+      navigate("/");
+      return;
+    }
+
+    // 🟥 Sai tài khoản
+    setErrorMsg("Sai email hoặc mật khẩu.");
   };
 
   return (
@@ -87,7 +105,7 @@ const LoginPage = () => {
               </button>
             </div>
 
-            {/* Error message */}
+            {/* Error */}
             {errorMsg && <p className="text-red-600 text-sm font-medium">{errorMsg}</p>}
 
             {/* Remember / Forgot */}
@@ -100,7 +118,7 @@ const LoginPage = () => {
               </Link>
             </div>
 
-            {/* Submit Button */}
+            {/* Submit */}
             <button
               type="submit"
               disabled={loading}
@@ -129,7 +147,7 @@ const LoginPage = () => {
             <span className="text-gray-700 font-medium">Đăng nhập bằng Google</span>
           </button>
 
-          {/* Register link */}
+          {/* Register */}
           <p className="text-center text-sm text-gray-600 mt-8">
             Chưa có tài khoản?{" "}
             <Link to="/register" className="text-blue-700 hover:underline font-semibold">
@@ -153,14 +171,12 @@ const LoginPage = () => {
         />
         <div className="absolute inset-0 bg-gradient-to-br from-blue-900/80 via-blue-800/70 to-blue-700/60"></div>
 
-        {/* Overlay Text */}
         <div className="relative text-center text-white px-8">
           <h2 className="text-4xl font-bold mb-4 leading-tight drop-shadow-lg">
             Kết Nối Giao Thương
           </h2>
           <p className="text-blue-100 text-lg max-w-md mx-auto leading-relaxed">
-            Nền tảng giao thương uy tín — nơi các doanh nghiệp cùng hợp tác, chia sẻ và phát triển
-            bền vững.
+            Nền tảng giao thương uy tín — nơi các doanh nghiệp hợp tác và phát triển bền vững.
           </p>
         </div>
       </motion.div>
