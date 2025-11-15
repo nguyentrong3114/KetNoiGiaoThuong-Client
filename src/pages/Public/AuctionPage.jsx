@@ -1,9 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+
 import CountdownTimer from "../../components/Auction/CountdownTimer";
 import BidModal from "../../components/Auction/BidModal";
 import ReviewForm from "../../components/Auction/ReviewForm";
 
+// =============================
+//   SAMPLE DATA (fallback)
+// =============================
 const sampleProducts = [
   {
     id: 1,
@@ -12,6 +16,7 @@ const sampleProducts = [
       "Đồng hồ chất lượng, đấu giá mở hôm nay. Mặt số bằng pha lê, dây da cổ điển, bảo hành 6 tháng.",
     image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30",
     currentBid: 500000,
+    highestBidder: null,
     endsAt: new Date(Date.now() + 1000 * 60 * 60 * 24).toISOString(),
     seller: "Người bán ABC",
     condition: "Like new",
@@ -23,6 +28,7 @@ const sampleProducts = [
     image:
       "https://images.unsplash.com/photo-1539185441755-769473a23570?auto=format&fit=crop&w=800&q=80",
     currentBid: 1200000,
+    highestBidder: null,
     endsAt: new Date(Date.now() + 1000 * 60 * 60 * 12).toISOString(),
     seller: "Shop XYZ",
     condition: "99%",
@@ -30,17 +36,44 @@ const sampleProducts = [
 ];
 
 const AuctionPage = () => {
-  const { id } = useParams(); // ⭐ lấy id từ URL
+  const { id } = useParams();
 
-  const product = sampleProducts.find((item) => item.id === Number(id)); // ⭐ tìm sản phẩm theo id
+  // =============================
+  //   Lấy danh sách từ localStorage
+  //   (nếu không có thì lấy sample)
+  // =============================
+  const storedAuctions = JSON.parse(localStorage.getItem("auctions") || "[]");
+  const allProducts = storedAuctions.length > 0 ? storedAuctions : sampleProducts;
+
+  const [product, setProduct] = useState(allProducts.find((item) => item.id === Number(id)));
 
   const [isBidOpen, setIsBidOpen] = useState(false);
 
-  const handleReview = (payload) => {
-    console.log("Review submitted", payload);
+  // Save updated auction list to localStorage
+  const updateLocalStorage = (updatedProduct) => {
+    let list = [...allProducts];
+    const idx = list.findIndex((i) => i.id === updatedProduct.id);
+    if (idx !== -1) {
+      list[idx] = updatedProduct;
+      localStorage.setItem("auctions", JSON.stringify(list));
+    }
   };
 
-  // ⭐ Nếu id sai hoặc không tồn tại → báo lỗi
+  // =============================
+  //   callback khi đặt giá thành công
+  // =============================
+  const handleBidSuccess = (updated) => {
+    setProduct(updated); // cập nhật UI
+    updateLocalStorage(updated);
+  };
+
+  const handleReview = (payload) => {
+    console.log("Review submitted:", payload);
+  };
+
+  // =============================
+  //   Nếu không tìm thấy ID
+  // =============================
   if (!product) {
     return (
       <div className="max-w-7xl mx-auto px-4 py-20 text-center text-gray-600">
@@ -50,6 +83,9 @@ const AuctionPage = () => {
     );
   }
 
+  // =============================
+  //        UI HIỂN THỊ
+  // =============================
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="mb-6">
@@ -58,12 +94,12 @@ const AuctionPage = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
-        {/* Left: large image */}
+        {/* LEFT IMAGE */}
         <div className="bg-white rounded-lg overflow-hidden shadow-sm">
           <img src={product.image} alt={product.title} className="w-full h-[520px] object-cover" />
         </div>
 
-        {/* Right */}
+        {/* RIGHT INFO */}
         <div className="space-y-6">
           <div className="bg-white rounded-lg p-6 shadow-sm">
             <div className="flex items-start justify-between">
@@ -73,6 +109,7 @@ const AuctionPage = () => {
                   {product.condition} · {product.seller}
                 </p>
               </div>
+
               <div className="text-right">
                 <div className="text-xs text-gray-400">Kết thúc</div>
                 <CountdownTimer targetDate={product.endsAt} />
@@ -85,6 +122,12 @@ const AuctionPage = () => {
                 <div className="text-3xl font-extrabold text-indigo-600">
                   ₫{product.currentBid.toLocaleString("vi-VN")}
                 </div>
+
+                {product.highestBidder && (
+                  <p className="text-xs mt-1 text-gray-500">
+                    Người dẫn đầu: <strong>{product.highestBidder}</strong>
+                  </p>
+                )}
               </div>
 
               <div className="flex gap-3 justify-end">
@@ -113,7 +156,13 @@ const AuctionPage = () => {
         </div>
       </div>
 
-      <BidModal open={isBidOpen} onClose={() => setIsBidOpen(false)} product={product} />
+      {/* MODAL ĐẶT GIÁ */}
+      <BidModal
+        open={isBidOpen}
+        onClose={() => setIsBidOpen(false)}
+        product={product}
+        onBidSuccess={handleBidSuccess}
+      />
     </div>
   );
 };

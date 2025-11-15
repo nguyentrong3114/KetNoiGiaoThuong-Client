@@ -1,49 +1,89 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Modal from "../Modal";
 import CountdownTimer from "./CountdownTimer";
 
-const BidModal = ({ open, onClose, product }) => {
+const BidModal = ({ open, onClose, product, onBidSuccess }) => {
   const [amount, setAmount] = useState("");
   const [error, setError] = useState("");
 
+  // Reset input mỗi khi mở modal
+  useEffect(() => {
+    if (open) {
+      setAmount("");
+      setError("");
+    }
+  }, [open]);
+
   const submit = (e) => {
     e.preventDefault();
-    const num = Number(amount);
-    if (!num || num <= product.currentBid) {
-      setError("Vui lòng nhập số lớn hơn giá hiện tại");
+    const value = Number(amount);
+
+    // ❌ Validate
+    if (!value) {
+      setError("Vui lòng nhập giá hợp lệ.");
       return;
     }
-    // For now simulate bid submission
-    console.log("BID SUBMIT", { productId: product.id, amount: num });
-    // In a real app, call API then refresh product data
+    if (value <= product.currentBid) {
+      setError("Giá thầu phải cao hơn giá hiện tại.");
+      return;
+    }
+
+    // 🧩 Tạo object cập nhật giá thầu
+    const updated = {
+      ...product,
+      currentBid: value,
+      highestBidder: "Bạn",
+    };
+
+    // 💾 Lưu vào localStorage (đấu giá user tạo)
+    const auctions = JSON.parse(localStorage.getItem("auctions") || "[]");
+    const idx = auctions.findIndex((a) => a.id === product.id);
+
+    if (idx !== -1) {
+      auctions[idx] = updated;
+      localStorage.setItem("auctions", JSON.stringify(auctions));
+    }
+
+    // Cập nhật UI ngay lập tức
+    if (onBidSuccess) onBidSuccess(updated);
+
+    alert("🎉 Đặt giá thành công!");
+
     onClose();
   };
 
   return (
     <Modal open={open} title={`Đặt giá - ${product?.title}`} onClose={onClose}>
       <form onSubmit={submit} className="space-y-4">
+        {/* Current price & countdown */}
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="block text-sm text-gray-500">Giá hiện tại</label>
-            <div className="text-xl font-bold">₫{product?.currentBid}</div>
+            <div className="text-xl font-bold text-indigo-600">
+              ₫{product?.currentBid.toLocaleString("vi-VN")}
+            </div>
           </div>
+
           <div>
             <label className="block text-sm text-gray-500">Thời gian còn lại</label>
-            <div className="text-sm text-gray-600">
-              <CountdownTimer targetDate={product?.endsAt} />
-            </div>
+            <CountdownTimer targetDate={product?.endsAt} />
           </div>
         </div>
 
+        {/* Bid input */}
         <div>
           <label className="block text-sm text-gray-500 mb-1">Nhập giá mới</label>
           <input
             type="number"
             value={amount}
-            onChange={(e) => setAmount(e.target.value)}
-            className="w-full border border-gray-200 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-200"
+            onChange={(e) => {
+              setAmount(e.target.value);
+              setError("");
+            }}
             min={product?.currentBid + 1}
+            className="w-full border border-gray-200 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-200"
           />
+
           {error && <div className="text-sm text-red-500 mt-1">{error}</div>}
         </div>
 
@@ -51,11 +91,15 @@ const BidModal = ({ open, onClose, product }) => {
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-2 border border-gray-200 rounded-md"
+            className="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50"
           >
             Hủy
           </button>
-          <button type="submit" className="px-4 py-2 bg-indigo-600 text-white rounded-md shadow">
+
+          <button
+            type="submit"
+            className="px-4 py-2 bg-indigo-600 text-white rounded-md shadow hover:bg-indigo-700"
+          >
             Xác nhận
           </button>
         </div>

@@ -23,8 +23,9 @@ const Navbar = () => {
   }, []);
 
   const handleLogout = () => {
-    localStorage.clear();
+    localStorage.removeItem("user");
     navigate("/login");
+    window.location.reload(); // ⭐ refresh lại Navbar
   };
 
   return (
@@ -89,10 +90,7 @@ const Navbar = () => {
         {/* Right */}
         <div className="flex items-center space-x-5">
           {/* Search */}
-          <Link
-            to="/search"
-            className="flex items-center space-x-1 text-blue-700 hover:text-blue-900"
-          >
+          <Link to="/search" className="flex items-center gap-1 text-blue-700 hover:text-blue-900">
             <FiSearch className="text-xl" />
             <span className="hidden md:inline font-medium">Search</span>
           </Link>
