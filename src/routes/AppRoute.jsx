@@ -12,13 +12,17 @@ import LoginPage from "../pages/Public/LoginPage";
 import RegisterPage from "../pages/Public/RegisterPage";
 import ResetPasswordPage from "../pages/Public/ResetPasswordPage";
 import ForgotPasswordPage from "../pages/Public/ForgotPasswordPage";
+import ContactPage from "../pages/Public/ContactPage";
+
 import AdminLayout from "../pages/Admin/AdminLayout";
 import AdminDashboard from "../pages/Admin/AdminDashboard";
 import AdminUsers from "../pages/Admin/AdminUsers";
 import ReportsPage from "../pages/Admin/ReportsPage";
 import TransactionsPage from "../pages/Admin/TransactionsPage";
 import PostsAds from "../pages/Admin/PostsAds";
+
 import AuctionPage from "../pages/Public/AuctionPage";
+import AuctionList from "../pages/Public/AuctionList";
 import Dashboard from "../pages/Private/Dashboard";
 
 const AppRoute = () => {
@@ -29,7 +33,13 @@ const AppRoute = () => {
         <Route path="/" element={<MainLayout />}>
           <Route index element={<HomePage />} />
           <Route path="about" element={<AboutPage />} />
-          <Route path="auction" element={<AuctionPage />} />
+          <Route path="contact" element={<ContactPage />} />
+
+          {/* ĐẤU GIÁ */}
+          <Route path="auctions" element={<AuctionList />} />
+          <Route path="auction/:id" element={<AuctionPage />} />
+
+          {/* USER FEATURES */}
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="profile" element={<Profile />} />
           <Route path="login" element={<LoginPage />} />

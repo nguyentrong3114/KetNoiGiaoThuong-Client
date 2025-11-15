@@ -23,7 +23,7 @@ const MainLayout = () => {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -8 }}
           transition={{ duration: 0.28, ease: "easeOut" }}
-          className="flex-grow pt-[50px]"
+          className="flex-grow"
         >
           <Outlet />
         </motion.main>

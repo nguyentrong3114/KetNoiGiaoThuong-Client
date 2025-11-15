@@ -1,20 +1,20 @@
-import React, { useState } from 'react';
-import Modal from './Modal';
-import CountdownTimer from './CountdownTimer';
+import React, { useState } from "react";
+import Modal from "../Modal";
+import CountdownTimer from "./CountdownTimer";
 
 const BidModal = ({ open, onClose, product }) => {
-  const [amount, setAmount] = useState('');
-  const [error, setError] = useState('');
+  const [amount, setAmount] = useState("");
+  const [error, setError] = useState("");
 
   const submit = (e) => {
     e.preventDefault();
     const num = Number(amount);
     if (!num || num <= product.currentBid) {
-      setError('Vui lòng nhập số lớn hơn giá hiện tại');
+      setError("Vui lòng nhập số lớn hơn giá hiện tại");
       return;
     }
     // For now simulate bid submission
-    console.log('BID SUBMIT', { productId: product.id, amount: num });
+    console.log("BID SUBMIT", { productId: product.id, amount: num });
     // In a real app, call API then refresh product data
     onClose();
   };
@@ -48,7 +48,11 @@ const BidModal = ({ open, onClose, product }) => {
         </div>
 
         <div className="flex justify-end gap-3">
-          <button type="button" onClick={onClose} className="px-4 py-2 border border-gray-200 rounded-md">
+          <button
+            type="button"
+            onClick={onClose}
+            className="px-4 py-2 border border-gray-200 rounded-md"
+          >
             Hủy
           </button>
           <button type="submit" className="px-4 py-2 bg-indigo-600 text-white rounded-md shadow">

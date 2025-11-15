@@ -1,55 +1,117 @@
-import React from 'react';
-import DashboardChart from '../../components/DashboardChart';
+import React from "react";
+import { FiEye, FiActivity, FiTrendingUp } from "react-icons/fi";
+import DashboardChart from "../../components/Auction/DashboardChart";
 
 const Dashboard = () => {
-  // sample data - replace with real API data in integration
+  // sample data - replace with real API when ready
   const posts = [
-    { id: 1, title: 'Đồng hồ cổ', views: 120, bids: 8 },
-    { id: 2, title: 'Túi xách da', views: 80, bids: 5 },
-    { id: 3, title: 'Giày thể thao', views: 200, bids: 15 },
+    { id: 1, title: "Đồng hồ cổ", views: 120, bids: 8 },
+    { id: 2, title: "Túi xách da", views: 80, bids: 5 },
+    { id: 3, title: "Giày thể thao", views: 200, bids: 15 },
   ];
 
-  const chartData = posts.map((p) => ({ label: p.id, value: p.views }));
+  const totalViews = posts.reduce((s, p) => s + p.views, 0);
+  const totalBids = posts.reduce((s, p) => s + p.bids, 0);
+
+  const chartData = posts.map((p) => ({ label: p.title, value: p.views }));
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-      <h2 className="text-3xl font-extrabold mb-4">Dashboard người dùng</h2>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      {/* PAGE TITLE */}
+      <h2 className="text-3xl font-bold text-gray-900 mb-6">Dashboard người dùng</h2>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-        <div className="bg-white rounded-lg shadow-sm p-4">
-          <h3 className="font-semibold mb-2">Thống kê lượt xem tin đăng (views)</h3>
+      {/* OVERVIEW CARDS */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
+        <div className="p-5 bg-white shadow-sm rounded-xl border border-gray-100">
+          <div className="flex items-center justify-between">
+            <span className="text-gray-600 font-medium">Tin đăng</span>
+            <FiActivity className="text-indigo-600 text-xl" />
+          </div>
+          <div className="mt-2 text-3xl font-bold">{posts.length}</div>
+        </div>
+
+        <div className="p-5 bg-white shadow-sm rounded-xl border border-gray-100">
+          <div className="flex items-center justify-between">
+            <span className="text-gray-600 font-medium">Tổng lượt xem</span>
+            <FiEye className="text-blue-600 text-xl" />
+          </div>
+          <div className="mt-2 text-3xl font-bold">{totalViews}</div>
+        </div>
+
+        <div className="p-5 bg-white shadow-sm rounded-xl border border-gray-100">
+          <div className="flex items-center justify-between">
+            <span className="text-gray-600 font-medium">Tổng lượt đấu</span>
+            <FiTrendingUp className="text-green-600 text-xl" />
+          </div>
+          <div className="mt-2 text-3xl font-bold">{totalBids}</div>
+        </div>
+      </div>
+
+      {/* CHART + SUMMARY */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        {/* Chart */}
+        <div className="bg-white rounded-xl shadow-sm p-5 border border-gray-100">
+          <h3 className="text-lg font-semibold text-gray-800 mb-3">
+            Biểu đồ lượt xem theo tin đăng
+          </h3>
           <DashboardChart data={chartData} />
         </div>
 
-        <div className="bg-white rounded-lg shadow-sm p-4">
-          <h3 className="font-semibold mb-2">Tổng quan</h3>
-          <div className="grid grid-cols-3 gap-3">
-            <div className="p-3 bg-gray-50 rounded">Tin đăng: <div className="text-lg font-bold">{posts.length}</div></div>
-            <div className="p-3 bg-gray-50 rounded">Tổng lượt xem: <div className="text-lg font-bold">{posts.reduce((s,p)=>s+p.views,0)}</div></div>
-            <div className="p-3 bg-gray-50 rounded">Tổng lượt đấu: <div className="text-lg font-bold">{posts.reduce((s,p)=>s+p.bids,0)}</div></div>
+        {/* Summary box */}
+        <div className="bg-white rounded-xl shadow-sm p-5 border border-gray-100">
+          <h3 className="text-lg font-semibold text-gray-800 mb-3">Tổng quan hiệu suất</h3>
+
+          <p className="text-gray-600 text-sm leading-relaxed">
+            Đây là thống kê tổng quan về mức độ tương tác của các tin đăng đấu giá bạn đã đăng trong
+            hệ thống. Dữ liệu bao gồm lượt xem, lượt đấu giá và hiệu quả từng bài đăng.
+          </p>
+
+          <div className="mt-4 grid grid-cols-3 gap-3 text-center">
+            <div className="p-4 bg-gray-50 rounded-lg border">
+              <div className="text-xs text-gray-500">Tin đăng</div>
+              <div className="text-xl font-bold">{posts.length}</div>
+            </div>
+
+            <div className="p-4 bg-gray-50 rounded-lg border">
+              <div className="text-xs text-gray-500">Lượt xem</div>
+              <div className="text-xl font-bold">{totalViews}</div>
+            </div>
+
+            <div className="p-4 bg-gray-50 rounded-lg border">
+              <div className="text-xs text-gray-500">Lượt đấu</div>
+              <div className="text-xl font-bold">{totalBids}</div>
+            </div>
           </div>
         </div>
       </div>
 
-      <div className="bg-white rounded-lg shadow-sm p-4">
-        <h3 className="font-semibold mb-3">Hiệu quả tin đăng</h3>
+      {/* TABLE */}
+      <div className="bg-white rounded-xl shadow-sm p-5 border border-gray-100">
+        <h3 className="text-lg font-semibold text-gray-800 mb-4">Hiệu quả từng tin đăng</h3>
+
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="text-left text-gray-600">
+              <tr className="text-left text-gray-600 border-b">
                 <th className="pb-2">Tiêu đề</th>
                 <th className="pb-2">Lượt xem</th>
-                <th className="pb-2">Số lần đấu</th>
+                <th className="pb-2">Lượt đấu</th>
+                <th className="pb-2">Tỉ lệ đấu (%)</th>
               </tr>
             </thead>
             <tbody>
-              {posts.map((p) => (
-                <tr key={p.id} className="border-t">
-                  <td className="py-2">{p.title}</td>
-                  <td className="py-2">{p.views}</td>
-                  <td className="py-2">{p.bids}</td>
-                </tr>
-              ))}
+              {posts.map((p) => {
+                const ratio = ((p.bids / p.views) * 100).toFixed(1);
+
+                return (
+                  <tr key={p.id} className="border-b">
+                    <td className="py-2">{p.title}</td>
+                    <td className="py-2">{p.views}</td>
+                    <td className="py-2">{p.bids}</td>
+                    <td className="py-2 text-indigo-600 font-semibold">{ratio}%</td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>

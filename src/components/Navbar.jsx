@@ -67,9 +67,17 @@ const Navbar = () => {
           >
             Sản phẩm
           </NavLink>
+          <NavLink
+            to="/auctions"
+            className={({ isActive }) =>
+              `hover:text-blue-600 transition ${isActive ? "text-blue-600 border-b-2 border-blue-600 pb-1" : ""}`
+            }
+          >
+            Đấu Giá
+          </NavLink>
 
           <NavLink
-            to="/chat"
+            to="/contact"
             className={({ isActive }) =>
               `hover:text-blue-600 ${isActive ? "text-blue-600 border-b-2 border-blue-600 pb-1" : ""}`
             }
@@ -128,13 +136,19 @@ const Navbar = () => {
               {openMenu && (
                 <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg p-2 animate-fadeIn">
                   <button
+                    onClick={() => navigate("/dashboard")}
+                    className="w-full text-left px-3 py-2 hover:bg-gray-100 rounded"
+                  >
+                    Dashboard
+                  </button>
+
+                  <button
                     onClick={() => navigate("/profile")}
                     className="w-full text-left px-3 py-2 hover:bg-gray-100 rounded"
                   >
                     Hồ sơ cá nhân
                   </button>
 
-                  {/* ⭐ ĐƠN HÀNG CỦA BẠN */}
                   <button
                     onClick={() => navigate("/track-order")}
                     className="w-full text-left px-3 py-2 hover:bg-gray-100 rounded"
