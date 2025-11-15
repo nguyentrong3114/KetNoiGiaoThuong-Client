@@ -12,21 +12,25 @@ import LoginPage from "../pages/Public/LoginPage";
 import RegisterPage from "../pages/Public/RegisterPage";
 import ResetPasswordPage from "../pages/Public/ResetPasswordPage";
 import ForgotPasswordPage from "../pages/Public/ForgotPasswordPage";
-
 import AdminLayout from "../pages/Admin/AdminLayout";
 import AdminDashboard from "../pages/Admin/AdminDashboard";
 import AdminUsers from "../pages/Admin/AdminUsers";
 import ReportsPage from "../pages/Admin/ReportsPage";
 import TransactionsPage from "../pages/Admin/TransactionsPage";
 import PostsAds from "../pages/Admin/PostsAds";
+import AuctionPage from "../pages/Public/AuctionPage";
+import Dashboard from "../pages/Private/Dashboard";
 
 const AppRoute = () => {
   return (
     <Router>
       <Routes>
+        {/* USER */}
         <Route path="/" element={<MainLayout />}>
           <Route index element={<HomePage />} />
           <Route path="about" element={<AboutPage />} />
+          <Route path="auction" element={<AuctionPage />} />
+          <Route path="dashboard" element={<Dashboard />} />
           <Route path="profile" element={<Profile />} />
           <Route path="login" element={<LoginPage />} />
           <Route path="register" element={<RegisterPage />} />
