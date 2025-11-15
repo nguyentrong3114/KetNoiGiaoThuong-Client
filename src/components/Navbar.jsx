@@ -67,18 +67,8 @@ const Navbar = () => {
           >
             Sản phẩm
           </NavLink>
-
           <NavLink
-            to="/services"
-            className={({ isActive }) =>
-              `hover:text-blue-600 ${isActive ? "text-blue-600 border-b-2 border-blue-600 pb-1" : ""}`
-            }
-          >
-            Dịch vụ
-          </NavLink>
-
-          <NavLink
-            to="/contact"
+            to="/chat"
             className={({ isActive }) =>
               `hover:text-blue-600 ${isActive ? "text-blue-600 border-b-2 border-blue-600 pb-1" : ""}`
             }

@@ -49,11 +49,6 @@ const Footer = () => {
               </Link>
             </li>
             <li>
-              <Link to="/services" className="hover:text-white transition-colors duration-150">
-                Dịch vụ
-              </Link>
-            </li>
-            <li>
               <Link to="/about" className="hover:text-white transition-colors duration-150">
                 Giới thiệu
               </Link>

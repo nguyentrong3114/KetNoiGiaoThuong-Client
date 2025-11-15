@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import Button from "../../components/Button";
 import Card from "../../components/Card";
@@ -6,6 +6,9 @@ import Modal from "../../components/Modal";
 
 const HomePage = () => {
   const [showModal, setShowModal] = useState(false);
+
+  // 👉 Ref trỏ đến section muốn cuộn
+  const featureRef = useRef(null);
 
   const features = [
     {
@@ -70,13 +73,19 @@ const HomePage = () => {
             <br />
             <span className="text-blue-200 font-semibold">Phát triển bền vững</span>
           </h1>
+
           <p className="text-lg md:text-xl mb-10 text-blue-50 max-w-3xl mx-auto leading-relaxed">
             Nền tảng giao thương hàng đầu Việt Nam, tạo cầu nối giữa các doanh nghiệp để cùng nhau
             phát triển và thành công.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button variant="primary" size="lg" onClick={() => alert("Bắt đầu ngay!")}>
+            {/* 🔥 CUỘN XUỐNG FEATURE SECTION */}
+            <Button
+              variant="primary"
+              size="lg"
+              onClick={() => featureRef.current?.scrollIntoView({ behavior: "smooth" })}
+            >
               Bắt đầu ngay
             </Button>
 
@@ -90,7 +99,7 @@ const HomePage = () => {
       </section>
 
       {/* FEATURES SECTION */}
-      <section className="py-20 bg-gray-50">
+      <section ref={featureRef} className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
             Tại sao chọn chúng tôi?
@@ -157,7 +166,7 @@ const HomePage = () => {
               Đăng ký miễn phí
             </Button>
           </Link>
-          <Link to="/contact" className="inline-block">
+          <Link to="/chat" className="inline-block">
             <Button variant="primary" size="lg">
               Liên hệ tư vấn
             </Button>
@@ -168,8 +177,7 @@ const HomePage = () => {
       {/* MODAL */}
       <Modal show={showModal} onClose={() => setShowModal(false)} title="Thông tin thêm">
         <p className="text-gray-700 leading-relaxed">
-          Nền tảng <strong>Kết Nối Giao Thương</strong> giúp doanh nghiệp Việt Nam mở rộng mạng lưới
-          hợp tác, nâng cao hiệu quả, và phát triển bền vững thông qua công nghệ số hiện đại.
+          Nền tảng <strong>Kết Nối Giao Thương</strong> giúp doanh nghiệp Việt Nam...
         </p>
       </Modal>
     </div>
