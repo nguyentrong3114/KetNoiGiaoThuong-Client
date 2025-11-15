@@ -60,14 +60,10 @@ const Navbar = () => {
             Giới thiệu
           </NavLink>
 
-          <NavLink
-            to="/products"
-            className={({ isActive }) =>
-              `hover:text-blue-600 ${isActive ? "text-blue-600 border-b-2 border-blue-600 pb-1" : ""}`
-            }
-          >
+          <NavLink to={user?.role === "company" ? `/company/${user.companySlug}` : "/products"}>
             Sản phẩm
           </NavLink>
+
           <NavLink
             to="/auctions"
             className={({ isActive }) =>

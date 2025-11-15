@@ -1,7 +1,9 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
+// LAYOUT
 import MainLayout from "../pages/Layout/MainLayout";
 
+// PUBLIC PAGES
 import HomePage from "../pages/Public/HomePage";
 import AboutPage from "../pages/Public/AboutPage";
 import ContactPage from "../pages/Public/ContactPage";
@@ -35,22 +37,32 @@ import ReportsPage from "../pages/Admin/ReportsPage";
 import TransactionsPage from "../pages/Admin/TransactionsPage";
 import PostsAds from "../pages/Admin/PostsAds";
 
+// ⭐ Company pages
+import CompanyPage from "../pages/Public/CompanyPage";
+import CompanyProductPage from "../pages/Public/CompanyProductPage";
+import ProductDetailPage from "../pages/Public/ProductDetailPage";
+import CompanyPostPage from "../pages/Private/CompanyPostPage";
+
+// ⭐ Trang sản phẩm chung
+import AllProductsPage from "../pages/Public/AllProductsPage";
+
 const AppRoute = () => {
   return (
     <Router>
       <Routes>
-        {/* =============================
-                USER LAYOUT
-        ============================== */}
+        {/* ============================= */}
+        {/*           MAIN LAYOUT         */}
+        {/* ============================= */}
         <Route path="/" element={<MainLayout />}>
+          {/* HOME + INFO */}
           <Route index element={<HomePage />} />
           <Route path="about" element={<AboutPage />} />
           <Route path="contact" element={<ContactPage />} />
 
-          {/* ⭐ Tìm kiếm toàn trang */}
+          {/* SEARCH */}
           <Route path="search" element={<SearchPage />} />
 
-          {/* ⭐ ĐẤU GIÁ */}
+          {/* ĐẤU GIÁ */}
           <Route path="auctions" element={<AuctionList />} />
           <Route path="auction/:id" element={<AuctionPage />} />
           <Route path="auction/create" element={<AuctionCreatePage />} />
@@ -70,11 +82,20 @@ const AppRoute = () => {
           <Route path="cart" element={<OrderPage />} />
           <Route path="checkout" element={<CheckoutPage />} />
           <Route path="track-order" element={<OrderTrackingPage />} />
+
+          {/* ⭐ TẤT CẢ SẢN PHẨM */}
+          <Route path="products" element={<AllProductsPage />} />
+
+          {/* ⭐ COMPANY ROUTES */}
+          <Route path="company/:slug" element={<CompanyPage />} />
+          <Route path="company/:slug/product" element={<CompanyProductPage />} />
+          <Route path="company/:slug/product/:id" element={<ProductDetailPage />} />
+          <Route path="company/:slug/post" element={<CompanyPostPage />} />
         </Route>
 
-        {/* =============================
-                ADMIN LAYOUT
-        ============================== */}
+        {/* ============================= */}
+        {/*           ADMIN LAYOUT        */}
+        {/* ============================= */}
         <Route path="/admin" element={<AdminLayout />}>
           <Route path="dashboard" element={<AdminDashboard />} />
           <Route path="users" element={<AdminUsers />} />
