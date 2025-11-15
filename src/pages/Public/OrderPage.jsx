@@ -1,7 +1,6 @@
 ﻿import React, { useMemo } from "react";
 import OrderItem from "../../components/Order/OrderItem";
 import OrderSummary from "../../components/Order/OrderSummary";
-import AutoBreadcrumb from "../../components/AutoBreadcrumb";
 
 const OrderPage = () => {
   const items = useMemo(
@@ -32,12 +31,6 @@ const OrderPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 py-10 px-4">
-      {/* BREADCRUMB + TIÊU ĐỀ */}
-      <div className="max-w-5xl mx-auto">
-        <AutoBreadcrumb />
-        <h1 className="text-2xl font-bold mt-4 mb-6">Giỏ Hàng</h1>
-      </div>
-
       {/* NỘI DUNG GIỎ HÀNG */}
       <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* LEFT: Danh sách sản phẩm */}

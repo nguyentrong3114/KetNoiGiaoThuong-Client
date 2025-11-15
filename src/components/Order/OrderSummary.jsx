@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 const OrderSummary = ({ totalItems, deliveryFee, subtotal }) => {
   return (
     <div className="p-6 bg-white rounded-lg shadow space-y-4">
-      <h2 className="text-lg font-semibold">Order Summary</h2>
+      <h2 className="text-lg font-semibold text-gray-900">Tóm tắt đơn hàng</h2>
 
       <div className="flex justify-between text-gray-700">
         <span>Tổng tiền hàng</span>
@@ -17,16 +17,16 @@ const OrderSummary = ({ totalItems, deliveryFee, subtotal }) => {
       </div>
 
       <div className="flex justify-between font-bold text-gray-900 border-t pt-3">
-        <span>Subtotal</span>
+        <span>Tạm tính</span>
         <span>${subtotal.toFixed(2)}</span>
       </div>
 
-      {/* NÚT CHECKOUT — CHUYỂN TRANG */}
+      {/* NÚT THANH TOÁN — CHUYỂN TRANG */}
       <Link
         to="/checkout"
         className="block w-full bg-blue-600 hover:bg-blue-700 text-white text-center font-semibold py-3 rounded-full transition"
       >
-        Checkout ${subtotal.toFixed(2)}
+        Tiến hành thanh toán ${subtotal.toFixed(2)}
       </Link>
     </div>
   );

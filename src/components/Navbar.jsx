@@ -67,6 +67,7 @@ const Navbar = () => {
           >
             Sản phẩm
           </NavLink>
+
           <NavLink
             to="/chat"
             className={({ isActive }) =>
@@ -79,6 +80,7 @@ const Navbar = () => {
 
         {/* Right */}
         <div className="flex items-center space-x-5">
+          {/* Search */}
           <Link
             to="/search"
             className="flex items-center space-x-1 text-blue-700 hover:text-blue-900"
@@ -87,6 +89,7 @@ const Navbar = () => {
             <span className="hidden md:inline font-medium">Search</span>
           </Link>
 
+          {/* Cart */}
           <Link
             to="/cart"
             className="flex items-center space-x-1 text-blue-700 hover:text-blue-900"
@@ -114,7 +117,6 @@ const Navbar = () => {
           {/* ĐÃ ĐĂNG NHẬP */}
           {user && (
             <div className="relative" ref={menuRef}>
-              {/* Avatar click */}
               <img
                 src={user.avatar}
                 alt="avatar"
@@ -122,14 +124,22 @@ const Navbar = () => {
                 onClick={() => setOpenMenu((prev) => !prev)}
               />
 
-              {/* Dropdown */}
+              {/* Dropdown menu */}
               {openMenu && (
-                <div className="absolute right-0 mt-2 w-44 bg-white shadow-lg rounded-lg p-2 animate-fadeIn">
+                <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg p-2 animate-fadeIn">
                   <button
                     onClick={() => navigate("/profile")}
                     className="w-full text-left px-3 py-2 hover:bg-gray-100 rounded"
                   >
                     Hồ sơ cá nhân
+                  </button>
+
+                  {/* ⭐ ĐƠN HÀNG CỦA BẠN */}
+                  <button
+                    onClick={() => navigate("/track-order")}
+                    className="w-full text-left px-3 py-2 hover:bg-gray-100 rounded"
+                  >
+                    Đơn hàng của bạn
                   </button>
 
                   <button

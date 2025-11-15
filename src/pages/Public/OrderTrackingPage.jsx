@@ -3,7 +3,6 @@ import OrderStatus from "../../components/Tracking/OrderStatus";
 import OrderDetails from "../../components/Tracking/OrderDetails";
 import DeliveryInfo from "../../components/Tracking/DeliveryInfo";
 import OrderSummary from "../../components/Tracking/OrderSummary";
-import AutoBreadcrumb from "../../components/AutoBreadcrumb";
 
 const OrderTrackingPage = () => {
   const order = {
@@ -50,11 +49,6 @@ const OrderTrackingPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 py-10 px-4">
-      {/* BREADCRUMB */}
-      <div className="max-w-6xl mx-auto mb-6">
-        <AutoBreadcrumb />
-      </div>
-
       {/* HEADER */}
       <div className="max-w-6xl mx-auto space-y-2 mb-10">
         <div className="flex justify-between items-start">

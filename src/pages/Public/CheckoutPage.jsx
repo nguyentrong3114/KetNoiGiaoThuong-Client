@@ -5,15 +5,10 @@ import ShippingMethod from "../../components/Checkout/ShippingMethod";
 import PaymentMethod from "../../components/Checkout/PaymentMethod";
 import BillingAddress from "../../components/Checkout/BillingAddress";
 import OrderReview from "../../components/Checkout/OrderReview";
-import AutoBreadcrumb from "../../components/AutoBreadcrumb";
 
 const CheckoutPage = () => {
   return (
     <div className="min-h-screen bg-gray-100 py-10 px-4">
-      {/* BREADCRUMB */}
-      <div className="max-w-6xl mx-auto mb-6">
-        <AutoBreadcrumb />
-      </div>
       {/* HEADER */}
       <div className="max-w-6xl mx-auto mb-8">
         <h1 className="text-3xl font-bold text-gray-900">Thanh Toán</h1>

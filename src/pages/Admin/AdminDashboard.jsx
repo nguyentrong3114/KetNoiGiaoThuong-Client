@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Chart } from "chart.js/auto";
 import AdminHeader from "./components/AdminHeader";
 import "./AdminDashboard.css";
@@ -8,6 +8,10 @@ const AdminDashboard = () => {
   const pieChart1Ref = useRef(null);
   const pieChart2Ref = useRef(null);
   const pieChart3Ref = useRef(null);
+
+  // ⭐ THÊM STATE CHO CHECKBOX
+  const [showCharts, setShowCharts] = useState(true);
+  const [showValues, setShowValues] = useState(true);
 
   useEffect(() => {
     // Bar Chart
@@ -28,9 +32,7 @@ const AdminDashboard = () => {
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        plugins: {
-          legend: { display: false },
-        },
+        plugins: { legend: { display: false } },
         scales: {
           y: {
             beginAtZero: true,
@@ -62,10 +64,7 @@ const AdminDashboard = () => {
         responsive: true,
         maintainAspectRatio: false,
         cutout: "75%",
-        plugins: {
-          legend: { display: false },
-          tooltip: { enabled: false },
-        },
+        plugins: { legend: { display: false }, tooltip: { enabled: false } },
       },
     });
 
@@ -86,10 +85,7 @@ const AdminDashboard = () => {
         responsive: true,
         maintainAspectRatio: false,
         cutout: "75%",
-        plugins: {
-          legend: { display: false },
-          tooltip: { enabled: false },
-        },
+        plugins: { legend: { display: false }, tooltip: { enabled: false } },
       },
     });
 
@@ -110,10 +106,7 @@ const AdminDashboard = () => {
         responsive: true,
         maintainAspectRatio: false,
         cutout: "75%",
-        plugins: {
-          legend: { display: false },
-          tooltip: { enabled: false },
-        },
+        plugins: { legend: { display: false }, tooltip: { enabled: false } },
       },
     });
 
@@ -132,8 +125,8 @@ const AdminDashboard = () => {
         subtitle="Chào mừng bạn quay trở lại! Đây là tổng quan hôm nay."
       />
 
+      {/* ==== THỐNG KÊ NHANH ==== */}
       <div className="stats-grid">
-        {/* Tổng đơn hàng */}
         <div className="stat-card">
           <div className="stat-icon bg-green">
             <i className="bi bi-clipboard-check"></i>
@@ -147,7 +140,6 @@ const AdminDashboard = () => {
           </div>
         </div>
 
-        {/* Đơn hủy */}
         <div className="stat-card">
           <div className="stat-icon bg-red">
             <i className="bi bi-x-circle"></i>
@@ -161,7 +153,6 @@ const AdminDashboard = () => {
           </div>
         </div>
 
-        {/* Doanh thu */}
         <div className="stat-card">
           <div className="stat-icon bg-yellow">
             <i className="bi bi-currency-dollar"></i>
@@ -175,7 +166,6 @@ const AdminDashboard = () => {
           </div>
         </div>
 
-        {/* Đơn giao thành công */}
         <div className="stat-card">
           <div className="stat-icon bg-blue">
             <i className="bi bi-box-seam"></i>
@@ -190,7 +180,7 @@ const AdminDashboard = () => {
         </div>
       </div>
 
-      {/* Khu vực biểu đồ */}
+      {/* ==== CHARTS ==== */}
       <div className="charts-grid">
         {/* Bar Chart */}
         <div className="chart-card">
@@ -200,28 +190,53 @@ const AdminDashboard = () => {
           </div>
         </div>
 
-        {/* Pie Chart */}
+        {/* Pie Charts */}
         <div className="chart-card">
           <div className="chart-header">
             <h3 className="chart-title">Biểu đồ tròn</h3>
+
+            {/* ⭐ CHECKBOX LOGIC */}
             <div className="chart-controls">
               <label className="control-checkbox">
-                <input type="checkbox" /> Biểu đồ
+                <input
+                  type="checkbox"
+                  checked={showCharts}
+                  onChange={() => setShowCharts(!showCharts)}
+                />
+                Biểu đồ
               </label>
+
               <label className="control-checkbox">
-                <input type="checkbox" defaultChecked /> Hiển thị giá trị
+                <input
+                  type="checkbox"
+                  checked={showValues}
+                  onChange={() => setShowValues(!showValues)}
+                />
+                Hiển thị giá trị
               </label>
+
               <button className="control-menu">
                 <i className="bi bi-three-dots-vertical"></i>
               </button>
             </div>
           </div>
 
-          <div className="pie-charts-container">
+          {/* PIE CHART BLOCK */}
+          <div
+            className="pie-charts-container"
+            style={{
+              opacity: showCharts ? 1 : 0.2,
+              pointerEvents: showCharts ? "auto" : "none",
+              transition: "0.3s",
+            }}
+          >
+            {/* Pie 1 */}
             <div className="pie-chart-item">
               <div className="pie-chart-wrapper">
                 <canvas ref={pieChart1Ref}></canvas>
-                <div className="pie-chart-label">
+
+                {/* ⭐ HIỂN THỊ GIÁ TRỊ */}
+                <div className="pie-chart-label" style={{ display: showValues ? "flex" : "none" }}>
                   81<span className="pie-percent">%</span>
                 </div>
               </div>
@@ -232,10 +247,12 @@ const AdminDashboard = () => {
               </div>
             </div>
 
+            {/* Pie 2 */}
             <div className="pie-chart-item">
               <div className="pie-chart-wrapper">
                 <canvas ref={pieChart2Ref}></canvas>
-                <div className="pie-chart-label">
+
+                <div className="pie-chart-label" style={{ display: showValues ? "flex" : "none" }}>
                   22<span className="pie-percent">%</span>
                 </div>
               </div>
@@ -246,10 +263,12 @@ const AdminDashboard = () => {
               </div>
             </div>
 
+            {/* Pie 3 */}
             <div className="pie-chart-item">
               <div className="pie-chart-wrapper">
                 <canvas ref={pieChart3Ref}></canvas>
-                <div className="pie-chart-label">
+
+                <div className="pie-chart-label" style={{ display: showValues ? "flex" : "none" }}>
                   62<span className="pie-percent">%</span>
                 </div>
               </div>

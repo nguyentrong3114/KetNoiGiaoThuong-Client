@@ -1,24 +1,46 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Chart } from "chart.js/auto";
 import AdminHeader from "./components/AdminHeader";
 import "./PostsAds.css";
 
 const PostsAds = () => {
-  const barChartRef = useRef(null);
+  const chartRef = useRef(null);
+  const chartInstance = useRef(null);
 
-  useEffect(() => {
-    const ctx = barChartRef.current.getContext("2d");
-    const chart = new Chart(ctx, {
+  const [filter, setFilter] = useState("month");
+
+  // Fake dữ liệu theo từng bộ lọc
+  const dataByFilter = {
+    today: [120, 200, 150, 220, 260, 180, 300],
+    week: [700, 850, 900, 880, 920, 780, 650],
+    month: Array.from({ length: 30 }, () => Math.floor(Math.random() * 1500 + 1500)),
+    year: Array.from({ length: 12 }, () => Math.floor(Math.random() * 15000 + 10000)),
+  };
+
+  const labelsByFilter = {
+    today: ["8h", "9h", "10h", "11h", "12h", "13h", "14h"],
+    week: ["T2", "T3", "T4", "T5", "T6", "T7", "CN"],
+    month: Array.from({ length: 30 }, (_, i) => `Ngày ${i + 1}`),
+    year: ["T1", "T2", "T3", "T4", "T5", "T6", "T7", "T8", "T9", "T10", "T11", "T12"],
+  };
+
+  // Render chart
+  const renderChart = () => {
+    if (chartInstance.current) chartInstance.current.destroy();
+
+    const ctx = chartRef.current.getContext("2d");
+    chartInstance.current = new Chart(ctx, {
       type: "bar",
       data: {
-        labels: ["Sun 12", "Mon 13", "Tue 14", "Wed 15", "Thu 16", "Fri 17", "Sat 18"],
+        labels: labelsByFilter[filter],
         datasets: [
           {
             label: "Lượt truy cập mới",
-            data: [1650, 2550, 2150, 2450, 2700, 2850, 2600],
+            data: dataByFilter[filter],
             backgroundColor: "#00D9C0",
-            borderRadius: 8,
-            barThickness: 60,
+            borderRadius: 6,
+            barThickness: "flex",
+            maxBarThickness: 40,
           },
         ],
       },
@@ -27,166 +49,70 @@ const PostsAds = () => {
         maintainAspectRatio: false,
         plugins: {
           legend: {
-            display: true,
-            position: "top",
-            align: "end",
-            labels: {
-              boxWidth: 12,
-              boxHeight: 12,
-              usePointStyle: true,
-              pointStyle: "circle",
-              color: "#fff",
-            },
+            labels: { color: "#fff" },
           },
           tooltip: {
-            enabled: true,
-            backgroundColor: "#fff",
-            titleColor: "#000",
-            bodyColor: "#000",
-            borderColor: "#ddd",
-            borderWidth: 1,
-            displayColors: false,
-            callbacks: {
-              label: function (context) {
-                return context.parsed.y;
-              },
-            },
+            backgroundColor: "#000",
+            titleColor: "#fff",
+            bodyColor: "#fff",
           },
         },
         scales: {
-          y: {
-            beginAtZero: true,
-            max: 3000,
-            ticks: {
-              stepSize: 500,
-              color: "#999",
-            },
-            grid: {
-              color: "#444",
-            },
-          },
           x: {
-            grid: {
-              display: false,
-            },
-            ticks: {
-              color: "#999",
-            },
+            ticks: { color: "#ddd" },
+            grid: { display: false },
+          },
+          y: {
+            ticks: { color: "#ddd" },
+            grid: { color: "rgba(255,255,255,0.1)" },
           },
         },
       },
     });
+  };
 
-    return () => {
-      chart.destroy();
-    };
-  }, []);
+  // Rerender chart khi đổi filter
+  useEffect(() => {
+    renderChart();
+  }, [filter]);
 
   return (
     <>
-      <AdminHeader title="Bài đăng / Quảng cáo" subtitle="" />
+      <AdminHeader title="Bài đăng / Quảng cáo" subtitle="Thống kê tổng quan lượt truy cập" />
 
-      {/* Tổng quan quảng cáo */}
-      <div className="overview-section">
-        <div className="overview-header">
-          <div>
-            <h2 className="overview-title">Tổng quan hiệu suất quảng cáo</h2>
-            <div className="overview-amount">$45,000</div>
-          </div>
-
-          <div className="overview-controls">
-            <div className="time-filters">
-              <button className="time-btn">Hôm nay</button>
-              <button className="time-btn active">Tuần</button>
-              <button className="time-btn">Tháng</button>
-              <button className="time-btn">Quý</button>
-              <button className="time-btn">Năm</button>
-              <button className="time-btn">Tùy chọn</button>
-            </div>
-
-            <label className="compare-toggle">
-              <input type="checkbox" />
-              <span>Không so sánh</span>
-            </label>
-
-            <button className="btn-export">
-              <i className="bi bi-download"></i>
-              Xuất dữ liệu
-            </button>
-          </div>
+      {/* Tổng quan */}
+      <div className="overview-box">
+        <div>
+          <h2 className="overview-label">Tổng quan hiệu suất quảng cáo</h2>
+          <div className="overview-value">$45,000</div>
         </div>
 
-        {/* Thống kê */}
-        <div className="stats-cards">
-          <div className="stat-card">
-            <div className="stat-label">Tổng bài đăng</div>
-            <div className="stat-value">$14,509</div>
-            <div className="stat-change positive">
-              <i className="bi bi-arrow-up"></i>
-              <span>21%</span>
-              <span className="stat-period">So với tuần trước</span>
-            </div>
-          </div>
+        <div className="filter-row">
+          {[
+            { key: "today", label: "Hôm nay" },
+            { key: "week", label: "Tuần" },
+            { key: "month", label: "Tháng" },
+            { key: "year", label: "Năm" },
+          ].map((f) => (
+            <button
+              key={f.key}
+              className={`filter-btn ${filter === f.key ? "active" : ""}`}
+              onClick={() => setFilter(f.key)}
+            >
+              {f.label}
+            </button>
+          ))}
 
-          <div className="stat-card">
-            <div className="stat-label">Lượt nhấp</div>
-            <div className="stat-value">$204</div>
-            <div className="stat-change positive">
-              <i className="bi bi-arrow-up"></i>
-              <span>$53</span>
-              <span className="stat-period">So với tuần trước</span>
-            </div>
-          </div>
-
-          <div className="stat-card">
-            <div className="stat-label">CTR</div>
-            <div className="stat-value">12%</div>
-            <div className="stat-change positive">
-              <i className="bi bi-arrow-up"></i>
-              <span>4%</span>
-              <span className="stat-period">So với tuần trước</span>
-            </div>
-          </div>
-
-          <div className="stat-card">
-            <div className="stat-label">Chi tiêu</div>
-            <div className="stat-value">$306</div>
-            <div className="stat-change positive">
-              <i className="bi bi-arrow-up"></i>
-              <span>11%</span>
-              <span className="stat-period">So với tuần trước</span>
-            </div>
-          </div>
+          <button className="export-btn">
+            <i className="bi bi-download"></i> Xuất dữ liệu
+          </button>
         </div>
       </div>
 
-      {/* Biểu đồ */}
-      <div className="chart-section">
-        <div className="chart-header">
-          <div className="chart-legend">
-            <span className="legend-item">
-              <span className="legend-dot new-visit"></span>
-              Lượt truy cập mới
-            </span>
-            <span className="legend-item">
-              <span className="legend-dot unique-visit"></span>
-              Lượt truy cập duy nhất
-            </span>
-            <span className="legend-item">
-              <span className="legend-dot old-visit"></span>
-              Lượt truy cập cũ
-            </span>
-          </div>
-
-          <select className="chart-filter">
-            <option>Tuần</option>
-            <option>Tháng</option>
-            <option>Năm</option>
-          </select>
-        </div>
-
-        <div className="chart-container">
-          <canvas ref={barChartRef}></canvas>
+      {/* Chart */}
+      <div className="chart-wrapper">
+        <div className="chart-container dark-chart-bg">
+          <canvas ref={chartRef}></canvas>
         </div>
       </div>
     </>
