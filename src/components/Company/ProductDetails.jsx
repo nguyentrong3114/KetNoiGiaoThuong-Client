@@ -1,80 +1,61 @@
 const ProductDetails = () => {
   return (
     <div className="w-full">
-      {/* Left Column - Specs and Description */}
       <div>
-        <h3 className="text-2xl font-semibold text-gray-900 mb-2">A-shaped gown</h3>
-        <p className="text-gray-600 mb-6">VN 400.000</p>
+        <h3 className="text-2xl font-semibold text-gray-900 mb-2">Đầm dáng chữ A</h3>
+        <p className="text-gray-600 mb-6">400.000 VNĐ</p>
 
-        {/* Specifications Table */}
+        {/* Bảng thông số sản phẩm */}
         <div className="mb-8">
           <table className="w-full text-sm">
             <tbody>
-              <tr className="border-b border-gray-200">
-                <td className="py-3 text-gray-600 font-medium">Size</td>
-                <td className="py-3 text-gray-900">Free size</td>
-              </tr>
-              <tr className="border-b border-gray-200">
-                <td className="py-3 text-gray-600 font-medium">Material</td>
-                <td className="py-3 text-gray-900">Ankara</td>
-              </tr>
-              <tr className="border-b border-gray-200">
-                <td className="py-3 text-gray-600 font-medium">Style</td>
-                <td className="py-3 text-gray-900">Vintage</td>
-              </tr>
-              <tr className="border-b border-gray-200">
-                <td className="py-3 text-gray-600 font-medium">Weight (kg/m)</td>
-                <td className="py-3 text-gray-900">Medium solid</td>
-              </tr>
-              <tr className="border-b border-gray-200">
-                <td className="py-3 text-gray-600 font-medium">Pattern and print</td>
-                <td className="py-3 text-gray-900">Printed</td>
-              </tr>
-              <tr className="border-b border-gray-200">
-                <td className="py-3 text-gray-600 font-medium">Occasion</td>
-                <td className="py-3 text-gray-900">Casual</td>
-              </tr>
-              <tr className="border-b border-gray-200">
-                <td className="py-3 text-gray-600 font-medium">Fit</td>
-                <td className="py-3 text-gray-900">TBU</td>
-              </tr>
-              <tr className="border-b border-gray-200">
-                <td className="py-3 text-gray-600 font-medium">Closure</td>
-                <td className="py-3 text-gray-900">Natural elastic</td>
-              </tr>
-              <tr className="border-b border-gray-200">
-                <td className="py-3 text-gray-600 font-medium">Dimension</td>
-                <td className="py-3 text-gray-900">1917/1987</td>
-              </tr>
+              {[
+                ["Kích cỡ", "Free size"],
+                ["Chất liệu", "Ankara"],
+                ["Phong cách", "Vintage"],
+                ["Độ dày vải", "Vừa – trung bình"],
+                ["Họa tiết", "In họa tiết"],
+                ["Phù hợp", "Đi chơi, hằng ngày"],
+                ["Form dáng", "TBU"],
+                ["Đóng/mở", "Thun tự nhiên"],
+                ["Kích thước", "1917 / 1987"],
+              ].map(([label, value], index) => (
+                <tr key={index} className="border-b border-gray-200">
+                  <td className="py-3 text-gray-600 font-medium">{label}</td>
+                  <td className="py-3 text-gray-900">{value}</td>
+                </tr>
+              ))}
+
               <tr>
-                <td className="py-3 text-gray-600 font-medium">Product Type</td>
+                <td className="py-3 text-gray-600 font-medium">Loại sản phẩm</td>
                 <td className="py-3 text-gray-900">
-                  <a href="#" className="text-blue-600 underline">Request for measurement</a>
+                  <a href="#" className="text-blue-600 underline">
+                    Yêu cầu đo size riêng
+                  </a>
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
 
-        {/* Description */}
+        {/* Mô tả */}
         <p className="text-sm text-gray-600 leading-relaxed mb-8">
-          Lorem ipsum dolor sit amet, consectetur. Quam nihil impedit quo minus id quod maxime placeat facere possimus,
-          omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut
-          rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae.
+          Sản phẩm được thiết kế theo phong cách hiện đại, mang lại sự thoải mái và tự tin. Chất
+          liệu cao cấp, bền đẹp, đảm bảo trải nghiệm tốt nhất cho người mặc.
         </p>
 
-        {/* Action Buttons */}
+        {/* Nút thao tác */}
         <div className="flex gap-4 mb-8">
           <button className="flex-1 bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition">
-            Add to cart
+            Thêm vào giỏ
           </button>
           <button className="flex-1 border-2 border-blue-600 text-blue-600 py-3 rounded-lg font-semibold hover:bg-blue-50 transition">
-            Pay immediately
+            Thanh toán ngay
           </button>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ProductDetails
+export default ProductDetails;

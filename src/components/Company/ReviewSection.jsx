@@ -1,10 +1,10 @@
 const ReviewSection = () => {
   return (
     <div className="bg-gray-50 p-8 rounded-lg py-8">
-      <h3 className="text-lg font-semibold text-gray-900 mb-2">Leave a complain or review</h3>
+      <h3 className="text-lg font-semibold text-gray-900 mb-2">Gửi phản hồi hoặc đánh giá</h3>
+
       <p className="text-sm text-gray-600 mb-6">
-        Lorem ipsum dolor sit amet consectetur. Quam nihil impedit quo minus id quod maxime placeat facere possimus,
-        omnis.
+        Hãy cho chúng tôi biết trải nghiệm của bạn để cải thiện chất lượng tốt hơn.
       </p>
 
       {/* Star Rating */}
@@ -18,22 +18,27 @@ const ReviewSection = () => {
         </div>
       </div>
 
-      {/* Review Text Area */}
+      {/* Textarea */}
       <textarea
-        placeholder="Enter your message"
+        placeholder="Nhập nội dung đánh giá..."
         className="w-full p-3 border border-gray-300 rounded-lg text-sm resize-none mb-6 focus:outline-none focus:ring-2 focus:ring-blue-500"
         rows={6}
       />
 
-      {/* Submit Button */}
+      {/* Submit */}
       <button className="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition flex items-center justify-center gap-2">
         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
+          />
         </svg>
-        Submit
+        Gửi đánh giá
       </button>
     </div>
-  )
-}
+  );
+};
 
-export default ReviewSection
+export default ReviewSection;

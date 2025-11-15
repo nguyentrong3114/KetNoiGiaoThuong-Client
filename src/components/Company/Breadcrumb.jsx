@@ -7,11 +7,9 @@ const Breadcrumb = ({ items }) => {
       {items.map((item, index) => (
         <div key={index} className="flex items-center">
           {index > 0 && <ChevronRight size={16} className="mx-2 text-gray-400" />}
+
           {item.href ? (
-            <Link 
-              to={item.href} 
-              className="hover:text-blue-600 transition-colors"
-            >
+            <Link to={item.href} className="hover:text-blue-600 transition-colors">
               {item.label}
             </Link>
           ) : (

@@ -55,6 +55,26 @@ const LoginPage = () => {
       navigate("/");
       return;
     }
+    // 🟨 Tài khoản doanh nghiệp (demo)
+    if (email === "company@gmail.com" && password === "company123") {
+      alert("Đăng nhập DOANH NGHIỆP thành công!");
+
+      // ⭐ Lưu thông tin doanh nghiệp vào localStorage
+      localStorage.setItem("role", "company");
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          role: "company",
+          companySlug: "cong-ty-demo",
+          companyName: "Công ty Demo",
+          avatar: "/default-avatar.jpg",
+        })
+      );
+
+      navigate("/");
+
+      return;
+    }
 
     // 🟥 Sai tài khoản
     setErrorMsg("Sai email hoặc mật khẩu.");

@@ -13,21 +13,26 @@ import LoginPage from "../pages/Public/LoginPage";
 import RegisterPage from "../pages/Public/RegisterPage";
 import ResetPasswordPage from "../pages/Public/ResetPasswordPage";
 import ForgotPasswordPage from "../pages/Public/ForgotPasswordPage";
+
 import AdminLayout from "../pages/Admin/AdminLayout";
 import AdminDashboard from "../pages/Admin/AdminDashboard";
 import AdminUsers from "../pages/Admin/AdminUsers";
 import ReportsPage from "../pages/Admin/ReportsPage";
 import TransactionsPage from "../pages/Admin/TransactionsPage";
 import PostsAds from "../pages/Admin/PostsAds";
+
 import CompanyPage from "../pages/Public/CompanyPage";
 import CompanyProductPage from "../pages/Public/CompanyProductPage";
 import ProductDetailPage from "../pages/Public/ProductDetailPage";
-import CompanyPostPage from "../pages/Public/CompanyPostPage";
+import CompanyPostPage from "../pages/Private/CompanyPostPage";
+
+import AllProductsPage from "../pages/Public/AllProductsPage"; // ⭐ Thêm import mới
 
 const AppRoute = () => {
   return (
     <Router>
       <Routes>
+        {/* LAYOUT CHÍNH */}
         <Route path="/" element={<MainLayout />}>
           <Route index element={<HomePage />} />
           <Route path="about" element={<AboutPage />} />
@@ -36,18 +41,25 @@ const AppRoute = () => {
           <Route path="register" element={<RegisterPage />} />
           <Route path="reset" element={<ResetPasswordPage />} />
           <Route path="forgot" element={<ForgotPasswordPage />} />
+
+          {/* ⭐ Trang sản phẩm chung cho user cá nhân */}
+          <Route path="products" element={<AllProductsPage />} />
+
+          {/* ⭐ Các trang của doanh nghiệp */}
           <Route path="company/:slug" element={<CompanyPage />} />
           <Route path="company/:slug/product" element={<CompanyProductPage />} />
           <Route path="company/:slug/product/:id" element={<ProductDetailPage />} />
           <Route path="company/:slug/post" element={<CompanyPostPage />} />
         </Route>
-         <Route path="/admin" element={<AdminLayout />}>
+
+        {/* ADMIN */}
+        <Route path="/admin" element={<AdminLayout />}>
           <Route path="dashboard" element={<AdminDashboard />} />
           <Route path="users" element={<AdminUsers />} />
           <Route path="reports" element={<ReportsPage />} />
           <Route path="transactions" element={<TransactionsPage />} />
           <Route path="posts" element={<PostsAds />} />
-        </Route> 
+        </Route>
       </Routes>
     </Router>
   );
