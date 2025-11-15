@@ -7,6 +7,8 @@ import LoginPage from "../pages/Public/LoginPage";
 import RegisterPage from "../pages/Public/RegisterPage";
 import ResetPasswordPage from "../pages/Public/ResetPasswordPage";
 import ForgotPasswordPage from "../pages/Public/ForgotPasswordPage";
+import AuctionPage from "../pages/Public/AuctionPage";
+import Dashboard from "../pages/Private/Dashboard";
 const AppRoute = () => {
   return (
     <Router>
@@ -14,6 +16,8 @@ const AppRoute = () => {
         <Route path="/" element={<MainLayout />}>
           <Route index element={<HomePage />} />
           <Route path="about" element={<AboutPage />} />
+          <Route path="auction" element={<AuctionPage />} />
+          <Route path="dashboard" element={<Dashboard />} />
           <Route path="profile" element={<Profile />} />
           <Route path="login" element={<LoginPage />} />
           <Route path="register" element={<RegisterPage />} />
