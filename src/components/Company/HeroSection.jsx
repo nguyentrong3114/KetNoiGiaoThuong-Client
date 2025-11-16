@@ -1,81 +1,81 @@
-import { Link, useParams } from "react-router-dom";
-import { CheckCircle, ArrowRight } from "lucide-react";
+import { useParams, useNavigate } from "react-router-dom";
+import { CheckCircle, ArrowRight, PlayCircle } from "lucide-react";
 
-const HeroSection = () => {
+const HeroSection = ({ onScrollToProducts }) => {
   const { slug } = useParams();
+  const navigate = useNavigate();
 
   return (
-    <section className="bg-blue-300 py-12 md:py-20 px-4 md:px-8">
+    <section className="bg-gradient-to-r from-blue-600 to-blue-800 py-16 px-6 md:px-10 text-white">
       <div className="max-w-7xl mx-auto">
-        {/* Tags */}
-        <div className="flex flex-wrap items-center gap-3 mb-12 text-sm">
-          {["Đăng ký miễn phí", "Dịch vụ tuyệt vời", "Thanh toán dễ dàng"].map((text, i) => (
+        {/* TAGS */}
+        <div className="flex flex-wrap items-center gap-3 mb-10 text-sm">
+          {["Uy tín – Nhanh chóng", "Hỗ trợ 24/7", "Thanh toán an toàn"].map((text, i) => (
             <div
               key={i}
-              className="bg-white rounded-full px-4 py-2 flex items-center gap-2 text-gray-700"
+              className="bg-white/15 backdrop-blur-sm rounded-full px-4 py-2 flex items-center gap-2 text-blue-100 border border-white/20"
             >
-              <CheckCircle size={16} className="text-blue-600" />
+              <CheckCircle size={16} className="text-green-300" />
               <span>{text}</span>
             </div>
           ))}
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-          {/* Left text */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+          {/* LEFT */}
           <div>
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4 leading-tight">
-              Những phong cách thời trang mới nhất chưa bao giờ{" "}
-              <span className="text-orange-500">dễ dàng đến vậy!</span>
+            <h1 className="text-4xl md:text-5xl font-extrabold mb-6 leading-tight drop-shadow-sm">
+              Khám phá những sản phẩm nổi bật của <span className="text-yellow-300">{slug}</span>
             </h1>
 
-            <p className="text-gray-700 mb-8">
-              <span className="font-semibold">FashionForAll</span> giúp thời trang tiếp cận mọi
-              người — mang phong cách đến ngay trước cửa nhà bạn!
+            <p className="text-blue-100 mb-8 text-lg leading-relaxed max-w-xl">
+              <span className="font-semibold">{slug}</span> mang đến những sản phẩm chất lượng, xu
+              hướng thời trang hiện đại và trải nghiệm dịch vụ tuyệt vời dành riêng cho bạn.
             </p>
 
-            <div className="flex gap-4">
-              {/* ⭐ NÚT CHUYỂN ĐẾN TRANG SẢN PHẨM DOANH NGHIỆP */}
-              <Link
-                to={`/company/${slug}/product`}
-                className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition flex items-center gap-2"
+            <div className="flex flex-wrap gap-4">
+              {/* CUỘN ĐẾN SẢN PHẨM */}
+              <button
+                onClick={onScrollToProducts}
+                className="bg-white text-blue-700 hover:bg-blue-50 font-semibold py-3 px-6 rounded-xl transition flex items-center gap-2 shadow-md"
               >
                 Xem bộ sưu tập <ArrowRight size={18} />
-              </Link>
+              </button>
 
-              <button className="border-2 border-red-500 text-red-500 hover:bg-red-50 font-medium py-3 px-6 rounded-lg flex items-center gap-2 transition">
-                <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-                Xem cách hoạt động
+              {/* CHUYỂN TRANG GIỚI THIỆU CÔNG TY */}
+              <button
+                onClick={() => navigate(`/company/${slug}/intro`)}
+                className="border-2 border-white text-white hover:bg-white hover:text-blue-700 font-semibold py-3 px-6 rounded-xl flex items-center gap-2 transition shadow-sm"
+              >
+                <PlayCircle size={20} />
+                Giới thiệu công ty
               </button>
             </div>
           </div>
 
-          {/* Right images */}
-          <div className="relative flex justify-center items-center h-80">
-            <div className="relative w-full h-full">
-              <div className="absolute left-0 top-0 w-48 h-48 bg-gradient-to-br from-pink-400 to-pink-600 rounded-full flex items-center justify-center border-4 border-white shadow-lg">
-                <img
-                  src="/woman-in-colorful-dress.jpg"
-                  alt="Model 1"
-                  className="w-40 h-40 rounded-full object-cover"
-                />
-              </div>
+          {/* RIGHT IMAGES */}
+          <div className="relative h-96 flex justify-center items-center">
+            <div className="absolute w-72 h-72 bg-white/20 rounded-full backdrop-blur-md shadow-2xl"></div>
 
-              <div className="absolute right-0 top-12 w-40 h-40 bg-orange-400 rounded-full flex items-center justify-center border-4 border-white shadow-lg">
-                <img
-                  src="/placeholder.svg"
-                  alt="Model 2"
-                  className="w-32 h-32 rounded-full object-cover"
-                />
-              </div>
+            <img
+              src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e"
+              alt="Main Model"
+              className="relative w-64 h-64 rounded-full object-cover shadow-xl border-4 border-white"
+            />
 
-              <div className="absolute bottom-0 left-8 flex gap-2">
-                {[1, 2, 3].map((box) => (
-                  <div
-                    key={box}
-                    className="w-16 h-16 bg-gray-300 rounded-lg border-2 border-white shadow-md"
-                  ></div>
-                ))}
-              </div>
+            <img
+              src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab"
+              alt="Model 2"
+              className="absolute right-0 top-8 w-40 h-40 rounded-xl object-cover shadow-xl border-4 border-white"
+            />
+
+            <div className="absolute bottom-4 left-6 flex gap-3">
+              {[1, 2, 3].map((box) => (
+                <div
+                  key={box}
+                  className="w-16 h-16 bg-white/30 backdrop-blur-md rounded-lg border border-white/40 shadow"
+                ></div>
+              ))}
             </div>
           </div>
         </div>

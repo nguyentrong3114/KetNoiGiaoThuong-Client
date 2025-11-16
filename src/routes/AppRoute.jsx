@@ -45,6 +45,7 @@ import CompanyPostPage from "../pages/Private/CompanyPostPage";
 
 // ⭐ Trang sản phẩm chung
 import AllProductsPage from "../pages/Public/AllProductsPage";
+import CompanyIntroPage from "../pages/Public/CompanyIntroPage";
 
 const AppRoute = () => {
   return (
@@ -92,6 +93,8 @@ const AppRoute = () => {
           <Route path="company/:slug/product" element={<CompanyProductPage />} />
           <Route path="company/:slug/product/:id" element={<ProductDetailPage />} />
           <Route path="company/:slug/post" element={<CompanyPostPage />} />
+          {/* ⭐ NEW: GIỚI THIỆU DOANH NGHIỆP */}
+          <Route path="company/:slug/intro" element={<CompanyIntroPage />} />
         </Route>
 
         {/* ============================= */}

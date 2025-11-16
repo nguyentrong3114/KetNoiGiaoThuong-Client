@@ -196,7 +196,6 @@ const AllProductsPage = () => {
                         prev.includes(gender) ? prev.filter((g) => g !== gender) : [...prev, gender]
                       )
                     }
-                    className="w-4 h-4"
                   />
                   {gender}
                 </label>
@@ -216,7 +215,6 @@ const AllProductsPage = () => {
                         prev.includes(age) ? prev.filter((a) => a !== age) : [...prev, age]
                       )
                     }
-                    className="w-4 h-4"
                   />
                   {age}
                 </label>
@@ -236,7 +234,6 @@ const AllProductsPage = () => {
                         prev.includes(size) ? prev.filter((s) => s !== size) : [...prev, size]
                       )
                     }
-                    className="w-4 h-4"
                   />
                   {size}
                 </label>
@@ -299,9 +296,9 @@ const AllProductsPage = () => {
                 key={index}
                 disabled={page === "..."}
                 onClick={() => typeof page === "number" && setCurrentPage(page)}
-                className={`w-8 h-8 rounded-lg font-medium transition 
-                  ${page === currentPage ? "bg-blue-600 text-white" : "hover:bg-gray-100"}
-                `}
+                className={`w-8 h-8 rounded-lg font-medium transition ${
+                  page === currentPage ? "bg-blue-600 text-white" : "hover:bg-gray-100"
+                }`}
               >
                 {page}
               </button>
