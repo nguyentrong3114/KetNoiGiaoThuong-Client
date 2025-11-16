@@ -15,7 +15,7 @@ import ForgotPasswordPage from "../pages/Public/ForgotPasswordPage";
 import ResetPasswordPage from "../pages/Public/ResetPasswordPage";
 
 import Profile from "../pages/Private/Profile";
-import Dashboard from "../pages/Private/Dashboard";
+import DashboardCompany from "../pages/Private/DashboardCompany";
 
 import OrderPage from "../pages/Public/OrderPage";
 import CheckoutPage from "../pages/Public/CheckoutPage";
@@ -68,7 +68,8 @@ const AppRoute = () => {
           <Route path="auction/create" element={<AuctionCreatePage />} />
 
           {/* USER ACCOUNT */}
-          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="dashboard/company" element={<DashboardCompany />} />
+
           <Route path="profile" element={<Profile />} />
 
           {/* AUTH */}

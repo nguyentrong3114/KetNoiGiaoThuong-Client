@@ -1,99 +1,124 @@
+"use client";
+
 import React, { useState, useMemo, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ChevronRight, ChevronLeft } from "lucide-react";
 
 const AllProductsPage = () => {
+  // FILTER
   const [search, setSearch] = useState("");
-  const [filterGender, setFilterGender] = useState([]);
+  const [selectedGender, setSelectedGender] = useState([]);
+  const [selectedAgeGroup, setSelectedAgeGroup] = useState([]);
+  const [selectedSize, setSelectedSize] = useState([]);
   const [sortOption, setSortOption] = useState("default");
 
-  // --- PAGINATION ---
+  // PAGINATION
   const [currentPage, setCurrentPage] = useState(1);
-  const productsPerPage = 6; // 📌 số sản phẩm mỗi trang
+  const productsPerPage = 12;
 
-  // --- DEMO DATA ---
+  // DEMO PRODUCTS
   const products = [
     {
       id: 1,
-      slug: "cong-ty-abc",
       name: "Váy công sở",
-      priceLabel: "400.000đ",
+      slug: "cong-ty-abc",
+      priceLabel: "₫400.000",
       priceValue: 400000,
-      gender: "female",
+      gender: "Nữ",
+      ageGroup: "Người lớn",
+      size: "M",
       image: "/placeholder.svg",
     },
     {
       id: 2,
-      slug: "cong-ty-x",
       name: "Áo thun cao cấp",
-      priceLabel: "250.000đ",
+      slug: "cong-ty-x",
+      priceLabel: "₫250.000",
       priceValue: 250000,
-      gender: "male",
+      gender: "Nam",
+      ageGroup: "Người lớn",
+      size: "L",
       image: "/placeholder.svg",
     },
     {
       id: 3,
-      slug: "shop-vn",
       name: "Đầm dự tiệc",
-      priceLabel: "600.000đ",
+      slug: "shop-vn",
+      priceLabel: "₫600.000",
       priceValue: 600000,
-      gender: "female",
+      gender: "Nữ",
+      ageGroup: "Người lớn",
+      size: "S",
       image: "/placeholder.svg",
     },
     {
       id: 4,
-      slug: "shop-vn",
       name: "Áo khoác len",
-      priceLabel: "320.000đ",
+      slug: "shop-vn",
+      priceLabel: "₫320.000",
       priceValue: 320000,
-      gender: "female",
+      gender: "Nữ",
+      ageGroup: "Người lớn",
+      size: "M",
       image: "/placeholder.svg",
     },
     {
       id: 5,
-      slug: "cong-ty-hk",
       name: "Áo sơ mi nam",
-      priceLabel: "280.000đ",
+      slug: "cong-ty-hk",
+      priceLabel: "₫280.000",
       priceValue: 280000,
-      gender: "male",
+      gender: "Nam",
+      ageGroup: "Người lớn",
+      size: "L",
       image: "/placeholder.svg",
     },
     {
       id: 6,
-      slug: "cong-ty-hk",
       name: "Quần âu cao cấp",
-      priceLabel: "550.000đ",
+      slug: "cong-ty-hk",
+      priceLabel: "₫550.000",
       priceValue: 550000,
-      gender: "male",
+      gender: "Nam",
+      ageGroup: "Người lớn",
+      size: "M",
       image: "/placeholder.svg",
     },
   ];
 
-  // --- FILTER + SORT ---
+  // FILTER + SORT
   const filtered = useMemo(() => {
     let list = [...products];
 
-    // Search
-    list = list.filter((p) => p.name.toLowerCase().includes(search.toLowerCase()));
-
-    // Gender
-    if (filterGender.length) {
-      list = list.filter((p) => filterGender.includes(p.gender));
+    if (search.trim()) {
+      list = list.filter((p) => p.name.toLowerCase().includes(search.toLowerCase()));
     }
 
-    // Sorting
+    if (selectedGender.length > 0) {
+      list = list.filter((p) => selectedGender.includes(p.gender));
+    }
+
+    if (selectedAgeGroup.length > 0) {
+      list = list.filter((p) => selectedAgeGroup.includes(p.ageGroup));
+    }
+
+    if (selectedSize.length > 0) {
+      list = list.filter((p) => selectedSize.includes(p.size));
+    }
+
     if (sortOption === "low") list.sort((a, b) => a.priceValue - b.priceValue);
     if (sortOption === "high") list.sort((a, b) => b.priceValue - a.priceValue);
+    if (sortOption === "newest") list.sort((a, b) => b.id - a.id);
 
     return list;
-  }, [search, filterGender, sortOption]);
+  }, [search, selectedGender, selectedAgeGroup, selectedSize, sortOption]);
 
-  // --- RESET PAGE WHEN FILTER CHANGES ---
+  // RESET PAGE WHEN FILTER CHANGE
   useEffect(() => {
     setCurrentPage(1);
-  }, [search, filterGender, sortOption]);
+  }, [search, selectedGender, selectedAgeGroup, selectedSize, sortOption]);
 
-  // --- PAGINATION ---
+  // PAGINATION
   const totalPages = Math.ceil(filtered.length / productsPerPage);
 
   const displayedProducts = filtered.slice(
@@ -101,7 +126,6 @@ const AllProductsPage = () => {
     currentPage * productsPerPage
   );
 
-  // Generate pagination structure
   const generatePages = () => {
     const pages = [];
     if (totalPages <= 7) {
@@ -116,7 +140,7 @@ const AllProductsPage = () => {
 
   return (
     <div className="min-h-screen bg-white pt-6 px-4 md:px-8">
-      {/* Breadcrumb */}
+      {/* BREADCRUMB */}
       <nav className="flex items-center text-sm text-gray-600 mb-4">
         <Link to="/" className="hover:text-blue-600">
           Trang chủ
@@ -128,16 +152,18 @@ const AllProductsPage = () => {
       <h1 className="text-3xl font-bold mb-6 text-gray-900">Tất cả sản phẩm ({filtered.length})</h1>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-        {/* --- FILTER SIDEBAR --- */}
-        <aside className="col-span-1">
-          <div className="bg-white shadow-lg rounded-2xl p-5 border border-gray-200">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="font-bold text-gray-900 text-lg">Bộ lọc</h3>
+        {/* FILTER SIDEBAR */}
+        <aside className="md:col-span-1">
+          <div className="bg-white rounded-2xl border shadow p-5 space-y-6">
+            <div className="flex items-center justify-between">
+              <h3 className="font-bold text-lg text-gray-900">Bộ lọc</h3>
               <button
                 onClick={() => {
-                  setFilterGender([]);
-                  setSortOption("default");
+                  setSelectedGender([]);
+                  setSelectedAgeGroup([]);
+                  setSelectedSize([]);
                   setSearch("");
+                  setSortOption("default");
                 }}
                 className="text-blue-600 text-sm hover:underline"
               >
@@ -146,38 +172,73 @@ const AllProductsPage = () => {
             </div>
 
             {/* Search */}
-            <div className="mb-6">
+            <div>
               <label className="font-semibold block mb-2">Tìm kiếm</label>
               <input
                 type="text"
                 placeholder="Nhập tên sản phẩm..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="w-full px-4 py-2 border rounded-lg bg-gray-50 focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-2 border rounded-lg bg-gray-50 focus:ring-2 focus:ring-blue-600"
               />
             </div>
 
             {/* Gender */}
-            <div className="mb-6">
+            <div>
               <label className="font-semibold block mb-2">Giới tính</label>
-              {[
-                { value: "male", label: "Nam" },
-                { value: "female", label: "Nữ" },
-              ].map((g) => (
-                <label key={g.value} className="flex items-center gap-3 cursor-pointer mt-2">
+              {["Nam", "Nữ"].map((gender) => (
+                <label key={gender} className="flex items-center gap-3 cursor-pointer">
                   <input
                     type="checkbox"
-                    checked={filterGender.includes(g.value)}
+                    checked={selectedGender.includes(gender)}
                     onChange={() =>
-                      setFilterGender((prev) =>
-                        prev.includes(g.value)
-                          ? prev.filter((i) => i !== g.value)
-                          : [...prev, g.value]
+                      setSelectedGender((prev) =>
+                        prev.includes(gender) ? prev.filter((g) => g !== gender) : [...prev, gender]
                       )
                     }
                     className="w-4 h-4"
                   />
-                  {g.label}
+                  {gender}
+                </label>
+              ))}
+            </div>
+
+            {/* Age group */}
+            <div>
+              <label className="font-semibold block mb-2">Nhóm tuổi</label>
+              {["Người lớn", "Trẻ em"].map((age) => (
+                <label key={age} className="flex items-center gap-3 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={selectedAgeGroup.includes(age)}
+                    onChange={() =>
+                      setSelectedAgeGroup((prev) =>
+                        prev.includes(age) ? prev.filter((a) => a !== age) : [...prev, age]
+                      )
+                    }
+                    className="w-4 h-4"
+                  />
+                  {age}
+                </label>
+              ))}
+            </div>
+
+            {/* Size */}
+            <div>
+              <label className="font-semibold block mb-2">Kích cỡ</label>
+              {["S", "M", "L"].map((size) => (
+                <label key={size} className="flex items-center gap-3 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={selectedSize.includes(size)}
+                    onChange={() =>
+                      setSelectedSize((prev) =>
+                        prev.includes(size) ? prev.filter((s) => s !== size) : [...prev, size]
+                      )
+                    }
+                    className="w-4 h-4"
+                  />
+                  {size}
                 </label>
               ))}
             </div>
@@ -186,44 +247,46 @@ const AllProductsPage = () => {
             <div>
               <label className="font-semibold block mb-2">Sắp xếp</label>
               <select
+                value={sortOption}
                 onChange={(e) => setSortOption(e.target.value)}
-                className="w-full px-3 py-2 border rounded-lg bg-gray-50 focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-2 border rounded-lg bg-gray-50 focus:ring-2 focus:ring-blue-600"
               >
                 <option value="default">Mặc định</option>
                 <option value="low">Giá thấp → cao</option>
                 <option value="high">Giá cao → thấp</option>
+                <option value="newest">Mới nhất</option>
               </select>
             </div>
           </div>
         </aside>
 
-        {/* --- PRODUCT GRID --- */}
-        <div className="col-span-1 md:col-span-3">
-          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {displayedProducts.map((p) => (
+        {/* PRODUCT GRID */}
+        <div className="md:col-span-3">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
+            {displayedProducts.map((product) => (
               <Link
-                key={p.id}
-                to={`/company/${p.slug}/product/${p.id}`}
+                key={product.id}
+                to={`/company/${product.slug}/product/${product.id}`}
                 className="bg-white rounded-lg shadow hover:shadow-lg overflow-hidden transition"
               >
-                <div className="h-48 bg-gray-100">
+                <div className="h-48 bg-gray-200">
                   <img
-                    src={p.image}
-                    alt={p.name}
+                    src={product.image}
+                    alt={product.name}
                     className="w-full h-full object-cover hover:scale-105 transition-transform"
                   />
                 </div>
+
                 <div className="p-4">
-                  <h3 className="font-semibold text-gray-900 mb-1">{p.name}</h3>
-                  <p className="text-blue-600 font-bold">{p.priceLabel}</p>
+                  <h4 className="font-semibold text-gray-900 text-sm mb-1">{product.name}</h4>
+                  <p className="text-blue-600 font-bold text-sm">{product.priceLabel}</p>
                 </div>
               </Link>
             ))}
           </div>
 
-          {/* --- PAGINATION --- */}
+          {/* PAGINATION */}
           <div className="flex items-center justify-center mt-10 gap-3">
-            {/* Previous */}
             <button
               onClick={() => setCurrentPage((p) => (p > 1 ? p - 1 : p))}
               className="p-2 rounded-lg hover:bg-gray-100"
@@ -231,21 +294,19 @@ const AllProductsPage = () => {
               <ChevronLeft size={20} />
             </button>
 
-            {/* Page numbers */}
-            {pageList.map((page, i) => (
+            {pageList.map((page, index) => (
               <button
-                key={i}
+                key={index}
+                disabled={page === "..."}
+                onClick={() => typeof page === "number" && setCurrentPage(page)}
                 className={`w-8 h-8 rounded-lg font-medium transition 
                   ${page === currentPage ? "bg-blue-600 text-white" : "hover:bg-gray-100"}
                 `}
-                disabled={page === "..."}
-                onClick={() => typeof page === "number" && setCurrentPage(page)}
               >
                 {page}
               </button>
             ))}
 
-            {/* Next */}
             <button
               onClick={() => setCurrentPage((p) => (p < totalPages ? p + 1 : p))}
               className="p-2 rounded-lg hover:bg-gray-100"

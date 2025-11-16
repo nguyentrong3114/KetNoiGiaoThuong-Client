@@ -1,6 +1,9 @@
-import { CheckCircle } from "lucide-react";
+import { Link, useParams } from "react-router-dom";
+import { CheckCircle, ArrowRight } from "lucide-react";
 
 const HeroSection = () => {
+  const { slug } = useParams();
+
   return (
     <section className="bg-blue-300 py-12 md:py-20 px-4 md:px-8">
       <div className="max-w-7xl mx-auto">
@@ -18,7 +21,7 @@ const HeroSection = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-          {/* Left */}
+          {/* Left text */}
           <div>
             <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4 leading-tight">
               Những phong cách thời trang mới nhất chưa bao giờ{" "}
@@ -31,13 +34,17 @@ const HeroSection = () => {
             </p>
 
             <div className="flex gap-4">
-              <button className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition">
-                Xem bộ sưu tập
-              </button>
+              {/* ⭐ NÚT CHUYỂN ĐẾN TRANG SẢN PHẨM DOANH NGHIỆP */}
+              <Link
+                to={`/company/${slug}/product`}
+                className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition flex items-center gap-2"
+              >
+                Xem bộ sưu tập <ArrowRight size={18} />
+              </Link>
 
               <button className="border-2 border-red-500 text-red-500 hover:bg-red-50 font-medium py-3 px-6 rounded-lg flex items-center gap-2 transition">
                 <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-                Xem đánh giá
+                Xem cách hoạt động
               </button>
             </div>
           </div>
@@ -45,7 +52,6 @@ const HeroSection = () => {
           {/* Right images */}
           <div className="relative flex justify-center items-center h-80">
             <div className="relative w-full h-full">
-              {/* Main */}
               <div className="absolute left-0 top-0 w-48 h-48 bg-gradient-to-br from-pink-400 to-pink-600 rounded-full flex items-center justify-center border-4 border-white shadow-lg">
                 <img
                   src="/woman-in-colorful-dress.jpg"
@@ -54,7 +60,6 @@ const HeroSection = () => {
                 />
               </div>
 
-              {/* Secondary */}
               <div className="absolute right-0 top-12 w-40 h-40 bg-orange-400 rounded-full flex items-center justify-center border-4 border-white shadow-lg">
                 <img
                   src="/placeholder.svg"
@@ -63,7 +68,6 @@ const HeroSection = () => {
                 />
               </div>
 
-              {/* Small items */}
               <div className="absolute bottom-0 left-8 flex gap-2">
                 {[1, 2, 3].map((box) => (
                   <div

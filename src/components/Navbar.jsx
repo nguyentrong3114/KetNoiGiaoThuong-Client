@@ -11,7 +11,7 @@ const Navbar = () => {
   const [openMenu, setOpenMenu] = useState(false);
   const menuRef = useRef(null);
 
-  // 🔥 Đóng menu khi click ra ngoài
+  // Đóng menu khi click ra ngoài
   useEffect(() => {
     const handleOutside = (e) => {
       if (menuRef.current && !menuRef.current.contains(e.target)) {
@@ -22,16 +22,17 @@ const Navbar = () => {
     return () => document.removeEventListener("mousedown", handleOutside);
   }, []);
 
+  // Logout
   const handleLogout = () => {
     localStorage.removeItem("user");
     navigate("/login");
-    window.location.reload(); // ⭐ refresh lại Navbar
+    window.location.reload();
   };
 
   return (
     <nav className="bg-white shadow-md sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-        {/* Logo */}
+        {/* LOGO */}
         <Link
           to="/"
           className="text-xl md:text-2xl font-bold text-blue-700 flex items-center gap-2"
@@ -40,7 +41,7 @@ const Navbar = () => {
           <span>Kết Nối Giao Thương</span>
         </Link>
 
-        {/* Menu */}
+        {/* MENU CHÍNH */}
         <div className="hidden md:flex space-x-6 font-medium text-gray-700">
           <NavLink
             to="/"
@@ -60,30 +61,52 @@ const Navbar = () => {
             Giới thiệu
           </NavLink>
 
-          <NavLink to={user?.role === "company" ? `/company/${user.companySlug}` : "/products"}>
+          {/* SẢN PHẨM → USER = /products, DOANH NGHIỆP = /company/slug */}
+          <NavLink
+            to={user?.role === "company" ? `/company/${user.companySlug}` : "/products"}
+            className={({ isActive }) =>
+              `hover:text-blue-600 ${
+                isActive ? "text-blue-600 border-b-2 border-blue-600 pb-1" : ""
+              }`
+            }
+          >
             Sản phẩm
           </NavLink>
 
           <NavLink
             to="/auctions"
             className={({ isActive }) =>
-              `hover:text-blue-600 transition ${isActive ? "text-blue-600 border-b-2 border-blue-600 pb-1" : ""}`
+              `hover:text-blue-600 ${
+                isActive ? "text-blue-600 border-b-2 border-blue-600 pb-1" : ""
+              }`
             }
           >
-            Đấu Giá
+            Đấu giá
           </NavLink>
 
           <NavLink
             to="/contact"
             className={({ isActive }) =>
-              `hover:text-blue-600 ${isActive ? "text-blue-600 border-b-2 border-blue-600 pb-1" : ""}`
+              `hover:text-blue-600 ${
+                isActive ? "text-blue-600 border-b-2 border-blue-600 pb-1" : ""
+              }`
             }
           >
             Liên hệ
           </NavLink>
         </div>
 
-        {/* Right */}
+        {/* ⭐ BUTTON ĐĂNG BÀI VIẾT – Chỉ cho doanh nghiệp */}
+        {user?.role === "company" && (
+          <Link
+            to={`/company/${user.companySlug}/post`}
+            className="hidden md:block px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+          >
+            Đăng bài viết
+          </Link>
+        )}
+
+        {/* PHẦN BÊN PHẢI */}
         <div className="flex items-center space-x-5">
           {/* Search */}
           <Link to="/search" className="flex items-center gap-1 text-blue-700 hover:text-blue-900">
@@ -92,10 +115,7 @@ const Navbar = () => {
           </Link>
 
           {/* Cart */}
-          <Link
-            to="/cart"
-            className="flex items-center space-x-1 text-blue-700 hover:text-blue-900"
-          >
+          <Link to="/cart" className="flex items-center gap-1 text-blue-700 hover:text-blue-900">
             <FiShoppingCart className="text-xl" />
             <span className="hidden md:inline font-medium">Cart</span>
           </Link>
@@ -108,6 +128,7 @@ const Navbar = () => {
                   Đăng nhập
                 </button>
               </Link>
+
               <Link to="/register">
                 <button className="px-4 py-2 text-sm font-semibold bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
                   Đăng ký
@@ -126,15 +147,27 @@ const Navbar = () => {
                 onClick={() => setOpenMenu((prev) => !prev)}
               />
 
-              {/* Dropdown menu */}
               {openMenu && (
                 <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg p-2 animate-fadeIn">
-                  <button
-                    onClick={() => navigate("/dashboard")}
-                    className="w-full text-left px-3 py-2 hover:bg-gray-100 rounded"
-                  >
-                    Dashboard
-                  </button>
+                  {/* ⭐ DASHBOARD phân nhánh theo role */}
+                  {user.role === "company" && (
+                    <button
+                      onClick={() => navigate("/dashboard/company")}
+                      className="w-full text-left px-3 py-2 hover:bg-gray-100 rounded"
+                    >
+                      Dashboard
+                    </button>
+                  )}
+
+                  {/* ⭐ NÚT ĐĂNG BÀI – chỉ doanh nghiệp */}
+                  {user.role === "company" && (
+                    <button
+                      onClick={() => navigate(`/company/${user.companySlug}/post`)}
+                      className="w-full text-left px-3 py-2 hover:bg-gray-100 rounded"
+                    >
+                      Đăng bài viết
+                    </button>
+                  )}
 
                   <button
                     onClick={() => navigate("/profile")}
@@ -150,6 +183,7 @@ const Navbar = () => {
                     Đơn hàng của bạn
                   </button>
 
+                  {/* Đăng xuất */}
                   <button
                     onClick={handleLogout}
                     className="w-full text-left px-3 py-2 text-red-600 hover:bg-gray-100 rounded"

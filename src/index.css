@@ -1,5 +1,6 @@
 @import "tailwindcss";
-/* Ẩn con mắt của trình duyệt */
+
+/* Ẩn icon con mắt (mặc định của trình duyệt) trong input password */
 input[type="password"]::-ms-reveal,
 input[type="password"]::-ms-clear {
   display: none !important;
@@ -9,20 +10,27 @@ input[type="password"]::-webkit-inner-spin-button,
 input[type="password"]::-webkit-textfield-decoration-container {
   display: none !important;
 }
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(5px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+
+/* ============================= */
+/* ✨ Fade Section Animation     */
+/* ============================= */
+.fade-section {
+  opacity: 0;
+  transform: translateY(6px);
+  transition:
+    opacity 0.35s ease-out,
+    transform 0.35s ease-out;
 }
 
-.animate-fadeIn {
-  animation: fadeIn 0.2s ease-out;
+/* Khi được kích hoạt */
+.fade-section.fade-visible {
+  opacity: 1;
+  transform: translateY(0);
 }
+
+/* ============================= */
+/* 🔁 Scroll Animation (Logo chạy ngang) */
+/* ============================= */
 @keyframes scroll {
   0% {
     transform: translateX(0);

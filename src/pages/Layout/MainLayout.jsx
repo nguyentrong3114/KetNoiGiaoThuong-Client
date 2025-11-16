@@ -7,9 +7,19 @@ import { useEffect } from "react";
 const MainLayout = () => {
   const location = useLocation();
 
-  // 🟦 Tự động scroll lên đầu trang khi đổi route
+  // Scroll top khi đổi trang
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [location.pathname]);
+
+  // Fade-in cho fade-section mỗi lần đổi trang
+  useEffect(() => {
+    const fadeEls = document.querySelectorAll(".fade-section");
+    fadeEls.forEach((el) => {
+      setTimeout(() => {
+        el.classList.add("fade-visible");
+      }, 30);
+    });
   }, [location.pathname]);
 
   return (
