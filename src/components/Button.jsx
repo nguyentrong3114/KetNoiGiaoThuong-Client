@@ -1,29 +1,81 @@
-const Button = ({ 
-  children, 
-  variant = 'primary', 
-  size = 'md', 
-  className = '', 
-  ...props 
+// src/components/Button.jsx
+
+const Button = ({
+  children,
+  variant = "primary",
+  size = "md",
+  disabled = false,
+  className = "",
+  ...props
 }) => {
-  const baseClasses = 'font-medium rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2';
-  
+  // Base UI
+  const baseClasses = `
+    font-medium 
+    rounded-xl
+    transition-all 
+    duration-200
+    ease-out
+    focus:outline-none 
+    focus:ring-2 
+    focus:ring-offset-2
+    active:scale-[0.97]
+  `;
+
+  // Variants (nâng cấp)
   const variants = {
-    primary: 'bg-blue-600 hover:bg-blue-700 text-white focus:ring-blue-500',
-    secondary: 'bg-gray-100 hover:bg-gray-200 text-gray-900 focus:ring-gray-500',
-    outline: 'border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white focus:ring-blue-500',
-    danger: 'bg-red-600 hover:bg-red-700 text-white focus:ring-red-500'
+    primary: `
+      bg-blue-600 
+      text-white 
+      hover:bg-blue-700
+      focus:ring-blue-400
+      shadow-sm
+    `,
+
+    secondary: `
+      bg-gray-100 
+      hover:bg-gray-200 
+      text-gray-900 
+      focus:ring-gray-400
+    `,
+
+    // ⭐ Outline trắng — premium
+    outline: `
+      border-2 border-white 
+      text-white 
+      hover:bg-white hover:text-blue-700 
+      focus:ring-white 
+      shadow-sm hover:shadow-white/30 
+      hover:scale-[1.02]
+    `,
+
+    danger: `
+      bg-red-600 
+      hover:bg-red-700 
+      text-white 
+      focus:ring-red-400
+    `,
   };
-  
+
+  // Size nâng cấp
   const sizes = {
-    sm: 'px-3 py-1.5 text-sm',
-    md: 'px-4 py-2 text-base',
-    lg: 'px-6 py-3 text-lg'
+    sm: "px-3 py-1.5 text-sm rounded-lg",
+    md: "px-5 py-2.5 text-base rounded-xl",
+    lg: "px-7 py-3 text-lg rounded-2xl",
   };
-  
-  const classes = `${baseClasses} ${variants[variant]} ${sizes[size]} ${className}`;
-  
+
+  // Disabled style
+  const disabledClasses = "opacity-60 cursor-not-allowed hover:none active:none shadow-none";
+
+  const classes = `
+    ${baseClasses}
+    ${variants[variant]}
+    ${sizes[size]}
+    ${disabled ? disabledClasses : ""}
+    ${className}
+  `;
+
   return (
-    <button className={classes} {...props}>
+    <button className={classes} disabled={disabled} {...props}>
       {children}
     </button>
   );

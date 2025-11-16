@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Button from "../../components/Button";
 import Card from "../../components/Auction/Card";
 import Modal from "../../components/Modal";
-import FadeIn from "../../components/FadeIn"; // ⭐ IMPORT ANIMATION
+import FadeIn from "../../components/FadeIn";
 
 const HomePage = () => {
   const [showModal, setShowModal] = useState(false);
@@ -20,9 +20,10 @@ const HomePage = () => {
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
-            strokeWidth={2}
-            d="M17 20h5v-2a3 3 0 00-5.356-1.857..."
+            strokeWidth="2"
+            d="M12 4.5C7.305 4.5 3.5 8.305 3.5 13S7.305 21.5 12 21.5 20.5 17.695 20.5 13 16.695 4.5 12 4.5z"
           />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 7v6l4 2" />
         </svg>
       ),
     },
@@ -36,9 +37,10 @@ const HomePage = () => {
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
-            strokeWidth={2}
-            d="M9 12l2 2 4-4m6 2..."
+            strokeWidth="2"
+            d="M12 22c4.97 0 9-4.03 9-9s-4.03-9-9-9-9 4.03-9 9 4.03 9 9 9z"
           />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4" />
         </svg>
       ),
     },
@@ -49,12 +51,7 @@ const HomePage = () => {
       iconColor: "text-purple-600",
       icon: (
         <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M13 10V3L4 14h7..."
-          />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
         </svg>
       ),
     },
@@ -62,7 +59,7 @@ const HomePage = () => {
 
   return (
     <div className="flex flex-col">
-      {/* ⭐ HERO SECTION (có FadeIn) */}
+      {/* ⭐ HERO SECTION */}
       <FadeIn delay={0.1}>
         <section className="bg-gradient-to-r from-blue-700 to-blue-900 text-white relative overflow-hidden">
           <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/diagonal-noise.png')] opacity-10"></div>
@@ -71,11 +68,12 @@ const HomePage = () => {
             <h1 className="text-4xl md:text-6xl font-extrabold mb-6 drop-shadow-lg">
               Kết nối doanh nghiệp
               <br />
-              <span className="text-blue-200 font-semibold">Phát triển bền vững</span>
+              <span className="text-blue-100 font-semibold">Phát triển bền vững</span>
             </h1>
 
             <p className="text-lg md:text-xl mb-10 text-blue-50 max-w-3xl mx-auto leading-relaxed">
-              Nền tảng giao thương hàng đầu Việt Nam...
+              Nền tảng giao thương hàng đầu Việt Nam, tạo cầu nối giữa các doanh nghiệp để cùng phát
+              triển.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -97,15 +95,15 @@ const HomePage = () => {
         </section>
       </FadeIn>
 
-      {/* ⭐ FEATURES SECTION (FadeIn) */}
+      {/* ⭐ FEATURES SECTION */}
       <FadeIn delay={0.15}>
         <section ref={featureRef} className="py-20 bg-gray-50">
           <div className="max-w-7xl mx-auto px-4 text-center">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
               Tại sao chọn chúng tôi?
             </h2>
-            <p className="text-lg text-gray-600 mb-16">
-              Chúng tôi cung cấp giải pháp toàn diện để kết nối và phát triển kinh doanh
+            <p className="text-lg text-gray-700 mb-16">
+              Giải pháp toàn diện để kết nối và phát triển kinh doanh hiện đại
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -120,8 +118,10 @@ const HomePage = () => {
                   >
                     {f.icon}
                   </div>
+
                   <h3 className="text-xl font-semibold text-gray-900 mb-3">{f.title}</h3>
-                  <p className="text-gray-600 text-base leading-relaxed">{f.desc}</p>
+
+                  <p className="text-gray-700 leading-relaxed">{f.desc}</p>
                 </div>
               ))}
             </div>
@@ -129,11 +129,13 @@ const HomePage = () => {
         </section>
       </FadeIn>
 
-      {/* ⭐ STATS SECTION (FadeIn) */}
+      {/* ⭐ STATS SECTION */}
       <FadeIn delay={0.2}>
         <section className="py-20 bg-white">
           <div className="max-w-7xl mx-auto px-4 text-center">
-            <h2 className="text-3xl md:text-4xl font-bold mb-12">Thành tựu của chúng tôi</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-12">
+              Thành tựu của chúng tôi
+            </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
               {[
@@ -143,8 +145,10 @@ const HomePage = () => {
                 { num: "24/7", text: "Hỗ trợ khách hàng", color: "text-orange-600" },
               ].map((item, index) => (
                 <div key={index} className="p-4 rounded-lg hover:bg-gray-50 transition">
-                  <div className={`text-4xl font-extrabold ${item.color} mb-2`}>{item.num}</div>
-                  <p className="text-gray-700 font-medium">{item.text}</p>
+                  <div className={`text-4xl font-extrabold ${item.color} mb-2 drop-shadow`}>
+                    {item.num}
+                  </div>
+                  <p className="text-gray-800 font-semibold">{item.text}</p>
                 </div>
               ))}
             </div>
@@ -152,11 +156,12 @@ const HomePage = () => {
         </section>
       </FadeIn>
 
-      {/* ⭐ CTA SECTION (FadeIn) */}
+      {/* ⭐ CTA SECTION */}
       <FadeIn delay={0.25}>
         <section className="py-20 bg-blue-700 text-center text-white">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Sẵn sàng bắt đầu?</h2>
-          <p className="text-lg md:text-xl text-blue-100 mb-10 max-w-2xl mx-auto">
+
+          <p className="text-lg md:text-xl text-blue-200 mb-10 max-w-2xl mx-auto">
             Tham gia cộng đồng doanh nghiệp lớn nhất Việt Nam ngay hôm nay
           </p>
 
@@ -166,6 +171,7 @@ const HomePage = () => {
                 Đăng ký miễn phí
               </Button>
             </Link>
+
             <Link to="/chat">
               <Button variant="primary" size="lg">
                 Liên hệ tư vấn
@@ -175,10 +181,11 @@ const HomePage = () => {
         </section>
       </FadeIn>
 
-      {/* MODAL */}
+      {/* ⭐ MODAL */}
       <Modal show={showModal} onClose={() => setShowModal(false)} title="Thông tin thêm">
         <p className="text-gray-700 leading-relaxed">
-          Nền tảng <strong>Kết Nối Giao Thương</strong> giúp doanh nghiệp Việt Nam...
+          Nền tảng <strong>Kết Nối Giao Thương</strong> giúp doanh nghiệp mở rộng mạng lưới, tiếp
+          cận đối tác, nâng cao hiệu quả kinh doanh và phát triển bền vững.
         </p>
       </Modal>
     </div>
