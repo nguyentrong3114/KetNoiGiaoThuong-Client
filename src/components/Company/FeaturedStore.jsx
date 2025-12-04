@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { Link, useParams } from "react-router-dom";
-import { ShoppingCart, ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 const FeaturedStore = ({ maxProducts = 8, showViewAll = true }) => {
   const { slug } = useParams();
@@ -12,79 +12,27 @@ const FeaturedStore = ({ maxProducts = 8, showViewAll = true }) => {
   const [selectedSize, setSelectedSize] = useState([]);
 
   const [sortOption, setSortOption] = useState("default");
-
   const [currentPage, setCurrentPage] = useState(1);
+
   const productsPerPage = maxProducts;
 
-  const products = [
-    {
-      id: 1,
-      name: "Áo blouse + chân váy",
-      image: "",
-      priceLabel: "₫300.000",
-      priceValue: 300000,
-      gender: "Nữ",
-      ageGroup: "Người lớn",
-      size: "M",
-    },
-    {
-      id: 2,
-      name: "Đầm phối màu hồng",
-      image: "",
-      priceLabel: "₫300.000",
-      priceValue: 300000,
-      gender: "Nữ",
-      ageGroup: "Người lớn",
-      size: "S",
-    },
-    {
-      id: 3,
-      name: "Đầm dáng chữ A",
-      image: "",
-      priceLabel: "₫300.000",
-      priceValue: 300000,
-      gender: "Nữ",
-      ageGroup: "Người lớn",
-      size: "L",
-    },
-    {
-      id: 4,
-      name: "Đầm xoè nhẹ",
-      image: "",
-      priceLabel: "₫300.000",
-      priceValue: 300000,
-      gender: "Nữ",
-      ageGroup: "Người lớn",
-      size: "M",
-    },
-    {
-      id: 5,
-      name: "Suit nam Ankara",
-      image: "",
-      priceLabel: "₫300.000",
-      priceValue: 300000,
-      gender: "Nam",
-      ageGroup: "Người lớn",
-      size: "L",
-    },
-    {
-      id: 6,
-      name: "Áo thun nam cao cấp",
-      image: "",
-      priceLabel: "₫250.000",
-      priceValue: 250000,
-      gender: "Nam",
-      ageGroup: "Người lớn",
-      size: "M",
-    },
-  ];
+  // ❗ DỮ LIỆU DEMO ĐÃ XÓA – CHUẨN BỊ NHẬN TỪ API SAU NÀY
+  const products = [];
 
   const filtered = useMemo(() => {
     let list = [...products];
 
-    if (selectedGender.length) list = list.filter((p) => selectedGender.includes(p.gender));
-    if (selectedAgeGroup.length) list = list.filter((p) => selectedAgeGroup.includes(p.ageGroup));
-    if (selectedSize.length) list = list.filter((p) => selectedSize.includes(p.size));
+    if (selectedGender.length) {
+      list = list.filter((p) => selectedGender.includes(p.gender));
+    }
+
+    if (selectedAgeGroup.length) {
+      list = list.filter((p) => selectedAgeGroup.includes(p.ageGroup));
+    }
+
+    if (selectedSize.length) {
+      list = list.filter((p) => selectedSize.includes(p.size));
+    }
 
     if (sortOption === "low") list.sort((a, b) => a.priceValue - b.priceValue);
     if (sortOption === "high") list.sort((a, b) => b.priceValue - a.priceValue);
@@ -93,7 +41,7 @@ const FeaturedStore = ({ maxProducts = 8, showViewAll = true }) => {
     return list;
   }, [selectedGender, selectedAgeGroup, selectedSize, sortOption]);
 
-  const totalPages = Math.ceil(filtered.length / productsPerPage);
+  const totalPages = Math.ceil(filtered.length / productsPerPage) || 1;
   const displayedProducts = filtered.slice(
     (currentPage - 1) * productsPerPage,
     currentPage * productsPerPage
@@ -105,7 +53,7 @@ const FeaturedStore = ({ maxProducts = 8, showViewAll = true }) => {
         <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">Sản phẩm nổi bật</h2>
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          {/* Sidebar (bản gốc) */}
+          {/* SIDEBAR FILTER (GIỮ NGUYÊN) */}
           <div className="md:col-span-1">
             <div className="bg-white p-4 shadow rounded-lg border">
               <h4 className="font-bold mb-2">Bộ lọc</h4>
@@ -166,42 +114,65 @@ const FeaturedStore = ({ maxProducts = 8, showViewAll = true }) => {
                   </label>
                 ))}
               </div>
+
+              {/* Sort (nếu sau này muốn thêm) */}
+              <div className="mt-4">
+                <h5 className="font-semibold mb-1">Sắp xếp</h5>
+                <select
+                  value={sortOption}
+                  onChange={(e) => setSortOption(e.target.value)}
+                  className="w-full border rounded px-2 py-1 text-sm"
+                >
+                  <option value="default">Mặc định</option>
+                  <option value="low">Giá thấp đến cao</option>
+                  <option value="high">Giá cao đến thấp</option>
+                  <option value="newest">Mới nhất</option>
+                </select>
+              </div>
             </div>
           </div>
 
-          {/* Product Grid */}
+          {/* PRODUCT GRID */}
           <div className="md:col-span-3">
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6 mb-8">
-              {displayedProducts.map((p) => (
-                <Link
-                  key={p.id}
-                  to={`/company/${slug}/product/${p.id}`}
-                  className="block bg-white shadow rounded-lg overflow-hidden"
-                >
-                  <div className="h-48 bg-gray-200"></div>
-                  <div className="p-3">
-                    <p className="font-semibold text-sm">{p.name}</p>
-                    <p className="text-blue-600 font-bold">{p.priceLabel}</p>
-                  </div>
-                </Link>
-              ))}
-            </div>
+            {/* Khi chưa có dữ liệu sản phẩm */}
+            {displayedProducts.length === 0 ? (
+              <div className="text-center text-gray-500 py-10">Chưa có sản phẩm.</div>
+            ) : (
+              <>
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6 mb-8">
+                  {displayedProducts.map((p) => (
+                    <Link
+                      key={p.id}
+                      to={`/company/${slug}/product/${p.id}`}
+                      className="block bg-white shadow rounded-lg overflow-hidden"
+                    >
+                      <div className="h-48 bg-gray-200" />
+                      <div className="p-3">
+                        <p className="font-semibold text-sm">{p.name}</p>
+                        <p className="text-blue-600 font-bold">{p.priceLabel}</p>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
 
-            {/* Pagination */}
-            <div className="flex justify-center gap-2">
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map((num) => (
-                <button
-                  key={num}
-                  onClick={() => setCurrentPage(num)}
-                  className={`px-3 py-1 rounded ${
-                    num === currentPage ? "bg-blue-600 text-white" : "bg-gray-100"
-                  }`}
-                >
-                  {num}
-                </button>
-              ))}
-            </div>
+                {/* Pagination */}
+                <div className="flex justify-center gap-2">
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((num) => (
+                    <button
+                      key={num}
+                      onClick={() => setCurrentPage(num)}
+                      className={`px-3 py-1 rounded ${
+                        num === currentPage ? "bg-blue-600 text-white" : "bg-gray-100"
+                      }`}
+                    >
+                      {num}
+                    </button>
+                  ))}
+                </div>
+              </>
+            )}
 
+            {/* Xem tất cả */}
             {showViewAll && (
               <div className="text-right mt-6">
                 <Link

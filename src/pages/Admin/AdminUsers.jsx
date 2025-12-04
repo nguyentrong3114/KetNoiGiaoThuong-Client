@@ -3,73 +3,8 @@ import AdminHeader from "./components/AdminHeader";
 import "./AdminUsers.css";
 
 const AdminUsers = () => {
-  const invoices = [
-    {
-      id: 1,
-      profile: "https://ui-avatars.com/api/?name=Tom+Smith&background=E8F5E9&color=4CAF50",
-      activityType: "Product",
-      owner: "Tom Smith",
-      task: "Client data test",
-      budget: "$125000",
-      priority: "High",
-      period: "Oct",
-      status: "completed",
-      deadline: "25/10/2020",
-      attachment: true,
-    },
-    {
-      id: 2,
-      profile: "https://ui-avatars.com/api/?name=Tom+Smith&background=E3F2FD&color=2196F3",
-      activityType: "Product",
-      owner: "Tom Smith",
-      task: "Client data test",
-      budget: "$125000",
-      priority: "High",
-      period: "Oct",
-      status: "completed",
-      deadline: "25/10/2020",
-      attachment: true,
-    },
-    {
-      id: 3,
-      profile: "https://ui-avatars.com/api/?name=Tom+Smith&background=FFF3E0&color=FF9800",
-      activityType: "Product",
-      owner: "Tom Smith",
-      task: "Client data test",
-      budget: "$125000",
-      priority: "High",
-      period: "Oct",
-      status: "completed",
-      deadline: "25/10/2020",
-      attachment: true,
-    },
-    {
-      id: 4,
-      profile: "https://ui-avatars.com/api/?name=Tom+Smith&background=FCE4EC&color=E91E63",
-      activityType: "Product",
-      owner: "Tom Smith",
-      task: "Client data test",
-      budget: "$125000",
-      priority: "High",
-      period: "Oct",
-      status: "cancelled",
-      deadline: "25/10/2020",
-      attachment: true,
-    },
-    {
-      id: 5,
-      profile: "https://ui-avatars.com/api/?name=Tom+Smith&background=F3E5F5&color=9C27B0",
-      activityType: "Product",
-      owner: "Tom Smith",
-      task: "Client data test",
-      budget: "$125000",
-      priority: "High",
-      period: "Oct",
-      status: "cancelled",
-      deadline: "25/10/2020",
-      attachment: true,
-    },
-  ];
+  // ❗ Không nhận demo nữa — BE trả về /admin/users
+  const invoices = [];
 
   return (
     <>
@@ -84,66 +19,45 @@ const AdminUsers = () => {
         </div>
 
         <div className="table-wrapper">
-          <table className="invoice-table">
-            <thead>
-              <tr>
-                <th>Hồ sơ</th>
-                <th>Loại hoạt động</th>
-                <th>Chủ sở hữu</th>
-                <th>Nhiệm vụ</th>
-                <th>Ngân sách</th>
-                <th>Mức ưu tiên</th>
-                <th>Thời gian</th>
-                <th>Trạng thái</th>
-                <th>Hạn cuối</th>
-                <th>Tập tin</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              {invoices.map((invoice) => (
-                <tr key={invoice.id}>
-                  {/* Profile hình đại diện */}
-                  <td>
-                    <img src={invoice.profile} alt={invoice.owner} className="profile-img" />
-                  </td>
-
-                  {/* Những field này là DATA → giữ nguyên */}
-                  <td className="text-dark">{invoice.activityType}</td>
-                  <td className="text-dark">{invoice.owner}</td>
-                  <td className="text-muted">{invoice.task}</td>
-                  <td className="text-dark">{invoice.budget}</td>
-                  <td className="text-dark">{invoice.priority}</td>
-
-                  {/* Period: dịch riêng Oct → Tháng 10 */}
-                  <td className="text-dark">
-                    {invoice.period === "Oct" ? "Tháng 10" : invoice.period}
-                  </td>
-
-                  {/* Status: chỉ icon ✔ hoặc ✖ */}
-                  <td>
-                    <span
-                      className={`status-badge ${
-                        invoice.status === "completed" ? "status-completed" : "status-cancelled"
-                      }`}
-                    >
-                      {invoice.status === "completed" ? (
-                        <i className="bi bi-check"></i>
-                      ) : (
-                        <i className="bi bi-x"></i>
-                      )}
-                    </span>
-                  </td>
-
-                  {/* Deadline giữ nguyên */}
-                  <td className="text-dark">{invoice.deadline}</td>
-
-                  {/* Attachment: giữ PDF */}
-                  <td>{invoice.attachment && <span className="attachment-badge">PDF</span>}</td>
+          {invoices.length === 0 ? (
+            <p className="text-gray-500 p-4">Chưa có dữ liệu người dùng.</p>
+          ) : (
+            <table className="invoice-table">
+              <thead>
+                <tr>
+                  <th>Hồ sơ</th>
+                  <th>Loại hoạt động</th>
+                  <th>Chủ sở hữu</th>
+                  <th>Nhiệm vụ</th>
+                  <th>Ngân sách</th>
+                  <th>Mức ưu tiên</th>
+                  <th>Thời gian</th>
+                  <th>Trạng thái</th>
+                  <th>Hạn cuối</th>
+                  <th>Tập tin</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+
+              <tbody>
+                {invoices.map((invoice) => (
+                  <tr key={invoice.id}>
+                    <td>
+                      <img src={invoice.profile} alt="" className="profile-img" />
+                    </td>
+                    <td>{invoice.activityType}</td>
+                    <td>{invoice.owner}</td>
+                    <td>{invoice.task}</td>
+                    <td>{invoice.budget}</td>
+                    <td>{invoice.priority}</td>
+                    <td>{invoice.period}</td>
+                    <td>{invoice.status}</td>
+                    <td>{invoice.deadline}</td>
+                    <td>{invoice.attachment && "PDF"}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
         </div>
 
         {/* Footer phân trang */}

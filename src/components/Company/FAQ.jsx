@@ -4,27 +4,8 @@ import { ChevronDown, HelpCircle } from "lucide-react";
 const FAQ = () => {
   const [expandedFaq, setExpandedFaq] = useState(null);
 
-  const faqs = [
-    {
-      question: "Làm sao để trở thành nhà cung cấp trên hệ thống?",
-      answer:
-        "Bạn có thể đăng ký tài khoản doanh nghiệp và hoàn tất xác minh hồ sơ để bắt đầu đăng sản phẩm.",
-    },
-    {
-      question: "Tôi có thể liên hệ trực tiếp với người bán không?",
-      answer:
-        "Hệ thống hỗ trợ bạn nhắn tin trực tiếp hoặc gọi điện tùy vào thiết lập của người bán.",
-    },
-    {
-      question: "Tôi có thể yêu cầu hoàn tiền trong trường hợp nào?",
-      answer:
-        "Bạn có thể yêu cầu hoàn tiền khi sản phẩm không đúng mô tả hoặc gặp vấn đề trong quá trình giao dịch.",
-    },
-    {
-      question: "Tôi có thể yêu cầu chất liệu riêng không?",
-      answer: "Có, một số nhà cung cấp có hỗ trợ thiết kế theo yêu cầu khách hàng.",
-    },
-  ];
+  // ❗ XÓA DEMO — THAY BẰNG MẢNG RỖNG
+  const faqs = [];
 
   return (
     <section className="py-16 px-4 md:px-8 bg-gray-50">
@@ -35,6 +16,11 @@ const FAQ = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* FAQ list */}
           <div className="md:col-span-2 space-y-4">
+            {/* Nếu chưa có FAQ */}
+            {faqs.length === 0 && (
+              <p className="text-gray-500 text-sm italic">Chưa có câu hỏi nào trong hệ thống.</p>
+            )}
+
             {faqs.map((faq, index) => (
               <div
                 key={index}

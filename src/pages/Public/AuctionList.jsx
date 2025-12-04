@@ -1,54 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-
-const defaultAuctions = [
-  {
-    id: 1,
-    title: "Đồng hồ cổ điển",
-    price: 500000,
-    image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30",
-    endsAt: new Date(Date.now() + 86400000).toISOString(), // còn 1 ngày
-  },
-  {
-    id: 2,
-    title: "Giày thể thao limited",
-    price: 1500000,
-    image:
-      "https://images.unsplash.com/photo-1539185441755-769473a23570?auto=format&fit=crop&w=800&q=80",
-    endsAt: new Date(Date.now() - 86400000).toISOString(), // đã kết thúc
-  },
-];
+import { Clock, CheckCircle, PlusCircle } from "lucide-react";
 
 const AuctionList = () => {
-  const [auctions, setAuctions] = useState(defaultAuctions);
-  const [filter, setFilter] = useState("all"); // all | active | ended
+  const [auctions, setAuctions] = useState([]);
+  const [filter, setFilter] = useState("all");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    try {
-      const stored = JSON.parse(localStorage.getItem("auctions"));
-
-      if (stored && Array.isArray(stored)) {
-        const formatted = stored.map((p) => ({
-          id: p.id,
-          title: p.title,
-          price: p.currentBid ?? p.price,
-          image: p.image,
-          endsAt: p.endsAt,
-        }));
-
-        setAuctions(formatted);
-      }
-    } catch (err) {
-      console.error("Parse error:", err);
-    }
+    setLoading(false);
+    setAuctions([]);
   }, []);
 
-  // ⭐ Lọc sản phẩm theo trạng thái
   const now = Date.now();
-
   const filteredAuctions = auctions.filter((item) => {
     const end = new Date(item.endsAt).getTime();
-
     if (filter === "active") return end > now;
     if (filter === "ended") return end <= now;
     return true;
@@ -57,86 +23,109 @@ const AuctionList = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 py-10">
       {/* HEADER */}
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-3xl font-extrabold">Danh sách đấu giá</h2>
+      <div className="flex items-center justify-between mb-8">
+        <h2 className="text-3xl font-extrabold text-gray-900 tracking-tight">Danh sách đấu giá</h2>
 
         <Link
           to="/auction/create"
-          className="px-4 py-2 bg-indigo-600 text-white rounded-lg shadow hover:bg-indigo-700 transition"
+          className="px-5 py-2.5 bg-gradient-to-r from-indigo-600 to-blue-600 text-white 
+          rounded-xl shadow hover:opacity-95 transition flex items-center gap-2"
         >
-          + Đăng sản phẩm đấu giá
+          <PlusCircle size={18} />
+          Đăng sản phẩm đấu giá
         </Link>
       </div>
 
-      {/* ⭐ BỘ LỌC */}
+      {/* FILTER */}
       <div className="flex gap-3 mb-8">
-        <button
-          onClick={() => setFilter("all")}
-          className={`px-4 py-2 rounded-lg border ${
-            filter === "all"
-              ? "bg-indigo-600 text-white"
-              : "bg-white text-gray-700 hover:bg-gray-50"
-          }`}
-        >
-          Tất cả
-        </button>
-
-        <button
-          onClick={() => setFilter("active")}
-          className={`px-4 py-2 rounded-lg border ${
-            filter === "active"
-              ? "bg-green-600 text-white"
-              : "bg-white text-gray-700 hover:bg-gray-50"
-          }`}
-        >
-          Đang diễn ra
-        </button>
-
-        <button
-          onClick={() => setFilter("ended")}
-          className={`px-4 py-2 rounded-lg border ${
-            filter === "ended" ? "bg-red-600 text-white" : "bg-white text-gray-700 hover:bg-gray-50"
-          }`}
-        >
-          Đã kết thúc
-        </button>
+        {[
+          { key: "all", label: "Tất cả" },
+          { key: "active", label: "Đang diễn ra" },
+          { key: "ended", label: "Đã kết thúc" },
+        ].map(({ key, label }) => (
+          <button
+            key={key}
+            onClick={() => setFilter(key)}
+            className={`
+              px-5 py-2.5 rounded-xl border text-sm font-medium transition flex items-center gap-2
+              ${
+                filter === key
+                  ? key === "active"
+                    ? "bg-green-600 text-white shadow"
+                    : key === "ended"
+                      ? "bg-red-600 text-white shadow"
+                      : "bg-indigo-600 text-white shadow"
+                  : "bg-white text-gray-700 hover:bg-gray-50"
+              }
+            `}
+          >
+            {key === "active" && <Clock size={16} />}
+            {key === "ended" && <CheckCircle size={16} />}
+            {label}
+          </button>
+        ))}
       </div>
 
-      {/* GRID LIST */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {filteredAuctions.map((item) => {
-          const isEnded = new Date(item.endsAt).getTime() <= now;
+      {/* LOADING */}
+      {loading && <p className="text-center text-gray-500 text-sm italic">Đang tải dữ liệu...</p>}
 
-          return (
-            <Link
-              key={item.id}
-              to={`/auction/${item.id}`}
-              className="bg-white rounded-xl shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 relative"
-            >
-              {/* Overlay khi hết hạn */}
-              {isEnded && (
-                <div className="absolute inset-0 bg-black/50 text-white flex items-center justify-center rounded-xl text-sm font-semibold">
-                  Đã kết thúc
+      {/* GRID AUCTION LIST */}
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-7">
+        {!loading &&
+          filteredAuctions.map((item) => {
+            const isEnded = new Date(item.endsAt).getTime() <= now;
+
+            return (
+              <Link
+                key={item.id}
+                to={`/auction/${item.id}`}
+                className="bg-white rounded-2xl shadow-md hover:shadow-xl 
+                transition-all duration-300 hover:-translate-y-1 relative"
+              >
+                {/* Badge trạng thái */}
+                {!isEnded ? (
+                  <div
+                    className="absolute top-3 left-3 bg-green-600 text-white text-xs 
+                  font-semibold px-3 py-1 rounded-full animate-pulse shadow"
+                  >
+                    Đang diễn ra
+                  </div>
+                ) : (
+                  <div
+                    className="absolute inset-0 bg-black/50 text-white flex items-center 
+                  justify-center rounded-2xl font-semibold text-sm backdrop-blur-sm"
+                  >
+                    Đã kết thúc
+                  </div>
+                )}
+
+                {/* IMAGE */}
+                <div className="h-48 w-full overflow-hidden rounded-t-2xl">
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    className={`w-full h-full object-cover transition-transform duration-300 
+                    ${!isEnded ? "hover:scale-110" : "opacity-60"}`}
+                  />
                 </div>
-              )}
 
-              <img
-                src={item.image}
-                alt={item.title}
-                className={`h-36 w-full object-cover rounded-t-xl ${isEnded ? "opacity-60" : ""}`}
-              />
+                {/* CONTENT */}
+                <div className="p-4">
+                  <h3 className="font-semibold text-gray-900 text-sm line-clamp-2">{item.title}</h3>
 
-              <div className="p-4">
-                <h3 className="font-semibold text-gray-800 text-sm line-clamp-2">{item.title}</h3>
-
-                <p className="text-indigo-600 font-bold mt-2 text-base">
-                  ₫{item.price.toLocaleString("vi-VN")}
-                </p>
-              </div>
-            </Link>
-          );
-        })}
+                  <p className="text-indigo-600 font-bold mt-2 text-base">
+                    ₫{item.price.toLocaleString("vi-VN")}
+                  </p>
+                </div>
+              </Link>
+            );
+          })}
       </div>
+
+      {/* EMPTY */}
+      {!loading && filteredAuctions.length === 0 && (
+        <p className="text-center text-gray-500 mt-10 italic">Chưa có dữ liệu đấu giá.</p>
+      )}
     </div>
   );
 };

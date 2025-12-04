@@ -15,7 +15,7 @@ const CheckoutPage = () => {
         <p className="text-gray-600 mt-1">Điền đầy đủ thông tin để hoàn tất đơn hàng của bạn.</p>
       </div>
 
-      {/* LAYOUT 3 CỘT GIỐNG HÌNH */}
+      {/* LAYOUT 3 CỘT */}
       <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* LEFT COLUMN */}
         <div className="space-y-6 lg:col-span-1">
@@ -57,14 +57,13 @@ const CheckoutPage = () => {
           </div>
         </div>
 
-        {/* RIGHT COLUMN — Order Review (chỉ nơi này có nút Pay) */}
+        {/* RIGHT COLUMN – ORDER REVIEW */}
         <div>
           <div className="bg-white p-6 rounded-lg shadow-md border">
             <h2 className="text-lg font-semibold mb-4">6. Tổng kết đơn hàng</h2>
 
+            {/* Tự rỗng vì đã xoá orderItems demo */}
             <OrderReview />
-
-            {/* ❗ KHÔNG THÊM NÚT Ở ĐÂY — NÚT NẰM BÊN TRONG OrderReview  */}
           </div>
         </div>
       </div>

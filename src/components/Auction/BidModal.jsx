@@ -6,7 +6,9 @@ const BidModal = ({ open, onClose, product, onBidSuccess }) => {
   const [amount, setAmount] = useState("");
   const [error, setError] = useState("");
 
-  // Reset input mỗi khi mở modal
+  // ❗ Không có dữ liệu → không render modal
+  if (!product) return null;
+
   useEffect(() => {
     if (open) {
       setAmount("");
@@ -16,61 +18,49 @@ const BidModal = ({ open, onClose, product, onBidSuccess }) => {
 
   const submit = (e) => {
     e.preventDefault();
+
     const value = Number(amount);
 
-    // ❌ Validate
     if (!value) {
       setError("Vui lòng nhập giá hợp lệ.");
       return;
     }
-    if (value <= product.currentBid) {
+    if (value <= (product.currentBid || 0)) {
       setError("Giá thầu phải cao hơn giá hiện tại.");
       return;
     }
 
-    // 🧩 Tạo object cập nhật giá thầu
     const updated = {
       ...product,
       currentBid: value,
       highestBidder: "Bạn",
     };
 
-    // 💾 Lưu vào localStorage (đấu giá user tạo)
-    const auctions = JSON.parse(localStorage.getItem("auctions") || "[]");
-    const idx = auctions.findIndex((a) => a.id === product.id);
-
-    if (idx !== -1) {
-      auctions[idx] = updated;
-      localStorage.setItem("auctions", JSON.stringify(auctions));
-    }
-
-    // Cập nhật UI ngay lập tức
     if (onBidSuccess) onBidSuccess(updated);
 
     alert("🎉 Đặt giá thành công!");
-
     onClose();
   };
 
   return (
-    <Modal open={open} title={`Đặt giá - ${product?.title}`} onClose={onClose}>
+    <Modal open={open} title={`Đặt giá - ${product.title}`} onClose={onClose}>
       <form onSubmit={submit} className="space-y-4">
-        {/* Current price & countdown */}
+        {/* Current price */}
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="block text-sm text-gray-500">Giá hiện tại</label>
             <div className="text-xl font-bold text-indigo-600">
-              ₫{product?.currentBid.toLocaleString("vi-VN")}
+              ₫{(product.currentBid || 0).toLocaleString("vi-VN")}
             </div>
           </div>
 
           <div>
             <label className="block text-sm text-gray-500">Thời gian còn lại</label>
-            <CountdownTimer targetDate={product?.endsAt} />
+            <CountdownTimer targetDate={product.endsAt} />
           </div>
         </div>
 
-        {/* Bid input */}
+        {/* input */}
         <div>
           <label className="block text-sm text-gray-500 mb-1">Nhập giá mới</label>
           <input
@@ -80,10 +70,9 @@ const BidModal = ({ open, onClose, product, onBidSuccess }) => {
               setAmount(e.target.value);
               setError("");
             }}
-            min={product?.currentBid + 1}
+            min={(product.currentBid || 0) + 1}
             className="w-full border border-gray-200 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-200"
           />
-
           {error && <div className="text-sm text-red-500 mt-1">{error}</div>}
         </div>
 

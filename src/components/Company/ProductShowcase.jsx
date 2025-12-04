@@ -2,11 +2,13 @@
 
 import { useState } from "react";
 
-const ProductShowcase = () => {
+const ProductShowcase = ({ images }) => {
   const [currentImage, setCurrentImage] = useState(0);
 
-  // TODO: Sau này thay bằng hình thật từ API
-  const images = ["", "", "", ""];
+  // Nếu không có hình → hiển thị thông báo
+  if (!images?.length) {
+    return <p className="text-gray-500">Chưa có hình ảnh.</p>;
+  }
 
   const nextImage = () => {
     setCurrentImage((prev) => (prev + 1) % images.length);
@@ -21,11 +23,7 @@ const ProductShowcase = () => {
       {/* Hình lớn */}
       <div className="relative bg-gradient-to-br from-pink-200 via-pink-100 to-purple-200 rounded-2xl overflow-hidden mb-6">
         <div className="aspect-square flex items-center justify-center">
-          <img
-            src={images[currentImage] || "/placeholder.svg"}
-            alt="Sản phẩm"
-            className="w-full h-full object-cover"
-          />
+          <img src={images[currentImage]} alt="Sản phẩm" className="w-full h-full object-cover" />
         </div>
 
         {/* Nút điều hướng */}
@@ -63,11 +61,6 @@ const ProductShowcase = () => {
         </button>
       </div>
 
-      {/* Tiêu đề */}
-      <h2 className="text-xl font-semibold text-gray-900 text-left mb-2">Đầm dáng chữ A</h2>
-      <p className="text-sm text-gray-600 mb-4">by Fashion-4</p>
-      <p className="text-2xl font-bold text-red-600 mb-6">400.000 VNĐ</p>
-
       {/* Thumbnail */}
       <div className="flex gap-3">
         {images.map((img, idx) => (
@@ -77,11 +70,7 @@ const ProductShowcase = () => {
             className={`w-20 h-20 rounded-lg overflow-hidden border-2 transition 
               ${idx === currentImage ? "border-blue-600" : "border-gray-200 hover:border-gray-300"}`}
           >
-            <img
-              src={img || "/placeholder.svg"}
-              alt={`Ảnh ${idx + 1}`}
-              className="w-full h-full object-cover"
-            />
+            <img src={img} alt={`Ảnh ${idx + 1}`} className="w-full h-full object-cover" />
           </button>
         ))}
       </div>

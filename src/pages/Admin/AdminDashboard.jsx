@@ -9,21 +9,20 @@ const AdminDashboard = () => {
   const pieChart2Ref = useRef(null);
   const pieChart3Ref = useRef(null);
 
-  // ⭐ THÊM STATE CHO CHECKBOX
   const [showCharts, setShowCharts] = useState(true);
   const [showValues, setShowValues] = useState(true);
 
   useEffect(() => {
-    // Bar Chart
+    // ===== BAR CHART =====
     const barCtx = barChartRef.current.getContext("2d");
     const barChart = new Chart(barCtx, {
       type: "bar",
       data: {
-        labels: ["Quý 1", "Quý 2", "Quý 3", "Quý 4"],
+        labels: [], // ← bỏ label demo
         datasets: [
           {
-            data: [65, 59, 80, 81],
-            backgroundColor: ["#5DADE2", "#EC7C94", "#F7DC6F", "#76D7C4"],
+            data: [], // ← bỏ số liệu demo
+            backgroundColor: [],
             borderRadius: 5,
             barThickness: 60,
           },
@@ -34,28 +33,21 @@ const AdminDashboard = () => {
         maintainAspectRatio: false,
         plugins: { legend: { display: false } },
         scales: {
-          y: {
-            beginAtZero: true,
-            max: 90,
-            ticks: { stepSize: 10 },
-            grid: { color: "#f0f0f0" },
-          },
-          x: {
-            grid: { display: false },
-          },
+          y: { beginAtZero: true, max: 10, ticks: { stepSize: 2 }, grid: { color: "#f0f0f0" } },
+          x: { grid: { display: false } },
         },
       },
     });
 
-    // Pie 1 – Tổng đơn hàng
+    // ===== PIE 1 =====
     const pie1Ctx = pieChart1Ref.current.getContext("2d");
     const pieChart1 = new Chart(pie1Ctx, {
       type: "doughnut",
       data: {
         datasets: [
           {
-            data: [81, 19],
-            backgroundColor: ["#EC7063", "#F5B7B1"],
+            data: [], // ← XÓA DEMO 81 – 19
+            backgroundColor: [],
             borderWidth: 0,
           },
         ],
@@ -68,15 +60,15 @@ const AdminDashboard = () => {
       },
     });
 
-    // Pie 2 – Tăng trưởng khách hàng
+    // ===== PIE 2 =====
     const pie2Ctx = pieChart2Ref.current.getContext("2d");
     const pieChart2 = new Chart(pie2Ctx, {
       type: "doughnut",
       data: {
         datasets: [
           {
-            data: [22, 78],
-            backgroundColor: ["#48C9B0", "#D5F4E6"],
+            data: [], // ← XÓA DEMO 22 – 78
+            backgroundColor: [],
             borderWidth: 0,
           },
         ],
@@ -89,15 +81,15 @@ const AdminDashboard = () => {
       },
     });
 
-    // Pie 3 – Tổng doanh thu
+    // ===== PIE 3 =====
     const pie3Ctx = pieChart3Ref.current.getContext("2d");
     const pieChart3 = new Chart(pie3Ctx, {
       type: "doughnut",
       data: {
         datasets: [
           {
-            data: [62, 38],
-            backgroundColor: ["#3498DB", "#AED6F1"],
+            data: [], // ← XÓA DEMO 62 – 38
+            backgroundColor: [],
             borderWidth: 0,
           },
         ],
@@ -122,60 +114,56 @@ const AdminDashboard = () => {
     <>
       <AdminHeader
         title="Bảng điều khiển"
-        subtitle="Chào mừng bạn quay trở lại! Đây là tổng quan hôm nay."
+        subtitle="Dữ liệu thống kê sẽ hiển thị khi kết nối API."
       />
 
       {/* ==== THỐNG KÊ NHANH ==== */}
       <div className="stats-grid">
+        {/* Tổng đơn hàng */}
         <div className="stat-card">
           <div className="stat-icon bg-green">
             <i className="bi bi-clipboard-check"></i>
           </div>
           <div className="stat-info">
-            <div className="stat-number">75</div>
+            <div className="stat-number">0</div> {/* ← demo removed */}
             <div className="stat-label">Tổng đơn hàng</div>
-            <div className="stat-change positive">
-              <i className="bi bi-arrow-up"></i> 4% (30 ngày)
-            </div>
+            <div className="stat-change positive">— {/* không có % demo */}</div>
           </div>
         </div>
 
+        {/* Đơn bị hủy */}
         <div className="stat-card">
           <div className="stat-icon bg-red">
             <i className="bi bi-x-circle"></i>
           </div>
           <div className="stat-info">
-            <div className="stat-number">65</div>
+            <div className="stat-number">0</div>
             <div className="stat-label">Đơn bị hủy</div>
-            <div className="stat-change negative">
-              <i className="bi bi-arrow-up"></i> 25% (30 ngày)
-            </div>
+            <div className="stat-change negative">—</div>
           </div>
         </div>
 
+        {/* Tổng doanh thu */}
         <div className="stat-card">
           <div className="stat-icon bg-yellow">
             <i className="bi bi-currency-dollar"></i>
           </div>
           <div className="stat-info">
-            <div className="stat-number">$128</div>
+            <div className="stat-number">₫0</div>
             <div className="stat-label">Tổng doanh thu</div>
-            <div className="stat-change negative">
-              <i className="bi bi-arrow-down"></i> 12% (30 ngày)
-            </div>
+            <div className="stat-change negative">—</div>
           </div>
         </div>
 
+        {/* Đã giao thành công */}
         <div className="stat-card">
           <div className="stat-icon bg-blue">
             <i className="bi bi-box-seam"></i>
           </div>
           <div className="stat-info">
-            <div className="stat-number">357</div>
+            <div className="stat-number">0</div>
             <div className="stat-label">Đã giao thành công</div>
-            <div className="stat-change positive">
-              <i className="bi bi-arrow-up"></i> 4% (30 ngày)
-            </div>
+            <div className="stat-change positive">—</div>
           </div>
         </div>
       </div>
@@ -195,7 +183,6 @@ const AdminDashboard = () => {
           <div className="chart-header">
             <h3 className="chart-title">Biểu đồ tròn</h3>
 
-            {/* ⭐ CHECKBOX LOGIC */}
             <div className="chart-controls">
               <label className="control-checkbox">
                 <input
@@ -221,7 +208,7 @@ const AdminDashboard = () => {
             </div>
           </div>
 
-          {/* PIE CHART BLOCK */}
+          {/* Pie chart block */}
           <div
             className="pie-charts-container"
             style={{
@@ -235,9 +222,8 @@ const AdminDashboard = () => {
               <div className="pie-chart-wrapper">
                 <canvas ref={pieChart1Ref}></canvas>
 
-                {/* ⭐ HIỂN THỊ GIÁ TRỊ */}
                 <div className="pie-chart-label" style={{ display: showValues ? "flex" : "none" }}>
-                  81<span className="pie-percent">%</span>
+                  —<span className="pie-percent">%</span>
                 </div>
               </div>
               <div className="pie-chart-title">
@@ -253,7 +239,7 @@ const AdminDashboard = () => {
                 <canvas ref={pieChart2Ref}></canvas>
 
                 <div className="pie-chart-label" style={{ display: showValues ? "flex" : "none" }}>
-                  22<span className="pie-percent">%</span>
+                  —<span className="pie-percent">%</span>
                 </div>
               </div>
               <div className="pie-chart-title">
@@ -269,7 +255,7 @@ const AdminDashboard = () => {
                 <canvas ref={pieChart3Ref}></canvas>
 
                 <div className="pie-chart-label" style={{ display: showValues ? "flex" : "none" }}>
-                  62<span className="pie-percent">%</span>
+                  —<span className="pie-percent">%</span>
                 </div>
               </div>
               <div className="pie-chart-title">

@@ -9,39 +9,16 @@ const ProductDetailPage = () => {
   const { slug, id } = useParams();
   const navigate = useNavigate();
 
-  // Giả lập product để thêm giỏ hàng
-  // (sau này bạn thay bằng API hoặc truyền props từ ProductDetails)
-  const productMock = {
-    id: id,
-    name: `Sản phẩm #${id}`,
-    price: 300000,
-    qty: 1,
-    slug: slug,
-    image: "https://images.unsplash.com/photo-1520975928319-24f0d71e1e45?q=80&w=800",
-  };
+  // Không còn productMock
+  const product = null;
 
-  // ⭐ Thêm vào giỏ hàng
+  // Tạm thời chưa có API
   const addToCart = () => {
-    const cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-    // Kiểm tra đã tồn tại trong giỏ chưa
-    const existing = cart.find((item) => item.id === productMock.id);
-
-    if (existing) {
-      existing.qty += 1;
-    } else {
-      cart.push(productMock);
-    }
-
-    localStorage.setItem("cart", JSON.stringify(cart));
-
-    alert("Đã thêm sản phẩm vào giỏ hàng!");
+    alert("Tính năng giỏ hàng sẽ hoạt động sau khi kết nối API");
   };
 
-  // ⭐ Mua ngay → chuyển sang CHECKOUT
   const buyNow = () => {
-    localStorage.setItem("checkout_item", JSON.stringify(productMock));
-    navigate("/checkout"); // 🔥 chuyển đến trang thanh toán
+    alert("Tính năng mua ngay sẽ hoạt động sau khi kết nối API");
   };
 
   return (
@@ -61,17 +38,16 @@ const ProductDetailPage = () => {
       {/* MAIN CONTENT */}
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16 mt-6">
-          {/* --- Cột trái – Ảnh sản phẩm --- */}
+          {/* Ảnh */}
           <div className="lg:col-span-1">
             <ProductShowcase productId={id} />
           </div>
 
-          {/* --- Cột phải – Chi tiết + nút mua hàng --- */}
+          {/* Chi tiết */}
           <div className="lg:col-span-2 space-y-8">
-            {/* Chi tiết */}
             <ProductDetails productId={id} slug={slug} />
 
-            {/* --- Nút hành động --- */}
+            {/* Nút */}
             <div className="flex flex-wrap gap-4 mt-4">
               <button
                 onClick={addToCart}

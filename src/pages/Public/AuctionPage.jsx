@@ -5,87 +5,25 @@ import CountdownTimer from "../../components/Auction/CountdownTimer";
 import BidModal from "../../components/Auction/BidModal";
 import ReviewForm from "../../components/Auction/ReviewForm";
 
-// =============================
-//   SAMPLE DATA (fallback)
-// =============================
-const sampleProducts = [
-  {
-    id: 1,
-    title: "Đồng hồ cổ điển",
-    description:
-      "Đồng hồ chất lượng, đấu giá mở hôm nay. Mặt số bằng pha lê, dây da cổ điển, bảo hành 6 tháng.",
-    image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30",
-    currentBid: 500000,
-    highestBidder: null,
-    endsAt: new Date(Date.now() + 1000 * 60 * 60 * 24).toISOString(),
-    seller: "Người bán ABC",
-    condition: "Like new",
-  },
-  {
-    id: 2,
-    title: "Giày thể thao Limited Edition",
-    description: "Phiên bản giới hạn, còn rất mới. Được săn đón bởi sneakerhead.",
-    image:
-      "https://images.unsplash.com/photo-1539185441755-769473a23570?auto=format&fit=crop&w=800&q=80",
-    currentBid: 1200000,
-    highestBidder: null,
-    endsAt: new Date(Date.now() + 1000 * 60 * 60 * 12).toISOString(),
-    seller: "Shop XYZ",
-    condition: "99%",
-  },
-];
-
 const AuctionPage = () => {
   const { id } = useParams();
 
-  // =============================
-  //   Lấy danh sách từ localStorage
-  //   (nếu không có thì lấy sample)
-  // =============================
-  const storedAuctions = JSON.parse(localStorage.getItem("auctions") || "[]");
-  const allProducts = storedAuctions.length > 0 ? storedAuctions : sampleProducts;
+  // ❗ Chưa fetch API → để trống
+  const product = null;
 
-  const [product, setProduct] = useState(allProducts.find((item) => item.id === Number(id)));
-
+  // Modal đặt giá
   const [isBidOpen, setIsBidOpen] = useState(false);
 
-  // Save updated auction list to localStorage
-  const updateLocalStorage = (updatedProduct) => {
-    let list = [...allProducts];
-    const idx = list.findIndex((i) => i.id === updatedProduct.id);
-    if (idx !== -1) {
-      list[idx] = updatedProduct;
-      localStorage.setItem("auctions", JSON.stringify(list));
-    }
-  };
-
-  // =============================
-  //   callback khi đặt giá thành công
-  // =============================
-  const handleBidSuccess = (updated) => {
-    setProduct(updated); // cập nhật UI
-    updateLocalStorage(updated);
-  };
-
-  const handleReview = (payload) => {
-    console.log("Review submitted:", payload);
-  };
-
-  // =============================
-  //   Nếu không tìm thấy ID
-  // =============================
+  // Khi chưa có API → show placeholder
   if (!product) {
     return (
-      <div className="max-w-7xl mx-auto px-4 py-20 text-center text-gray-600">
-        <h2 className="text-3xl font-bold">Không tìm thấy sản phẩm đấu giá</h2>
-        <p className="mt-3">ID: {id}</p>
+      <div className="max-w-7xl mx-auto px-4 py-20 text-center text-gray-500">
+        <p className="text-lg">Chưa có dữ liệu đấu giá.</p>
       </div>
     );
   }
 
-  // =============================
-  //        UI HIỂN THỊ
-  // =============================
+  // Khi đã có API → hiển thị như cũ
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="mb-6">
@@ -151,17 +89,17 @@ const AuctionPage = () => {
 
           <div className="bg-white rounded-lg p-6 shadow-sm">
             <h4 className="text-lg font-semibold mb-4">Đánh giá người dùng</h4>
-            <ReviewForm onSubmit={handleReview} />
+            <ReviewForm onSubmit={(p) => console.log("Review:", p)} />
           </div>
         </div>
       </div>
 
-      {/* MODAL ĐẶT GIÁ */}
+      {/* MODAL BIDDING */}
       <BidModal
         open={isBidOpen}
         onClose={() => setIsBidOpen(false)}
         product={product}
-        onBidSuccess={handleBidSuccess}
+        onBidSuccess={() => {}}
       />
     </div>
   );

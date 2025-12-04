@@ -1,14 +1,18 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline"; // ✅ Heroicons v2
+import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 
 const RegisterPage = () => {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
+    full_name: "",
     email: "",
+    phone: "",
+    role: "buyer",
     password: "",
     confirmPassword: "",
-    role: "doanhnghiep",
   });
 
   const [showPassword, setShowPassword] = useState(false);
@@ -16,31 +20,36 @@ const RegisterPage = () => {
   const [errorMsg, setErrorMsg] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // 🧩 Xử lý thay đổi input
+  // CHANGE INPUT
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  // 🧩 Xử lý submit form
-  const handleSubmit = async (e) => {
+  // SUBMIT REGISTER — DEMO MODE
+  const handleSubmit = (e) => {
     e.preventDefault();
     setErrorMsg("");
 
-    // Validate
-    if (!formData.email || !formData.password || !formData.confirmPassword) {
+    if (!formData.full_name || !formData.email || !formData.phone || !formData.password) {
       setErrorMsg("Vui lòng nhập đầy đủ thông tin.");
       return;
     }
+
     if (formData.password !== formData.confirmPassword) {
       setErrorMsg("Mật khẩu xác nhận không khớp.");
       return;
     }
 
     setLoading(true);
-    await new Promise((resolve) => setTimeout(resolve, 1000)); // mô phỏng API
-    setLoading(false);
-    alert("Đăng ký thành công (demo)");
+
+    console.log("DEMO REGISTER:", formData);
+
+    setTimeout(() => {
+      alert("Đăng ký thành công (DEMO)");
+      setLoading(false);
+      navigate("/login");
+    }, 800);
   };
 
   return (
@@ -59,9 +68,8 @@ const RegisterPage = () => {
         />
         <div className="absolute inset-0 bg-gradient-to-br from-blue-900/80 via-blue-800/70 to-blue-700/60"></div>
 
-        {/* Overlay text */}
         <div className="relative text-center text-white px-8">
-          <h2 className="text-4xl font-bold mb-4 leading-tight drop-shadow-lg">
+          <h2 className="text-4xl font-bold mb-4">
             Cùng nhau phát triển <br />
             <span className="text-blue-200">Kết Nối Giao Thương</span>
           </h2>
@@ -77,28 +85,51 @@ const RegisterPage = () => {
         initial={{ opacity: 0, x: -50 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.6 }}
-        className="w-full md:w-1/2 flex flex-col justify-center items-center px-6 md:px-16 lg:px-24 py-12 bg-white shadow-lg md:shadow-none"
+        className="w-full md:w-1/2 flex flex-col justify-center items-center px-6 md:px-16 lg:px-24 py-12 bg-white"
       >
         <div className="w-full max-w-md">
-          {/* Title */}
           <h1 className="text-4xl font-extrabold text-blue-800 mb-3">Tạo tài khoản</h1>
           <p className="text-gray-500 mb-8">
-            Tham gia cùng hàng nghìn doanh nghiệp uy tín trên nền tảng giao thương hàng đầu Việt
-            Nam.
+            Tham gia cùng hàng nghìn doanh nghiệp trên nền tảng giao thương uy tín.
           </p>
 
-          {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Full Name */}
+            <div>
+              <label className="block text-gray-800 font-medium mb-1">Họ và tên</label>
+              <input
+                type="text"
+                name="full_name"
+                value={formData.full_name}
+                onChange={handleChange}
+                placeholder="Nhập họ và tên"
+                className="w-full px-4 py-3 rounded-xl bg-gray-100 focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+
+            {/* Phone */}
+            <div>
+              <label className="block text-gray-800 font-medium mb-1">Số điện thoại</label>
+              <input
+                type="text"
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
+                placeholder="Nhập số điện thoại"
+                className="w-full px-4 py-3 rounded-xl bg-gray-100 focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+
             {/* Email */}
             <div>
               <label className="block text-gray-800 font-medium mb-1">Email</label>
               <input
                 type="email"
                 name="email"
-                placeholder="Nhập email của bạn"
                 value={formData.email}
                 onChange={handleChange}
-                className="w-full px-4 py-3 rounded-xl bg-gray-100 text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Nhập email"
+                className="w-full px-4 py-3 rounded-xl bg-gray-100 focus:ring-2 focus:ring-blue-500"
               />
             </div>
 
@@ -110,23 +141,22 @@ const RegisterPage = () => {
                   <input
                     type="radio"
                     name="role"
-                    value="doanhnghiep"
-                    checked={formData.role === "doanhnghiep"}
+                    value="buyer"
+                    checked={formData.role === "buyer"}
                     onChange={handleChange}
-                    className="text-blue-600 focus:ring-blue-500"
                   />
-                  Doanh nghiệp
+                  Cá nhân (buyer)
                 </label>
+
                 <label className="flex items-center gap-2 cursor-pointer">
                   <input
                     type="radio"
                     name="role"
-                    value="canhan"
-                    checked={formData.role === "canhan"}
+                    value="seller"
+                    checked={formData.role === "seller"}
                     onChange={handleChange}
-                    className="text-blue-600 focus:ring-blue-500"
                   />
-                  Cá nhân
+                  Doanh nghiệp (seller)
                 </label>
               </div>
             </div>
@@ -137,21 +167,17 @@ const RegisterPage = () => {
               <input
                 type={showPassword ? "text" : "password"}
                 name="password"
-                placeholder="Nhập mật khẩu"
                 value={formData.password}
                 onChange={handleChange}
-                className="w-full px-4 py-3 rounded-xl bg-gray-100 text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Nhập mật khẩu"
+                className="w-full px-4 py-3 rounded-xl bg-gray-100 focus:ring-2 focus:ring-blue-500"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-9 text-gray-500 hover:text-gray-700"
+                className="absolute right-3 top-9 text-gray-500"
               >
-                {showPassword ? (
-                  <EyeSlashIcon className="w-5 h-5" />
-                ) : (
-                  <EyeIcon className="w-5 h-5" />
-                )}
+                {showPassword ? <EyeIcon className="w-5" /> : <EyeSlashIcon className="w-5" />}
               </button>
             </div>
 
@@ -161,34 +187,30 @@ const RegisterPage = () => {
               <input
                 type={showConfirm ? "text" : "password"}
                 name="confirmPassword"
-                placeholder="Nhập lại mật khẩu"
                 value={formData.confirmPassword}
                 onChange={handleChange}
-                className="w-full px-4 py-3 rounded-xl bg-gray-100 text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Nhập lại mật khẩu"
+                className="w-full px-4 py-3 rounded-xl bg-gray-100 focus:ring-2 focus:ring-blue-500"
               />
               <button
                 type="button"
                 onClick={() => setShowConfirm(!showConfirm)}
-                className="absolute right-3 top-9 text-gray-500 hover:text-gray-700"
+                className="absolute right-3 top-9 text-gray-500"
               >
-                {showConfirm ? (
-                  <EyeSlashIcon className="w-5 h-5" />
-                ) : (
-                  <EyeIcon className="w-5 h-5" />
-                )}
+                {showConfirm ? <EyeIcon className="w-5" /> : <EyeSlashIcon className="w-5" />}
               </button>
             </div>
 
-            {/* Error message */}
+            {/* Error */}
             {errorMsg && <p className="text-red-600 text-sm font-medium">{errorMsg}</p>}
 
-            {/* Submit button */}
+            {/* Submit */}
             <button
               type="submit"
               disabled={loading}
               className={`w-full ${
                 loading ? "bg-gray-400" : "bg-blue-700 hover:bg-blue-800"
-              } text-white font-semibold text-lg py-3 rounded-full transition-all shadow-md hover:shadow-lg`}
+              } text-white font-semibold text-lg py-3 rounded-full shadow-md`}
             >
               {loading ? "Đang xử lý..." : "Đăng ký ngay"}
             </button>
@@ -201,17 +223,11 @@ const RegisterPage = () => {
             <hr className="flex-grow border-gray-300" />
           </div>
 
-          {/* Google Sign up */}
-          <button className="w-full border border-gray-300 rounded-xl py-3 flex items-center justify-center gap-3 hover:bg-gray-50 transition-all shadow-sm">
-            <img
-              src="https://www.svgrepo.com/show/475656/google-color.svg"
-              alt="Google"
-              className="w-5 h-5"
-            />
+          <button className="w-full border border-gray-300 rounded-xl py-3 flex items-center justify-center gap-3 hover:bg-gray-50">
+            <img src="https://www.svgrepo.com/show/475656/google-color.svg" className="w-5 h-5" />
             <span className="text-gray-700 font-medium">Đăng ký bằng Google</span>
           </button>
 
-          {/* Link to login */}
           <p className="text-center text-sm text-gray-600 mt-8">
             Đã có tài khoản?{" "}
             <Link to="/login" className="text-blue-700 hover:underline font-semibold">

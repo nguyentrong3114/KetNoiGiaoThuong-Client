@@ -11,9 +11,14 @@ const AdminSidebar = () => {
     const confirmLogout = window.confirm("Bạn có chắc chắn muốn đăng xuất không?");
     if (!confirmLogout) return;
 
-    localStorage.removeItem("token");
-    localStorage.removeItem("role");
+    // Xóa token + user + refresh token
+    localStorage.clear();
+
+    // Chuyển về trang Login
     navigate("/login");
+
+    // Force reload để Navbar trở lại chế độ chưa login
+    window.location.reload();
   };
 
   return (

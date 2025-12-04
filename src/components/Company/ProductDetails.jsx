@@ -5,26 +5,18 @@ import { useNavigate } from "react-router-dom";
 const ProductDetails = ({ productId, slug }) => {
   const navigate = useNavigate();
 
-  // DEMO sản phẩm — sau này lấy API thay thế
-  const product = {
-    id: productId,
-    name: "Đầm dáng chữ A",
-    priceLabel: "₫300.000",
-    priceValue: 300000,
-    size: "Free size",
-    material: "Vải cao cấp",
-    style: "Vintage",
-    pattern: "In hoạ tiết",
-    fit: "TBU",
-    closure: "Co giãn tự nhiên",
-    dimensions: "1917/1987",
-  };
+  // ❗ Sau này sẽ fetch API để lấy chi tiết sản phẩm
+  const product = null;
+
+  // Nếu chưa có dữ liệu → hiển thị placeholder
+  if (!product) {
+    return <div className="text-gray-500">Chưa có dữ liệu.</div>;
+  }
 
   // ⭐ Thêm vào giỏ hàng
   const handleAddToCart = () => {
     let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-    // Thêm item
     cart.push({
       ...product,
       quantity: 1,
@@ -32,8 +24,7 @@ const ProductDetails = ({ productId, slug }) => {
     });
 
     localStorage.setItem("cart", JSON.stringify(cart));
-
-    navigate("/cart"); // → chuyển trang giỏ hàng
+    navigate("/cart");
   };
 
   // ⭐ Thanh toán ngay
@@ -47,7 +38,7 @@ const ProductDetails = ({ productId, slug }) => {
       })
     );
 
-    navigate("/checkout"); // → chuyển trang thanh toán
+    navigate("/checkout");
   };
 
   return (
@@ -96,7 +87,7 @@ const ProductDetails = ({ productId, slug }) => {
         Sản phẩm được thiết kế theo phong cách hiện đại, chất liệu bền đẹp và thoải mái.
       </p>
 
-      {/* ⭐ BUTTON ACTIONS TRONG COMPONENET */}
+      {/* ⭐ BUTTON ACTIONS */}
       <div className="flex gap-4 mt-8">
         <button
           onClick={handleAddToCart}

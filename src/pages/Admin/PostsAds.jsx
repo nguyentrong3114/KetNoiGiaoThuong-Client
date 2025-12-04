@@ -9,34 +9,25 @@ const PostsAds = () => {
 
   const [filter, setFilter] = useState("month");
 
-  // Fake dữ liệu theo từng bộ lọc
-  const dataByFilter = {
-    today: [120, 200, 150, 220, 260, 180, 300],
-    week: [700, 850, 900, 880, 920, 780, 650],
-    month: Array.from({ length: 30 }, () => Math.floor(Math.random() * 1500 + 1500)),
-    year: Array.from({ length: 12 }, () => Math.floor(Math.random() * 15000 + 10000)),
-  };
+  // ❗ Không còn dữ liệu demo
+  const labels = [];
+  const values = [];
 
-  const labelsByFilter = {
-    today: ["8h", "9h", "10h", "11h", "12h", "13h", "14h"],
-    week: ["T2", "T3", "T4", "T5", "T6", "T7", "CN"],
-    month: Array.from({ length: 30 }, (_, i) => `Ngày ${i + 1}`),
-    year: ["T1", "T2", "T3", "T4", "T5", "T6", "T7", "T8", "T9", "T10", "T11", "T12"],
-  };
-
-  // Render chart
+  // Vẽ chart nếu có data
   const renderChart = () => {
+    if (!labels.length || !values.length) return; // ❗ Không có data → không vẽ chart
+
     if (chartInstance.current) chartInstance.current.destroy();
 
     const ctx = chartRef.current.getContext("2d");
     chartInstance.current = new Chart(ctx, {
       type: "bar",
       data: {
-        labels: labelsByFilter[filter],
+        labels,
         datasets: [
           {
             label: "Lượt truy cập mới",
-            data: dataByFilter[filter],
+            data: values,
             backgroundColor: "#00D9C0",
             borderRadius: 6,
             barThickness: "flex",
@@ -47,31 +38,10 @@ const PostsAds = () => {
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            labels: { color: "#fff" },
-          },
-          tooltip: {
-            backgroundColor: "#000",
-            titleColor: "#fff",
-            bodyColor: "#fff",
-          },
-        },
-        scales: {
-          x: {
-            ticks: { color: "#ddd" },
-            grid: { display: false },
-          },
-          y: {
-            ticks: { color: "#ddd" },
-            grid: { color: "rgba(255,255,255,0.1)" },
-          },
-        },
       },
     });
   };
 
-  // Rerender chart khi đổi filter
   useEffect(() => {
     renderChart();
   }, [filter]);
@@ -84,7 +54,7 @@ const PostsAds = () => {
       <div className="overview-box">
         <div>
           <h2 className="overview-label">Tổng quan hiệu suất quảng cáo</h2>
-          <div className="overview-value">$45,000</div>
+          <div className="overview-value">-</div>
         </div>
 
         <div className="filter-row">
@@ -112,7 +82,11 @@ const PostsAds = () => {
       {/* Chart */}
       <div className="chart-wrapper">
         <div className="chart-container dark-chart-bg">
-          <canvas ref={chartRef}></canvas>
+          {!labels.length ? (
+            <p className="text-center text-gray-400 py-10">Chưa có dữ liệu thống kê.</p>
+          ) : (
+            <canvas ref={chartRef}></canvas>
+          )}
         </div>
       </div>
     </>
