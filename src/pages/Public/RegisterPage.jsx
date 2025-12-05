@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
+import { authApi } from "../../services/apiClient";
 
 const RegisterPage = () => {
   const navigate = useNavigate();
@@ -26,11 +27,12 @@ const RegisterPage = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  // SUBMIT REGISTER — DEMO MODE
-  const handleSubmit = (e) => {
+  // SUBMIT REGISTER
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMsg("");
 
+    // Validate
     if (!formData.full_name || !formData.email || !formData.phone || !formData.password) {
       setErrorMsg("Vui lòng nhập đầy đủ thông tin.");
       return;
@@ -43,13 +45,24 @@ const RegisterPage = () => {
 
     setLoading(true);
 
-    console.log("DEMO REGISTER:", formData);
+    try {
+      const payload = {
+        full_name: formData.full_name,
+        email: formData.email,
+        phone: formData.phone,
+        role: formData.role,
+        password: formData.password,
+      };
 
-    setTimeout(() => {
-      alert("Đăng ký thành công (DEMO)");
+      await authApi.register(payload);
+
       setLoading(false);
+      alert("Đăng ký thành công! Vui lòng đăng nhập.");
       navigate("/login");
-    }, 800);
+    } catch (err) {
+      setLoading(false);
+      setErrorMsg(err.message || "Lỗi đăng ký. Vui lòng thử lại.");
+    }
   };
 
   return (

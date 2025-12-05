@@ -20,6 +20,15 @@ const Navbar = () => {
       setUser(null);
     }
   }, []);
+  useEffect(() => {
+    const syncUser = () => {
+      const saved = localStorage.getItem("user");
+      setUser(saved ? JSON.parse(saved) : null);
+    };
+
+    window.addEventListener("storage", syncUser);
+    return () => window.removeEventListener("storage", syncUser);
+  }, []);
 
   // Đóng menu khi click ra ngoài
   useEffect(() => {
@@ -56,9 +65,7 @@ const Navbar = () => {
           <NavLink
             to="/"
             className={({ isActive }) =>
-              `hover:text-blue-600 ${
-                isActive ? "text-blue-600 border-b-2 border-blue-600 pb-1" : ""
-              }`
+              `hover:text-blue-600 ${isActive ? "text-blue-600 border-b-2 border-blue-600 pb-1" : ""}`
             }
           >
             Trang chủ
@@ -67,9 +74,7 @@ const Navbar = () => {
           <NavLink
             to="/about"
             className={({ isActive }) =>
-              `hover:text-blue-600 ${
-                isActive ? "text-blue-600 border-b-2 border-blue-600 pb-1" : ""
-              }`
+              `hover:text-blue-600 ${isActive ? "text-blue-600 border-b-2 border-blue-600 pb-1" : ""}`
             }
           >
             Giới thiệu
@@ -78,9 +83,7 @@ const Navbar = () => {
           <NavLink
             to="/products"
             className={({ isActive }) =>
-              `hover:text-blue-600 ${
-                isActive ? "text-blue-600 border-b-2 border-blue-600 pb-1" : ""
-              }`
+              `hover:text-blue-600 ${isActive ? "text-blue-600 border-b-2 border-blue-600 pb-1" : ""}`
             }
           >
             Sản phẩm
@@ -89,9 +92,7 @@ const Navbar = () => {
           <NavLink
             to="/auctions"
             className={({ isActive }) =>
-              `hover:text-blue-600 ${
-                isActive ? "text-blue-600 border-b-2 border-blue-600 pb-1" : ""
-              }`
+              `hover:text-blue-600 ${isActive ? "text-blue-600 border-b-2 border-blue-600 pb-1" : ""}`
             }
           >
             Đấu giá
@@ -100,9 +101,7 @@ const Navbar = () => {
           <NavLink
             to="/contact"
             className={({ isActive }) =>
-              `hover:text-blue-600 ${
-                isActive ? "text-blue-600 border-b-2 border-blue-600 pb-1" : ""
-              }`
+              `hover:text-blue-600 ${isActive ? "text-blue-600 border-b-2 border-blue-600 pb-1" : ""}`
             }
           >
             Liên hệ
@@ -140,7 +139,18 @@ const Navbar = () => {
 
           {/* ĐÃ ĐĂNG NHẬP */}
           {user && (
-            <div className="relative" ref={menuRef}>
+            <div className="relative flex items-center gap-3" ref={menuRef}>
+              {/* ⭐ ADMIN PANEL BUTTON (KHÔNG ĐỤNG UI) ⭐ */}
+              {user.role === "admin" && (
+                <button
+                  onClick={() => navigate("/admin/dashboard")}
+                  className="px-4 py-2 text-sm font-semibold bg-red-600 text-white rounded-lg hover:bg-red-700 transition hidden md:block"
+                >
+                  Admin Panel
+                </button>
+              )}
+
+              {/* AVATAR */}
               <img
                 src={user.avatar || "/default-avatar.png"}
                 alt="avatar"
@@ -149,7 +159,7 @@ const Navbar = () => {
               />
 
               {openMenu && (
-                <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg p-2 animate-fadeIn">
+                <div className="absolute right-0 top-12 w-48 bg-white shadow-lg rounded-lg p-2 animate-fadeIn">
                   <button
                     onClick={() => navigate("/profile")}
                     className="w-full text-left px-3 py-2 hover:bg-gray-100 rounded"

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
+import { authApi } from "../../services/apiClient";
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -16,20 +17,72 @@ const LoginPage = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  /* ============================================================
-      📌 SUBMIT LOGIN — DEMO MODE (NO API)
-  ============================================================= */
+  // Submit login
+  // Submit login
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMsg("");
 
-    setLoading(true);
-    console.log("DEMO LOGIN:", formData);
+    if (!formData.email || !formData.password) {
+      setErrorMsg("Vui lòng nhập email và mật khẩu.");
+      return;
+    }
 
-    setTimeout(() => {
+    setLoading(true);
+
+    try {
+      const res = await authApi.login({
+        email: formData.email,
+        password: formData.password,
+      });
+
+      // Token BE trả về
+      const accessToken = res.data?.access_token;
+      const refreshToken = res.data?.refresh_token;
+
+      if (!accessToken) {
+        throw new Error("Không nhận được access token từ máy chủ.");
+      }
+
+      // ========= 🔥 DECODE JWT ĐỂ LẤY ROLE 🔥 =========
+      const decodeJWT = (token) => {
+        try {
+          const base64 = token.split(".")[1];
+          return JSON.parse(atob(base64));
+        } catch {
+          return null;
+        }
+      };
+
+      const payload = decodeJWT(accessToken);
+      const role = payload?.role || "buyer"; // fallback nếu token không có role
+
+      // ========= 🔥 LƯU TOKEN + ROLE + USER ĐỂ NAVBAR ĐỌC 🔥 =========
+      localStorage.setItem("access_token", accessToken);
+      localStorage.setItem("refresh_token", refreshToken || "");
+      localStorage.setItem("user_role", role);
+
+      const userData = {
+        role,
+        email: formData.email,
+        avatar: "/default-avatar.png",
+      };
+
+      localStorage.setItem("user", JSON.stringify(userData));
+      window.dispatchEvent(new Event("storage")); // ⬅ Thông báo Navbar cập nhật ngay
+
+      // ========= 🔥 REDIRECT THEO ROLE 🔥 =========
       setLoading(false);
-      navigate("/");
-    }, 800);
+
+      if (role === "admin") {
+        navigate("/admin/dashboard");
+      } else {
+        navigate("/");
+      }
+    } catch (err) {
+      setLoading(false);
+      setErrorMsg(err.message || "Sai email hoặc mật khẩu.");
+    }
   };
 
   return (
@@ -103,7 +156,7 @@ const LoginPage = () => {
             <hr className="flex-grow border-gray-300" />
           </div>
 
-          {/* Google Login (DEMO only) */}
+          {/* Google Login */}
           <button className="w-full border border-gray-300 rounded-xl py-3 flex items-center justify-center gap-3 hover:bg-gray-50 transition-all shadow-sm">
             <img src="https://www.svgrepo.com/show/475656/google-color.svg" className="w-5 h-5" />
             <span className="text-gray-700 font-medium">Đăng nhập bằng Google</span>
