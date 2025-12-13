@@ -2,20 +2,27 @@
 
 import { useState } from "react";
 
-const ProductShowcase = ({ images }) => {
+const ProductShowcase = ({ product, images }) => {
   const [currentImage, setCurrentImage] = useState(0);
 
-  // Nếu không có hình → hiển thị thông báo
-  if (!images?.length) {
-    return <p className="text-gray-500">Chưa có hình ảnh.</p>;
+  // Lấy images từ product hoặc prop
+  const productImages = images || product?.images || [];
+
+  // Nếu không có hình → hiển thị placeholder
+  if (!productImages.length) {
+    return (
+      <div className="bg-gray-200 rounded-2xl aspect-square flex items-center justify-center">
+        <p className="text-gray-500">Chưa có hình ảnh</p>
+      </div>
+    );
   }
 
   const nextImage = () => {
-    setCurrentImage((prev) => (prev + 1) % images.length);
+    setCurrentImage((prev) => (prev + 1) % productImages.length);
   };
 
   const prevImage = () => {
-    setCurrentImage((prev) => (prev - 1 + images.length) % images.length);
+    setCurrentImage((prev) => (prev - 1 + productImages.length) % productImages.length);
   };
 
   return (
@@ -23,7 +30,7 @@ const ProductShowcase = ({ images }) => {
       {/* Hình lớn */}
       <div className="relative bg-gradient-to-br from-pink-200 via-pink-100 to-purple-200 rounded-2xl overflow-hidden mb-6">
         <div className="aspect-square flex items-center justify-center">
-          <img src={images[currentImage]} alt="Sản phẩm" className="w-full h-full object-cover" />
+          <img src={productImages[currentImage]} alt="Sản phẩm" className="w-full h-full object-cover" />
         </div>
 
         {/* Nút điều hướng */}
@@ -62,8 +69,8 @@ const ProductShowcase = ({ images }) => {
       </div>
 
       {/* Thumbnail */}
-      <div className="flex gap-3">
-        {images.map((img, idx) => (
+      <div className="flex gap-3 overflow-x-auto">
+        {productImages.map((img, idx) => (
           <button
             key={idx}
             onClick={() => setCurrentImage(idx)}

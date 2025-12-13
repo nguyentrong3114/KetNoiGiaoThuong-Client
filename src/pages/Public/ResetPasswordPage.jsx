@@ -1,8 +1,10 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Lock, ShieldCheck } from "lucide-react";
+import { authApi } from "../../services/apiClient";
 
 const ResetPasswordPage = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     currentPassword: "",
     newPassword: "",
@@ -10,6 +12,9 @@ const ResetPasswordPage = () => {
   });
 
   const [strength, setStrength] = useState({ color: "bg-red-500", label: "Weak" });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -26,9 +31,42 @@ const ResetPasswordPage = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Reset password:", formData);
+    setError("");
+
+    // Validation
+    if (formData.newPassword !== formData.confirmPassword) {
+      setError("Mật khẩu xác nhận không khớp.");
+      return;
+    }
+
+    if (formData.newPassword.length < 6) {
+      setError("Mật khẩu mới phải có ít nhất 6 ký tự.");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const response = await authApi.changePassword({
+        current_password: formData.currentPassword,
+        password: formData.newPassword,
+        password_confirmation: formData.confirmPassword,
+      });
+
+      if (response?.status === "success") {
+        setSuccess(true);
+        setTimeout(() => {
+          navigate("/profile");
+        }, 2000);
+      }
+    } catch (err) {
+      console.error("Change password error:", err);
+      setError(err.message || "Mật khẩu hiện tại không đúng.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -95,14 +133,24 @@ const ResetPasswordPage = () => {
             />
           </div>
 
+          {/* Error/Success Messages */}
+          {error && (
+            <p className="text-red-600 text-sm">{error}</p>
+          )}
+          
+          {success && (
+            <p className="text-green-600 text-sm">✅ Đổi mật khẩu thành công! Đang chuyển trang...</p>
+          )}
+
           {/* Submit */}
           <button
             type="submit"
+            disabled={loading || success}
             className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 
             hover:opacity-95 text-white font-semibold text-lg py-3 rounded-xl 
-            shadow-lg transition-all"
+            shadow-lg transition-all disabled:bg-gray-400 disabled:cursor-not-allowed"
           >
-            Update Password
+            {loading ? "Đang cập nhật..." : success ? "Thành công!" : "Update Password"}
           </button>
         </form>
 

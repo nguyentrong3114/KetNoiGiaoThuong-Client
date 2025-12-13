@@ -1,43 +1,42 @@
 import React from "react";
 
-// Small, dependency-free SVG bar chart for the dashboard
-const DashboardChart = ({ data = [], width = 600, height = 220 }) => {
+// Horizontal bar chart - better for long labels
+const DashboardChart = ({ data = [] }) => {
   if (!data.length) return <div className="text-sm text-gray-500">Không có dữ liệu</div>;
 
   const max = Math.max(...data.map((d) => d.value));
-  const barWidth = width / data.length - 20; // tăng spacing để label thoáng
-
-  const paddingTop = 10;
-  const paddingBottom = 35; // ⭐ tăng từ 20 → 35 cho label không bị che
-  const chartHeight = height - paddingTop - paddingBottom;
 
   return (
-    <svg width={width} height={height} className="w-full">
+    <div className="space-y-4">
       {data.map((d, i) => {
-        const h = (d.value / (max || 1)) * chartHeight;
-        const x = i * (barWidth + 20) + 25;
-        const y = height - paddingBottom - h;
+        const percentage = max > 0 ? (d.value / max) * 100 : 0;
+        
+        // Truncate label nếu quá dài
+        const truncatedLabel = d.label.length > 40 
+          ? d.label.substring(0, 40) + "..." 
+          : d.label;
 
         return (
-          <g key={i}>
-            {/* BAR */}
-            <rect x={x} y={y} width={barWidth} height={h} fill="#3b82f6" rx="6" />
-
-            {/* LABEL */}
-            <text
-              x={x + barWidth / 2}
-              y={height - 12} // ⭐ không chạm đáy nữa
-              fontSize="11"
-              textAnchor="middle"
-              fill="#374151"
-              style={{ pointerEvents: "none" }}
-            >
-              {d.label}
-            </text>
-          </g>
+          <div key={i} className="space-y-1">
+            {/* Label */}
+            <div className="flex items-center justify-between text-sm">
+              <span className="text-gray-700 font-medium truncate" title={d.label}>
+                {truncatedLabel}
+              </span>
+              <span className="text-blue-600 font-bold ml-2">{d.value}</span>
+            </div>
+            
+            {/* Bar */}
+            <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+              <div
+                className="bg-gradient-to-r from-blue-500 to-blue-600 h-full rounded-full transition-all duration-500"
+                style={{ width: `${percentage}%` }}
+              />
+            </div>
+          </div>
         );
       })}
-    </svg>
+    </div>
   );
 };
 

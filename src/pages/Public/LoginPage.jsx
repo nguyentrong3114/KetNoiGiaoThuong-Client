@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
+import { authApi } from "../../services/apiClient";
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -10,6 +11,23 @@ const LoginPage = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  // Redirect nếu đã đăng nhập
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const user = JSON.parse(localStorage.getItem("user") || "{}");
+    
+    if (token) {
+      // Đã đăng nhập, redirect về dashboard tương ứng
+      if (user?.role === "admin") {
+        navigate("/admin/dashboard", { replace: true });
+      } else if (user?.role === "seller") {
+        navigate("/dashboard/company", { replace: true });
+      } else {
+        navigate("/dashboard", { replace: true });
+      }
+    }
+  }, [navigate]);
+
   // Input change
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -17,19 +35,121 @@ const LoginPage = () => {
   };
 
   /* ============================================================
-      📌 SUBMIT LOGIN — DEMO MODE (NO API)
+      📌 SUBMIT LOGIN — API CONNECTED
   ============================================================= */
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMsg("");
 
-    setLoading(true);
-    console.log("DEMO LOGIN:", formData);
+    if (!formData.email || !formData.password) {
+      setErrorMsg("Vui lòng nhập đầy đủ thông tin.");
+      return;
+    }
 
-    setTimeout(() => {
+    setLoading(true);
+
+    try {
+      console.log("📤 Sending login request...");
+      const response = await authApi.login({
+        email: formData.email,
+        password: formData.password,
+      });
+
+      console.log("🔐 Login response:", response);
+      console.log("🔐 Response type:", typeof response);
+      console.log("🔐 Response keys:", response ? Object.keys(response) : "null");
+
+      // apiRequest trả về toàn bộ response: { status, message, data }
+      // data chứa { access_token, user }
+      const token = response?.data?.access_token;
+      const user = response?.data?.user;
+
+      console.log("📦 Token:", token ? token.substring(0, 20) + "..." : "null");
+      console.log("📦 User:", user);
+
+      if (token) {
+        // Lưu token
+        localStorage.setItem("token", token);
+        console.log("✅ Token saved");
+        
+        // Fetch user info từ /api/user
+        let userData = null;
+        
+        try {
+          console.log("📡 Fetching user info from /user...");
+          const userResponse = await authApi.me();
+          console.log("📥 User response:", userResponse);
+          
+          // userResponse có thể là { data: {...} } hoặc trực tiếp user object
+          userData = userResponse?.data || userResponse;
+          console.log("📦 User data extracted:", userData);
+        } catch (err) {
+          console.error("❌ Error fetching user from /api/user:", err);
+          
+          // Nếu không lấy được từ /api/user, tạo user object cơ bản từ email
+          userData = {
+            id: 1,
+            email: formData.email,
+            full_name: formData.email.split("@")[0],
+            role: formData.email.includes("admin") ? "admin" : "buyer",
+          };
+          console.log("📦 Created fallback user:", userData);
+        }
+        
+        // Lưu user vào localStorage
+        if (userData) {
+          localStorage.setItem("user", JSON.stringify(userData));
+          console.log("✅ User saved to localStorage");
+          
+          // Verify
+          const savedUser = localStorage.getItem("user");
+          console.log("🔍 Verify saved user:", savedUser);
+        }
+        
+        // Redirect dựa vào role
+        const role = userData?.role || "buyer";
+        console.log("👤 User role:", role);
+        
+        if (role === "admin") {
+          console.log("🚀 Redirecting to admin dashboard...");
+          window.location.href = "/admin/dashboard";
+        } else if (role === "seller") {
+          console.log("🚀 Redirecting to company dashboard...");
+          window.location.href = "/dashboard/company";
+        } else {
+          console.log("🚀 Redirecting to user dashboard...");
+          window.location.href = "/dashboard";
+        }
+      } else {
+        console.error("❌ No access_token in response");
+        setErrorMsg("Đăng nhập thất bại. Vui lòng thử lại.");
+      }
+    } catch (error) {
+      console.error("❌ Login error:", error);
+      console.error("❌ Error type:", typeof error);
+      console.error("❌ Error message:", error.message);
+      console.error("❌ Error stack:", error.stack);
+      
+      // Xử lý các lỗi cụ thể
+      let errorMessage = "Có lỗi xảy ra. Vui lòng thử lại.";
+      
+      if (error.message) {
+        if (error.message.includes("verify your email") || error.message.includes("verify email")) {
+          errorMessage = "Vui lòng xác thực email trước khi đăng nhập.";
+        } else if (error.message.includes("Invalid credentials") || error.message.includes("không đúng")) {
+          errorMessage = "Email hoặc mật khẩu không đúng.";
+        } else if (error.message.includes("Network") || error.message.includes("Failed to fetch")) {
+          errorMessage = "Không thể kết nối đến server. Vui lòng kiểm tra kết nối mạng.";
+        } else {
+          errorMessage = error.message;
+        }
+      }
+      
+      console.error("📝 Final error message:", errorMessage);
+      setErrorMsg(errorMessage);
+    } finally {
       setLoading(false);
-      navigate("/");
-    }, 800);
+    }
   };
 
   return (

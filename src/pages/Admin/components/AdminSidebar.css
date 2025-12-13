@@ -1,16 +1,28 @@
 /* Sidebar */
 .sidebar {
   width: 270px;
-  background: linear-gradient(180deg, #5DADE2 0%, #3498DB 100%);
+  /* Đặt chiều cao 100% màn hình để menu luôn full chiều dọc */
+  height: 100vh;
+  background: linear-gradient(180deg, #5dade2 0%, #3498db 100%);
   color: white;
   padding: 20px;
-  position: relative;
+
+  /* 🔥 QUAN TRỌNG: Sử dụng Flexbox để chia bố cục dọc */
+  display: flex;
+  flex-direction: column;
+
+  /* Giữ vị trí cố định khi scroll trang chính (tuỳ chọn) */
+  position: sticky;
+  top: 0;
 }
 
 .logo-container {
-  margin-bottom: 50px;
+  /* Giảm margin một chút để tiết kiệm diện tích */
+  margin-bottom: 30px;
   display: flex;
   justify-content: center;
+  /* Đảm bảo logo không bị co lại */
+  flex-shrink: 0;
 }
 
 .logo-image {
@@ -21,7 +33,20 @@
 
 /* Navigation */
 .nav-menu {
+  /* 🔥 QUAN TRỌNG: flex: 1 giúp phần này chiếm toàn bộ khoảng trống còn lại */
+  flex: 1;
+  /* Nếu menu quá dài, chỉ phần này sẽ cuộn, không bị tràn xuống dưới */
+  overflow-y: auto;
+  /* Ẩn thanh cuộn cho đẹp (tuỳ chọn) */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+
   margin-bottom: 20px;
+}
+
+/* Ẩn thanh cuộn trên Chrome/Safari/Webkit */
+.nav-menu::-webkit-scrollbar {
+  display: none;
 }
 
 .nav-item {
@@ -34,6 +59,8 @@
   gap: 15px;
   opacity: 0.8;
   transition: all 0.3s ease;
+  text-decoration: none; /* Xóa gạch chân mặc định của Link */
+  color: white; /* Đảm bảo màu chữ đúng */
 }
 
 .nav-item:hover {
@@ -52,12 +79,19 @@
 
 .nav-text {
   font-size: 16px;
+  white-space: nowrap; /* Ngăn xuống dòng */
 }
 
 .nav-bottom {
-  position: absolute;
-  bottom: 100px;
-  width: 230px;
+  /* 🔥 XÓA position: absolute cũ đi */
+  /* position: absolute; */
+  /* bottom: 100px; */
+
+  /* Đảm bảo phần này nằm dưới cùng nhưng không đè lên phần trên */
+  flex-shrink: 0;
+  width: 100%;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.2); /* Thêm gạch ngang phân cách cho đẹp */
 }
 
 /* Responsive */
@@ -65,11 +99,17 @@
   .sidebar {
     width: 100%;
     height: auto;
+    position: relative;
+    padding-bottom: 20px;
+  }
+
+  .nav-menu {
+    overflow-y: visible; /* Trên mobile thì để scroll tự nhiên */
+    flex: none;
   }
 
   .nav-bottom {
-    position: relative;
-    bottom: 0;
-    width: 100%;
+    border-top: none;
+    padding-top: 0;
   }
 }
