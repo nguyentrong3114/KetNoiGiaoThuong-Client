@@ -44,11 +44,16 @@ const RegisterPage = () => {
     setFormData({ ...formData, [name]: value });
   };
 
+<<<<<<< HEAD
   // SUBMIT REGISTER — API CONNECTED
+=======
+  // SUBMIT REGISTER
+>>>>>>> 17d795c47111f022496d9bbca35c46e032b555bd
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMsg("");
 
+    // Validate
     if (!formData.full_name || !formData.email || !formData.phone || !formData.password) {
       setErrorMsg("Vui lòng nhập đầy đủ thông tin.");
       return;
@@ -77,12 +82,17 @@ const RegisterPage = () => {
     setLoading(true);
 
     try {
+<<<<<<< HEAD
       const response = await authApi.register({
+=======
+      const payload = {
+>>>>>>> 17d795c47111f022496d9bbca35c46e032b555bd
         full_name: formData.full_name,
         email: formData.email,
         phone: formData.phone,
         role: formData.role,
         password: formData.password,
+<<<<<<< HEAD
         password_confirmation: formData.confirmPassword,
       });
 
@@ -97,6 +107,18 @@ const RegisterPage = () => {
       setErrorMsg(error.message || "Có lỗi xảy ra khi đăng ký.");
     } finally {
       setLoading(false);
+=======
+      };
+
+      await authApi.register(payload);
+
+      setLoading(false);
+      alert("Đăng ký thành công! Vui lòng đăng nhập.");
+      navigate("/login");
+    } catch (err) {
+      setLoading(false);
+      setErrorMsg(err.message || "Lỗi đăng ký. Vui lòng thử lại.");
+>>>>>>> 17d795c47111f022496d9bbca35c46e032b555bd
     }
   };
 

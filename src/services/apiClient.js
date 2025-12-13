@@ -1,21 +1,21 @@
 /* ============================================================
-   API CLIENT – FINAL PRODUCTION VERSION (MATCH BACKEND)
+   API CLIENT – FINAL VERSION FOR LOGIN & REGISTER
 ============================================================ */
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000/api";
 
 /* ============================================================
-   CORE REQUEST HANDLER (NO CSRF – JWT ONLY)
+   CORE REQUEST HANDLER
 ============================================================ */
 async function apiRequest(path, { method = "GET", headers = {}, params = {}, body } = {}) {
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem("access_token");
 
   const finalHeaders = {
     Accept: "application/json",
     ...headers,
   };
 
-  // Nếu là JSON thì set Content-Type
+  // Nếu body JSON → add Content-Type
   if (!(body instanceof FormData)) {
     finalHeaders["Content-Type"] = "application/json";
   }
@@ -25,6 +25,7 @@ async function apiRequest(path, { method = "GET", headers = {}, params = {}, bod
     finalHeaders["Authorization"] = `Bearer ${token}`;
   }
 
+<<<<<<< HEAD
   // Build query ?key=value (loại bỏ undefined values)
   const cleanParams = {};
   if (params) {
@@ -35,18 +36,24 @@ async function apiRequest(path, { method = "GET", headers = {}, params = {}, bod
     });
   }
   
+=======
+  // Build query string
+>>>>>>> 17d795c47111f022496d9bbca35c46e032b555bd
   const queryString =
     Object.keys(cleanParams).length ? `?${new URLSearchParams(cleanParams).toString()}` : "";
 
+<<<<<<< HEAD
   // Fetch (CHẶN COOKIE → KHÔNG CÒN CSRF!)
   const fullUrl = API_BASE_URL + path + queryString;
   console.log(`🌐 API Request: ${method} ${fullUrl}`);
   
   const res = await fetch(fullUrl, {
+=======
+  const res = await fetch(API_BASE_URL + path + queryString, {
+>>>>>>> 17d795c47111f022496d9bbca35c46e032b555bd
     method,
     headers: finalHeaders,
     body: body instanceof FormData ? body : body ? JSON.stringify(body) : null,
-    credentials: "omit",
   });
 
   console.log(`📡 API Response Status: ${res.status} ${res.statusText}`);
@@ -82,6 +89,7 @@ async function apiRequest(path, { method = "GET", headers = {}, params = {}, bod
   }
 
   if (!res.ok) {
+<<<<<<< HEAD
     // Tạo error object với response data để component có thể xử lý
     const error = new Error(data.message || "Có lỗi xảy ra khi gọi API");
     error.response = {
@@ -90,13 +98,16 @@ async function apiRequest(path, { method = "GET", headers = {}, params = {}, bod
       data: data
     };
     throw error;
+=======
+    throw new Error(data.message || "Lỗi khi gọi API");
+>>>>>>> 17d795c47111f022496d9bbca35c46e032b555bd
   }
 
-  return data;
+  return data; // BE trả về {status, message, data: {...}}
 }
 
 /* ============================================================
-   AUTH API
+   AUTH (LOGIN / REGISTER)
 ============================================================ */
 export const authApi = {
   login: (payload) => apiRequest("/auth/login", { method: "POST", body: payload }),
@@ -119,6 +130,7 @@ export const authApi = {
   },
   resendVerificationOtp: (payload) => apiRequest("/auth/resend-verification-otp", { method: "POST", body: payload }),
 };
+<<<<<<< HEAD
 
 /* ============================================================
    PROFILE / IDENTITY (CORRECT MATCH WITH BACKEND)
@@ -897,3 +909,5 @@ export const adminSubscriptionApi = {
     body: { admin_note: adminNote } 
   }),
 };
+=======
+>>>>>>> 17d795c47111f022496d9bbca35c46e032b555bd
