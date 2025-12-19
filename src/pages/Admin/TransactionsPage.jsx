@@ -1,134 +1,203 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { Search, ArrowDownCircle, ArrowUpCircle, CreditCard, TrendingUp, Calendar } from "lucide-react";
 import AdminHeader from "./components/AdminHeader";
+import { adminApi } from "../../services/apiClient";
 import "./TransactionsPage.css";
 
 const TransactionsPage = () => {
+  const [transactions, setTransactions] = useState([]);
+  const [stats, setStats] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [filters, setFilters] = useState({
+    type: "",
+    from_date: "",
+    to_date: "",
+  });
+
+  useEffect(() => {
+    loadData();
+  }, [filters]);
+
+  const loadData = async () => {
+    setLoading(true);
+    try {
+      const params = { per_page: 50 };
+      if (filters.type) params.type = filters.type;
+      if (filters.from_date) params.from_date = filters.from_date;
+      if (filters.to_date) params.to_date = filters.to_date;
+
+      const [txRes, statsRes] = await Promise.all([
+        adminApi.getTransactions(params),
+        adminApi.getTransactionStats(),
+      ]);
+
+      setTransactions(txRes?.data || []);
+      setStats(statsRes?.data || null);
+    } catch (error) {
+      console.error("Error loading transactions:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const formatMoney = (amount) => new Intl.NumberFormat("vi-VN").format(amount || 0);
+
+  const getTypeInfo = (type) => {
+    const types = {
+      deposit: { icon: ArrowDownCircle, color: "text-green-500", bg: "bg-green-100", label: "Nạp tiền" },
+      withdraw: { icon: ArrowUpCircle, color: "text-red-500", bg: "bg-red-100", label: "Rút tiền" },
+      auction_win: { icon: CreditCard, color: "text-blue-500", bg: "bg-blue-100", label: "Thanh toán đấu giá" },
+      auction_receive: { icon: TrendingUp, color: "text-emerald-500", bg: "bg-emerald-100", label: "Nhận tiền đấu giá" },
+      payment: { icon: CreditCard, color: "text-orange-500", bg: "bg-orange-100", label: "Thanh toán" },
+      receive: { icon: TrendingUp, color: "text-green-500", bg: "bg-green-100", label: "Nhận tiền" },
+    };
+    return types[type] || types.payment;
+  };
+
+  const getStatusBadge = (status) => {
+    const styles = {
+      completed: { bg: "bg-green-100 text-green-700", label: "Hoàn thành" },
+      pending: { bg: "bg-yellow-100 text-yellow-700", label: "Đang xử lý" },
+      failed: { bg: "bg-red-100 text-red-700", label: "Thất bại" },
+    };
+    return styles[status] || styles.pending;
+  };
+
   return (
-    <>
-      <AdminHeader title="Giao dịch" subtitle="" />
-      <div className="transactions-content">
-        <PaymentHistory />
-        <PaymentChart />
+    <div className="p-6">
+      <AdminHeader title="Lịch sử giao dịch" subtitle="Quản lý tất cả giao dịch trong hệ thống" />
+
+      {/* Stats Cards */}
+      {stats && (
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+          <div className="bg-white rounded-xl p-5 shadow-sm">
+            <p className="text-sm text-gray-500">Tổng giao dịch</p>
+            <p className="text-2xl font-bold text-gray-900">{stats.total_transactions || 0}</p>
+          </div>
+          <div className="bg-white rounded-xl p-5 shadow-sm">
+            <p className="text-sm text-gray-500">Giao dịch tháng này</p>
+            <p className="text-2xl font-bold text-gray-900">{stats.month_transactions || 0}</p>
+          </div>
+          <div className="bg-white rounded-xl p-5 shadow-sm">
+            <p className="text-sm text-gray-500">Tổng nạp tiền</p>
+            <p className="text-2xl font-bold text-green-600">₫{formatMoney(stats.total_deposit)}</p>
+          </div>
+          <div className="bg-white rounded-xl p-5 shadow-sm">
+            <p className="text-sm text-gray-500">Tổng rút tiền</p>
+            <p className="text-2xl font-bold text-red-600">₫{formatMoney(stats.total_withdraw)}</p>
+          </div>
+        </div>
+      )}
+
+      {/* Filters */}
+      <div className="bg-white rounded-xl shadow-sm p-4 mb-6">
+        <div className="flex flex-wrap gap-4">
+          <select
+            value={filters.type}
+            onChange={(e) => setFilters({ ...filters, type: e.target.value })}
+            className="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          >
+            <option value="">Tất cả loại</option>
+            <option value="deposit">Nạp tiền</option>
+            <option value="withdraw">Rút tiền</option>
+            <option value="auction_win">Thanh toán đấu giá</option>
+            <option value="auction_receive">Nhận tiền đấu giá</option>
+          </select>
+
+          <div className="flex items-center gap-2">
+            <Calendar size={18} className="text-gray-400" />
+            <input
+              type="date"
+              value={filters.from_date}
+              onChange={(e) => setFilters({ ...filters, from_date: e.target.value })}
+              className="px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+            <span className="text-gray-400">→</span>
+            <input
+              type="date"
+              value={filters.to_date}
+              onChange={(e) => setFilters({ ...filters, to_date: e.target.value })}
+              className="px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+          </div>
+        </div>
       </div>
-    </>
-  );
-};
 
-// ===============================
-// 📌 LỊCH SỬ GIAO DỊCH
-// ===============================
-const PaymentHistory = () => {
-  // ❗ XOÁ DEMO → dữ liệu thật sẽ đến từ API /admin/transactions
-  const transactions = [];
-
-  return (
-    <div className="transactions-history-card">
-      <div className="transactions-history-header">
-        <h2 className="transactions-history-title">Lịch sử giao dịch</h2>
-
-        <button className="transactions-more-btn">
-          <svg width="20" height="20" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-            <circle cx="12" cy="12" r="1" />
-            <circle cx="12" cy="5" r="1" />
-            <circle cx="12" cy="19" r="1" />
-          </svg>
-        </button>
-      </div>
-
-      <div className="transactions-list">
-        {/* ❗ Nếu không có dữ liệu */}
-        {transactions.length === 0 ? (
-          <p className="text-gray-500 p-4">Chưa có giao dịch.</p>
+      {/* Transactions Table */}
+      <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+        {loading ? (
+          <div className="flex justify-center py-12">
+            <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-indigo-600"></div>
+          </div>
+        ) : transactions.length === 0 ? (
+          <div className="p-12 text-center text-gray-500">
+            <CreditCard className="w-12 h-12 mx-auto mb-4 text-gray-300" />
+            <p>Không có giao dịch nào</p>
+          </div>
         ) : (
-          transactions.map((transaction) => (
-            <div key={transaction.id} className="transactions-item">
-              {/* Icon */}
-              <div
-                className="transactions-item-icon"
-                style={{ backgroundColor: `${transaction.color}20` }}
-              >
-                {/* Icon types (giữ UI, nhưng không dùng demo nữa) */}
-                {transaction.icon === "paypal" && (
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill={transaction.color}>
-                    <path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944 3.72a.77.77 0 0 1 .76-.633h7.2a4.45 4.45 0 0 1 3.12 1.14 3.93 3.93 0 0 1 1.14 3.12v.39a6.45 6.45 0 0 1-1.92 4.56 6.39 6.39 0 0 1-4.56 1.92h-3.36a.77.77 0 0 0-.76.633l-.78 4.83a.77.77 0 0 1-.76.633z" />
-                  </svg>
-                )}
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead className="bg-gray-50">
+                <tr>
+                  <th className="px-4 py-3 text-left text-sm font-semibold text-gray-600">Mã GD</th>
+                  <th className="px-4 py-3 text-left text-sm font-semibold text-gray-600">Loại</th>
+                  <th className="px-4 py-3 text-left text-sm font-semibold text-gray-600">Người dùng</th>
+                  <th className="px-4 py-3 text-right text-sm font-semibold text-gray-600">Số tiền</th>
+                  <th className="px-4 py-3 text-right text-sm font-semibold text-gray-600">Số dư sau</th>
+                  <th className="px-4 py-3 text-center text-sm font-semibold text-gray-600">Trạng thái</th>
+                  <th className="px-4 py-3 text-left text-sm font-semibold text-gray-600">Thời gian</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-100">
+                {transactions.map((tx) => {
+                  const typeInfo = getTypeInfo(tx.type);
+                  const Icon = typeInfo.icon;
+                  const status = getStatusBadge(tx.status);
+                  const isPositive = tx.amount > 0;
 
-                {transaction.icon === "paypal2" && (
-                  <svg width="24" height="24" fill={transaction.color}>
-                    <circle cx="12" cy="12" r="8" />
-                  </svg>
-                )}
-
-                {transaction.icon === "bank" && (
-                  <svg
-                    width="24"
-                    height="24"
-                    fill="none"
-                    stroke={transaction.color}
-                    strokeWidth="2"
-                  >
-                    <rect x="3" y="8" width="18" height="13" rx="2" />
-                    <path d="M3 8l9-5 9 5" />
-                    <line x1="7" y1="13" x2="7" y2="17" />
-                    <line x1="12" y1="13" x2="12" y2="17" />
-                    <line x1="17" y1="13" x2="17" y2="17" />
-                  </svg>
-                )}
-
-                {transaction.icon === "cancel" && (
-                  <svg
-                    width="24"
-                    height="24"
-                    fill="none"
-                    stroke={transaction.color}
-                    strokeWidth="2"
-                  >
-                    <line x1="18" y1="6" x2="6" y2="18" />
-                    <line x1="6" y1="6" x2="18" y2="18" />
-                  </svg>
-                )}
-              </div>
-
-              {/* Info */}
-              <div className="transactions-item-info">
-                <div className="transactions-item-type">{transaction.type}</div>
-                <div className="transactions-item-date">{transaction.date}</div>
-              </div>
-
-              {/* Amount */}
-              <div className="transactions-item-amount">
-                <div className="transactions-item-value">{transaction.amount}</div>
-                <div className="transactions-item-currency">VNĐ</div>
-              </div>
-            </div>
-          ))
+                  return (
+                    <tr key={tx.id} className="hover:bg-gray-50">
+                      <td className="px-4 py-4">
+                        <span className="font-mono text-sm text-indigo-600">{tx.transaction_code}</span>
+                      </td>
+                      <td className="px-4 py-4">
+                        <div className="flex items-center gap-2">
+                          <div className={`p-2 rounded-lg ${typeInfo.bg}`}>
+                            <Icon className={typeInfo.color} size={18} />
+                          </div>
+                          <span className="text-sm font-medium text-gray-700">{typeInfo.label}</span>
+                        </div>
+                      </td>
+                      <td className="px-4 py-4">
+                        <div>
+                          <p className="font-medium text-gray-800">{tx.user?.full_name || "N/A"}</p>
+                          <p className="text-xs text-gray-500">{tx.user?.email}</p>
+                        </div>
+                      </td>
+                      <td className="px-4 py-4 text-right">
+                        <span className={`font-bold ${isPositive ? "text-green-600" : "text-red-600"}`}>
+                          {isPositive ? "+" : ""}₫{formatMoney(Math.abs(tx.amount))}
+                        </span>
+                      </td>
+                      <td className="px-4 py-4 text-right">
+                        <span className="text-gray-600">₫{formatMoney(tx.balance_after)}</span>
+                      </td>
+                      <td className="px-4 py-4 text-center">
+                        <span className={`px-2 py-1 rounded text-xs font-medium ${status.bg}`}>
+                          {status.label}
+                        </span>
+                      </td>
+                      <td className="px-4 py-4 text-sm text-gray-500">
+                        {new Date(tx.created_at).toLocaleString("vi-VN")}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         )}
       </div>
-    </div>
-  );
-};
-
-// ===============================
-// 📌 BIỂU ĐỒ GIAO DỊCH
-// ===============================
-const PaymentChart = () => {
-  return (
-    <div className="transactions-chart-card">
-      <div className="transactions-chart-header">
-        <h2 className="transactions-chart-title">Thống kê giao dịch</h2>
-
-        <button className="transactions-more-btn">
-          <svg width="20" height="20" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-            <circle cx="12" cy="12" r="1" />
-            <circle cx="12" cy="5" r="1" />
-            <circle cx="12" cy="19" r="1" />
-          </svg>
-        </button>
-      </div>
-
-      {/* ❗ Không có dữ liệu biểu đồ */}
-      <p className="text-gray-500 p-4">Chưa có dữ liệu thống kê.</p>
     </div>
   );
 };

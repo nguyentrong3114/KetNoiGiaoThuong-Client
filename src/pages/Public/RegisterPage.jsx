@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
+import { authApi } from "../../services/apiClient";
 
 const RegisterPage = () => {
   const navigate = useNavigate();
@@ -20,17 +21,39 @@ const RegisterPage = () => {
   const [errorMsg, setErrorMsg] = useState("");
   const [loading, setLoading] = useState(false);
 
+  // Redirect nếu đã đăng nhập
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const user = JSON.parse(localStorage.getItem("user") || "{}");
+    
+    if (token) {
+      // Đã đăng nhập, redirect về dashboard tương ứng
+      if (user?.role === "admin") {
+        navigate("/admin/dashboard", { replace: true });
+      } else if (user?.role === "seller") {
+        navigate("/dashboard/company", { replace: true });
+      } else {
+        navigate("/dashboard", { replace: true });
+      }
+    }
+  }, [navigate]);
+
   // CHANGE INPUT
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  // SUBMIT REGISTER — DEMO MODE
-  const handleSubmit = (e) => {
+<<<<<<< HEAD
+  // SUBMIT REGISTER — API CONNECTED
+=======
+  // SUBMIT REGISTER
+>>>>>>> 17d795c47111f022496d9bbca35c46e032b555bd
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMsg("");
 
+    // Validate
     if (!formData.full_name || !formData.email || !formData.phone || !formData.password) {
       setErrorMsg("Vui lòng nhập đầy đủ thông tin.");
       return;
@@ -41,15 +64,62 @@ const RegisterPage = () => {
       return;
     }
 
+    // ✅ VALIDATION: Kiểm tra email theo role
+    const email = formData.email.toLowerCase();
+    const personalEmailDomains = ['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com', 'icloud.com'];
+    const isPersonalEmail = personalEmailDomains.some(domain => email.endsWith(`@${domain}`));
+
+    if (formData.role === "seller" && isPersonalEmail) {
+      setErrorMsg("⚠️ Doanh nghiệp phải đăng ký bằng email công ty (không được dùng Gmail, Yahoo, Hotmail, v.v.)");
+      return;
+    }
+
+    if (formData.role === "buyer" && !isPersonalEmail) {
+      // Cảnh báo nhẹ nhưng vẫn cho phép
+      console.warn("Thành viên nên dùng email cá nhân");
+    }
+
     setLoading(true);
 
-    console.log("DEMO REGISTER:", formData);
+    try {
+<<<<<<< HEAD
+      const response = await authApi.register({
+=======
+      const payload = {
+>>>>>>> 17d795c47111f022496d9bbca35c46e032b555bd
+        full_name: formData.full_name,
+        email: formData.email,
+        phone: formData.phone,
+        role: formData.role,
+        password: formData.password,
+<<<<<<< HEAD
+        password_confirmation: formData.confirmPassword,
+      });
 
-    setTimeout(() => {
-      alert("Đăng ký thành công (DEMO)");
+      if (response?.status === "success") {
+        // Redirect đến trang verify email với email
+        navigate("/verify-email", { state: { email: formData.email } });
+      } else {
+        setErrorMsg("Đăng ký thất bại. Vui lòng thử lại.");
+      }
+    } catch (error) {
+      console.error("Register error:", error);
+      setErrorMsg(error.message || "Có lỗi xảy ra khi đăng ký.");
+    } finally {
       setLoading(false);
+=======
+      };
+
+      await authApi.register(payload);
+
+      setLoading(false);
+      alert("Đăng ký thành công! Vui lòng đăng nhập.");
       navigate("/login");
-    }, 800);
+    } catch (err) {
+      setLoading(false);
+      setErrorMsg(err.message || "Lỗi đăng ký. Vui lòng thử lại.");
+>>>>>>> 17d795c47111f022496d9bbca35c46e032b555bd
+    }
   };
 
   return (
@@ -120,19 +190,6 @@ const RegisterPage = () => {
               />
             </div>
 
-            {/* Email */}
-            <div>
-              <label className="block text-gray-800 font-medium mb-1">Email</label>
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                placeholder="Nhập email"
-                className="w-full px-4 py-3 rounded-xl bg-gray-100 focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-
             {/* Role */}
             <div>
               <label className="block text-gray-800 font-medium mb-2">Vai trò</label>
@@ -145,7 +202,7 @@ const RegisterPage = () => {
                     checked={formData.role === "buyer"}
                     onChange={handleChange}
                   />
-                  Cá nhân (buyer)
+                  👤 Thành viên (cá nhân)
                 </label>
 
                 <label className="flex items-center gap-2 cursor-pointer">
@@ -156,9 +213,35 @@ const RegisterPage = () => {
                     checked={formData.role === "seller"}
                     onChange={handleChange}
                   />
-                  Doanh nghiệp (seller)
+                  🏢 Doanh nghiệp
                 </label>
               </div>
+              
+              {/* Gợi ý email theo role */}
+              {formData.role === "seller" && (
+                <div className="mt-2 p-3 bg-yellow-50 border border-yellow-200 rounded-lg text-sm text-yellow-800">
+                  ⚠️ <strong>Lưu ý:</strong> Doanh nghiệp phải đăng ký bằng email công ty (ví dụ: contact@company.com). 
+                  Không được dùng Gmail, Yahoo, Hotmail.
+                </div>
+              )}
+              {formData.role === "buyer" && (
+                <div className="mt-2 p-3 bg-blue-50 border border-blue-200 rounded-lg text-sm text-blue-800">
+                  ℹ️ Thành viên có thể dùng email cá nhân (Gmail, Yahoo, v.v.)
+                </div>
+              )}
+            </div>
+
+            {/* Email */}
+            <div>
+              <label className="block text-gray-800 font-medium mb-1">Email</label>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                placeholder={formData.role === "seller" ? "contact@company.com" : "example@gmail.com"}
+                className="w-full px-4 py-3 rounded-xl bg-gray-100 focus:ring-2 focus:ring-blue-500"
+              />
             </div>
 
             {/* Password */}

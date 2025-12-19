@@ -29,6 +29,24 @@ input[type="password"]::-webkit-textfield-decoration-container {
 }
 
 /* ============================= */
+/* ✨ Dropdown Animation         */
+/* ============================= */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.2s ease-out;
+}
+
+/* ============================= */
 /* 🔁 Scroll Animation (Logo chạy ngang) */
 /* ============================= */
 @keyframes scroll {

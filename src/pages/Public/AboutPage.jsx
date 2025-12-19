@@ -1,126 +1,177 @@
+import React from "react";
 import FadeIn from "../../components/FadeIn";
+import {
+  Target,
+  Globe,
+  ShieldCheck,
+  Users,
+  Lightbulb,
+  Briefcase,
+  TrendingUp,
+  Award,
+} from "lucide-react";
 
 const AboutPage = () => {
   return (
-    <div className="text-gray-800">
-      {/* 🌟 HERO */}
-      <section className="bg-gradient-to-br from-blue-600 to-indigo-700 text-white py-24">
+    <div className="bg-slate-50 min-h-screen font-sans text-slate-800 selection:bg-blue-100 selection:text-blue-900">
+      {/* 🌟 HERO SECTION - Thu gọn chiều cao (py-32 -> py-24) */}
+      <section className="relative overflow-hidden bg-gradient-to-br from-blue-700 via-indigo-800 to-slate-900 text-white py-24">
+        {/* Background Pattern */}
+        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:20px_20px]"></div>
+
         <FadeIn delay={0.1}>
-          <div className="max-w-6xl mx-auto px-4 text-center">
-            <h1 className="text-4xl md:text-5xl font-extrabold leading-tight drop-shadow-lg">
+          <div className="relative max-w-6xl mx-auto px-4 text-center z-10">
+            <span className="inline-block py-1 px-3 rounded-full bg-blue-500/20 border border-blue-400/30 text-blue-200 text-sm font-semibold mb-6">
               Về Chúng Tôi
+            </span>
+            <h1 className="text-4xl md:text-5xl font-extrabold leading-tight tracking-tight mb-6 drop-shadow-2xl">
+              Kiến tạo tương lai <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-200 to-cyan-200">
+                Giao thương số
+              </span>
             </h1>
-            <p className="text-xl mt-6 max-w-3xl mx-auto text-blue-100">
-              Nền tảng giao thương hiện đại – nơi doanh nghiệp kết nối, hợp tác và phát triển bền
-              vững.
+            <p className="text-lg md:text-xl text-blue-100 max-w-3xl mx-auto font-light leading-relaxed">
+              Nền tảng kết nối doanh nghiệp toàn diện, nơi cơ hội được chia sẻ và giá trị bền vững
+              được thiết lập.
             </p>
           </div>
         </FadeIn>
       </section>
 
-      {/* 🚀 SỨ MỆNH */}
-      <section className="py-20 bg-white">
-        <div className="max-w-6xl mx-auto px-4 grid lg:grid-cols-2 gap-12 items-center">
-          <FadeIn delay={0.1}>
-            <div>
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-                Sứ mệnh của chúng tôi
-              </h2>
+      {/* 🚀 MISSION & VISION - Asymmetric Grid */}
+      <section className="py-20">
+        <div className="max-w-7xl mx-auto px-4 grid lg:grid-cols-12 gap-10 items-center">
+          {/* Sứ mệnh (Chiếm 7 phần) */}
+          <div className="lg:col-span-7 space-y-6">
+            <FadeIn delay={0.1}>
+              <div className="flex items-center gap-3 mb-4">
+                <Target className="w-8 h-8 text-blue-600" />
+                <h2 className="text-3xl font-bold text-slate-900">Sứ mệnh của chúng tôi</h2>
+              </div>
 
-              <p className="text-lg text-gray-600 mb-4">
-                Xây dựng hệ sinh thái giao thương minh bạch, hiệu quả và bền vững cho doanh nghiệp
-                Việt Nam.
+              <p className="text-lg text-slate-600 leading-relaxed">
+                Chúng tôi cam kết xây dựng một hệ sinh thái giao thương{" "}
+                <strong>minh bạch, hiệu quả và không biên giới</strong>. Giúp các doanh nghiệp Việt
+                Nam không chỉ kết nối trong nước mà còn vươn tầm ra thị trường quốc tế.
               </p>
 
-              <p className="text-lg text-gray-600 mb-8">
-                Mỗi sự kết nối là một cơ hội tạo ra giá trị cho xã hội và cộng đồng doanh nghiệp.
-              </p>
-
-              <div className="grid grid-cols-2 gap-6">
-                <div className="p-5 rounded-xl bg-blue-50 shadow-sm text-center">
-                  <p className="text-3xl font-bold text-blue-600">5+</p>
-                  <p className="text-gray-600 text-sm mt-1">Năm kinh nghiệm</p>
+              {/* STATS CARDS - Đã thu nhỏ kích thước (padding, icon, text) */}
+              <div className="grid sm:grid-cols-2 gap-5 mt-6">
+                <div className="p-4 rounded-xl bg-white border border-slate-100 shadow shadow-slate-200/50 flex flex-col items-center text-center hover:-translate-y-1 transition-transform duration-300">
+                  <div className="w-10 h-10 bg-blue-50 rounded-full flex items-center justify-center mb-2">
+                    <Award className="w-5 h-5 text-blue-600" />
+                  </div>
+                  <p className="text-3xl font-extrabold text-slate-900">5+</p>
+                  <p className="text-slate-500 font-medium text-sm">Năm kinh nghiệm</p>
                 </div>
-                <div className="p-5 rounded-xl bg-green-50 shadow-sm text-center">
-                  <p className="text-3xl font-bold text-green-600">10K+</p>
-                  <p className="text-gray-600 text-sm mt-1">Doanh nghiệp tin dùng</p>
+                <div className="p-4 rounded-xl bg-white border border-slate-100 shadow shadow-slate-200/50 flex flex-col items-center text-center hover:-translate-y-1 transition-transform duration-300">
+                  <div className="w-10 h-10 bg-green-50 rounded-full flex items-center justify-center mb-2">
+                    <Users className="w-5 h-5 text-green-600" />
+                  </div>
+                  <p className="text-3xl font-extrabold text-slate-900">10K+</p>
+                  <p className="text-slate-500 font-medium text-sm">Đối tác tin cậy</p>
                 </div>
               </div>
-            </div>
-          </FadeIn>
+            </FadeIn>
+          </div>
 
-          {/* TẦM NHÌN */}
-          <FadeIn delay={0.2}>
-            <div className="bg-gradient-to-br from-blue-500 to-purple-600 text-white p-10 rounded-2xl shadow-xl backdrop-blur-md">
-              <h3 className="text-2xl font-bold mb-4">Tầm nhìn 2030</h3>
-              <p className="text-blue-100 mb-6">
-                Trở thành nền tảng giao thương số 1 Đông Nam Á, kết nối 100.000+ doanh nghiệp.
-              </p>
+          {/* Tầm nhìn (Chiếm 5 phần) */}
+          <div className="lg:col-span-5">
+            <FadeIn delay={0.2}>
+              {/* VISION CARD - Đã thu nhỏ padding (p-10 -> p-8) */}
+              <div className="relative bg-slate-900 text-white p-8 rounded-2xl shadow-2xl overflow-hidden">
+                {/* Decorative blob */}
+                <div className="absolute top-0 right-0 w-64 h-64 bg-blue-600 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
+                <div className="absolute -bottom-8 -left-8 w-64 h-64 bg-purple-600 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
 
-              <ul className="space-y-3">
-                {["Công nghệ AI tiên tiến", "Mạng lưới toàn cầu", "Phát triển bền vững"].map(
-                  (item, i) => (
-                    <li key={i} className="flex items-center text-blue-50">
-                      <svg className="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
-                        <path
-                          fillRule="evenodd"
-                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                      {item}
-                    </li>
-                  )
-                )}
-              </ul>
-            </div>
-          </FadeIn>
+                <div className="relative z-10">
+                  <div className="flex items-center gap-3 mb-4">
+                    <Globe className="w-6 h-6 text-blue-400" />
+                    <h3 className="text-xl font-bold">Tầm nhìn 2030</h3>
+                  </div>
+                  <p className="text-slate-300 mb-6 leading-relaxed text-sm md:text-base">
+                    Trở thành nền tảng B2B số 1 Đông Nam Á, là cầu nối cho hơn{" "}
+                    <strong>100.000+</strong> doanh nghiệp giao thương tự do.
+                  </p>
+
+                  <ul className="space-y-3">
+                    {[
+                      { text: "Tiên phong công nghệ AI Matching", color: "text-blue-300" },
+                      { text: "Mạng lưới Logistics toàn cầu", color: "text-purple-300" },
+                      { text: "Phát triển kinh tế xanh bền vững", color: "text-green-300" },
+                    ].map((item, i) => (
+                      <li
+                        key={i}
+                        className="flex items-center bg-white/5 p-2.5 rounded-lg border border-white/10 backdrop-blur-sm"
+                      >
+                        <TrendingUp className={`w-4 h-4 mr-3 ${item.color}`} />
+                        <span className="font-medium text-sm">{item.text}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </FadeIn>
+          </div>
         </div>
       </section>
 
-      {/* ⭐ GIÁ TRỊ CỐT LÕI */}
-      <section className="py-20 bg-gray-50">
+      {/* ⭐ CORE VALUES */}
+      <section className="py-20 bg-white">
         <FadeIn delay={0.1}>
-          <div className="max-w-6xl mx-auto px-4">
-            <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold">Giá trị cốt lõi</h2>
-              <p className="text-lg text-gray-600 mt-3">Nền tảng hình thành văn hóa doanh nghiệp</p>
+          <div className="max-w-7xl mx-auto px-4">
+            <div className="text-center mb-12 max-w-2xl mx-auto">
+              <span className="text-blue-600 font-bold tracking-wider uppercase text-xs md:text-sm">
+                Văn hóa doanh nghiệp
+              </span>
+              <h2 className="text-3xl font-bold mt-2 text-slate-900">Giá trị cốt lõi</h2>
+              <p className="text-base text-slate-500 mt-3">
+                Những nguyên tắc định hình cách chúng tôi làm việc và phục vụ khách hàng.
+              </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {[
                 {
                   title: "Tận tâm",
-                  desc: "Luôn lắng nghe doanh nghiệp.",
-                  color: "bg-blue-100 text-blue-600",
+                  desc: "Đặt khách hàng làm trọng tâm trong mọi hành động.",
+                  icon: Users,
+                  color: "bg-blue-50 text-blue-600",
+                  border: "border-blue-100",
                 },
                 {
                   title: "Chính trực",
-                  desc: "Minh bạch & rõ ràng.",
-                  color: "bg-green-100 text-green-600",
+                  desc: "Minh bạch về thông tin, rõ ràng trong cam kết.",
+                  icon: ShieldCheck,
+                  color: "bg-emerald-50 text-emerald-600",
+                  border: "border-emerald-100",
                 },
                 {
                   title: "Đổi mới",
-                  desc: "Ứng dụng công nghệ tiên tiến.",
-                  color: "bg-purple-100 text-purple-600",
+                  desc: "Không ngừng cải tiến công nghệ và quy trình.",
+                  icon: Lightbulb,
+                  color: "bg-amber-50 text-amber-600",
+                  border: "border-amber-100",
                 },
                 {
                   title: "Hợp tác",
-                  desc: "Cùng nhau tạo giá trị lớn.",
-                  color: "bg-orange-100 text-orange-600",
+                  desc: "Cùng nhau phát triển, chia sẻ lợi ích bền vững.",
+                  icon: Briefcase,
+                  color: "bg-indigo-50 text-indigo-600",
+                  border: "border-indigo-100",
                 },
               ].map((v, i) => (
                 <div
                   key={i}
-                  className="p-6 bg-white rounded-xl shadow hover:shadow-xl transition cursor-pointer"
+                  className={`group p-6 bg-white rounded-2xl border ${v.border} hover:shadow-xl hover:shadow-slate-200/50 transition-all duration-300 hover:-translate-y-2`}
                 >
                   <div
-                    className={`w-16 h-16 ${v.color} rounded-full flex items-center justify-center mx-auto mb-4`}
+                    className={`w-12 h-12 ${v.color} rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}
                   >
-                    <span className="text-2xl font-bold">★</span>
+                    <v.icon className="w-6 h-6" />
                   </div>
-                  <h3 className="text-lg font-bold text-center">{v.title}</h3>
-                  <p className="text-sm mt-2 text-gray-600 text-center">{v.desc}</p>
+                  <h3 className="text-lg font-bold text-slate-900 mb-2">{v.title}</h3>
+                  <p className="text-slate-500 text-sm leading-relaxed">{v.desc}</p>
                 </div>
               ))}
             </div>
@@ -129,23 +180,52 @@ const AboutPage = () => {
       </section>
 
       {/* 📌 TIMELINE */}
-      <section className="py-24 bg-gray-50">
+      <section className="py-20 bg-slate-50">
         <FadeIn delay={0.1}>
-          <div className="max-w-5xl mx-auto px-4">
-            <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
+          <div className="max-w-4xl mx-auto px-4">
+            <h2 className="text-3xl font-bold text-center mb-12 text-slate-900">
               Hành trình phát triển
             </h2>
 
-            <div className="relative border-l-4 border-blue-600 pl-6 space-y-14">
+            <div className="relative border-l-2 border-slate-200 ml-4 md:ml-1/2 space-y-10">
               {[
-                { year: "2019", text: "Thành lập và xây dựng nền tảng kết nối." },
-                { year: "2021", text: "5,000+ doanh nghiệp đăng ký." },
-                { year: "2023", text: "Tích hợp AI Matching thông minh." },
-                { year: "2025", text: "Mở rộng ra thị trường Đông Nam Á." },
+                {
+                  year: "2019",
+                  title: "Khởi tạo",
+                  text: "Thành lập công ty và ra mắt phiên bản Beta.",
+                },
+                {
+                  year: "2021",
+                  title: "Tăng trưởng",
+                  text: "Đạt mốc 5,000+ doanh nghiệp thành viên.",
+                },
+                {
+                  year: "2023",
+                  title: "Đột phá công nghệ",
+                  text: "Tích hợp AI Matching thông minh vào nền tảng.",
+                },
+                {
+                  year: "2025",
+                  title: "Vươn ra biển lớn",
+                  text: "Mở rộng văn phòng tại Singapore & Thái Lan.",
+                },
               ].map((item, i) => (
-                <div key={i}>
-                  <h3 className="text-xl font-semibold">{item.year}</h3>
-                  <p className="text-gray-600 mt-1">{item.text}</p>
+                <div key={i} className="relative pl-8 md:pl-0">
+                  {/* Dot on line */}
+                  <div className="absolute top-1 left-[-5px] md:left-1/2 md:-ml-[5px] w-3 h-3 bg-blue-600 rounded-full ring-4 ring-blue-100"></div>
+
+                  <div
+                    className={`md:flex items-center justify-between w-full ${i % 2 === 0 ? "md:flex-row-reverse" : ""}`}
+                  >
+                    <div className="hidden md:block w-5/12"></div> {/* Spacer */}
+                    <div className="w-full md:w-5/12 bg-white p-5 rounded-xl shadow-sm border border-slate-100 hover:shadow-md transition">
+                      <span className="text-blue-600 font-bold text-lg block mb-1">
+                        {item.year}
+                      </span>
+                      <h3 className="text-base font-bold text-slate-900 mb-1">{item.title}</h3>
+                      <p className="text-slate-500 text-sm">{item.text}</p>
+                    </div>
+                  </div>
                 </div>
               ))}
             </div>
@@ -157,32 +237,39 @@ const AboutPage = () => {
       <section className="py-20 bg-white">
         <FadeIn delay={0.1}>
           <div className="max-w-6xl mx-auto px-4">
-            <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold">Đội ngũ lãnh đạo</h2>
-              <p className="text-lg text-gray-600">
-                Những con người đứng sau thành công của nền tảng
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-bold text-slate-900">Ban Lãnh Đạo</h2>
+              <p className="text-base text-slate-500 mt-3 max-w-2xl mx-auto">
+                Những thuyền trưởng tài năng và tâm huyết dẫn dắt con tàu doanh nghiệp.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {[
-                { name: "Nguyễn Văn A", position: "CEO & Founder" },
-                { name: "Trần Thị B", position: "CTO" },
-                { name: "Lê Văn C", position: "Head of Business" },
+                { name: "Trần Kiến Quốc", position: "CEO & Founder", imgSeed: "Felix" },
+                { name: "Nguyễn Thảo Vy", position: "Chief Technology Officer", imgSeed: "Aidan" },
+                { name: "Phạm Đức Minh", position: "Head of Growth", imgSeed: "Aneka" },
               ].map((p, i) => (
-                <div key={i} className="text-center group">
-                  <div className="relative w-36 h-36 mx-auto mb-4">
-                    <img
-                      src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${p.name}`}
-                      className="w-full h-full rounded-full ring-4 ring-blue-200 shadow-lg object-cover group-hover:ring-blue-400 transition"
-                    />
-                  </div>
+                <div key={i} className="group relative">
+                  <div className="absolute inset-0 bg-blue-600 rounded-2xl rotate-1 opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
+                  <div className="relative bg-white border border-slate-100 p-6 rounded-2xl shadow-lg shadow-slate-200/50 text-center transition-transform duration-300 group-hover:-translate-y-2">
+                    <div className="w-28 h-28 mx-auto mb-5 relative">
+                      <div className="absolute inset-0 bg-blue-100 rounded-full scale-90 group-hover:scale-100 transition-transform duration-500"></div>
+                      <img
+                        src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${p.imgSeed}`}
+                        alt={p.name}
+                        className="relative w-full h-full rounded-full object-cover"
+                      />
+                    </div>
 
-                  <h3 className="text-xl font-semibold">{p.name}</h3>
-                  <p className="text-blue-600 font-medium">{p.position}</p>
-                  <p className="text-gray-600 text-sm mt-2">
-                    10+ năm kinh nghiệm trong lĩnh vực chuyên môn
-                  </p>
+                    <h3 className="text-lg font-bold text-slate-900">{p.name}</h3>
+                    <p className="text-blue-600 font-semibold text-xs uppercase tracking-wide mt-1 mb-3">
+                      {p.position}
+                    </p>
+                    <p className="text-slate-500 text-sm leading-relaxed">
+                      Hơn 15 năm kinh nghiệm quản lý cấp cao tại các tập đoàn công nghệ đa quốc gia.
+                    </p>
+                  </div>
                 </div>
               ))}
             </div>

@@ -51,7 +51,7 @@ const AuctionCreatePage = () => {
     const payload = {
       title: form.title,
       description: form.description,
-      image: form.image,
+      images: [form.image],
       start_price: Number(form.price),
       ends_at: new Date(form.endsAt).toISOString(),
     };
@@ -59,15 +59,27 @@ const AuctionCreatePage = () => {
     try {
       setLoading(true);
 
-      const res = await auctionApi.create(payload);
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/auctions`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
 
-      if (res?.status === "success") {
+      const data = await response.json();
+
+      if (data?.status === "success") {
         alert("🎉 Đăng sản phẩm đấu giá thành công!");
         navigate("/auction");
+      } else {
+        alert("Không thể đăng sản phẩm: " + (data?.message || "Lỗi không xác định"));
       }
     } catch (err) {
       console.error("Lỗi tạo đấu giá:", err);
-      alert("Không thể đăng sản phẩm! Backend chưa hỗ trợ API này.");
+      alert("Không thể đăng sản phẩm! Vui lòng thử lại.");
     } finally {
       setLoading(false);
     }
